@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec Docs Knowledge Base"
+  short_description: "Turn a project into AI-readable specs"
+  default_prompt: "Use $spec-docs-knowledge-base to convert this project into an AI-readable spec documentation library."
