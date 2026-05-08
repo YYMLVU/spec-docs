@@ -16,6 +16,7 @@ Send the following text to your AI assistant (Claude Code, Cursor, GitHub Copilo
 
 ```text
 Please follow the guidelines in https://github.com/YYMLVU/spec-docs/blob/main/INSTALL-FOR-AI.md to install the spec-docs skill into the current project.
+And use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
 
 ## Core Idea
