@@ -10,6 +10,14 @@ Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 **impl
 
 它记录当前已经实现的代码事实：代码行为、技术栈、模块约束、接口、数据流、关键符号、调用关系、边界和验证点。后续 AI agent 可以通过这些 spec 精准维护项目，减少重复全仓扫描，也避免牵连无关代码。
 
+## 一键安装到你的项目（通过 AI）
+
+将以下文本发给你的 AI 助手（Claude Code、Cursor、GitHub Copilot 等），它会自动完成安装：
+
+```text
+请根据 https://github.com/YYMLVU/spec-docs/blob/main/INSTALL-FOR-AI.md 中的指引，将 spec-docs skill 安装到当前项目。
+```
+
 ## 核心定位
 
 Spec Docs 把当前实现作为事实源。
