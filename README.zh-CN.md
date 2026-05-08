@@ -16,6 +16,7 @@ Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 **impl
 
 ```text
 请根据 https://github.com/YYMLVU/spec-docs/blob/main/INSTALL-FOR-AI.md 中的指引，将 spec-docs skill 安装到当前项目。
+然后使用 spec-docs skill 的init mode，为本项目构建一个完整的、以实现为先的Spec docs库。
 ```
 
 ## 核心定位
