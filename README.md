@@ -10,6 +10,14 @@ Spec Docs is a reusable skill for building and maintaining an **implementation-f
 
 It documents the current implementation: code behavior, technical stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. Future AI agents can use the generated specs to maintain the project precisely without repeatedly scanning the whole repository or changing unrelated code.
 
+## One-Click Installation into Your Project (via AI)
+
+Send the following text to your AI assistant (Claude Code, Cursor, GitHub Copilot, etc.), and it will automatically complete the installation:
+
+```text
+Please follow the guidelines in https://github.com/YYMLVU/spec-docs/blob/main/INSTALL-FOR-AI.md to install the spec-docs skill into the current project.
+```
+
 ## Core Idea
 
 Spec Docs treats the current implementation as the source of truth.
