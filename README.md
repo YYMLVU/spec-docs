@@ -1,143 +1,260 @@
+<p align="center">
+  <img src="./head.png" alt="Spec Docs" />
+</p>
+
 # Spec Docs
 
-[English](./README.en.md)
+[简体中文](./README.zh-CN.md)
 
-将任意软件项目转换为**轻量、可读、可维护的 AI 规范文档知识库**的通用 skill。它适合在开发、重构、接手旧项目、多人/多 agent 协作之前，先把现有实现整理成一套结构化说明文档，方便后续 AI 快速理解项目。
+Spec Docs is a reusable skill for building and maintaining an **implementation-first AI spec knowledge base** for software projects.
 
-该 skill 会帮助 agent：
+It documents the current implementation: code behavior, technical stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. Future AI agents can use the generated specs to maintain the project precisely without repeatedly scanning the whole repository or changing unrelated code.
 
-- 先阅读代码与配置，再基于真实实现写文档
-- 建立一个可持续维护的 `docs/specs/` 知识库
-- 生成 AI 入口文档与推荐阅读顺序
-- 按真实职责拆分 feature / architecture / runtime / interfaces 等说明
-- 随项目演进持续增删、拆分、合并 spec 文件
+## Core Idea
 
-## 功能概览
+Spec Docs treats the current implementation as the source of truth.
 
-- 从当前实现构建项目 spec 文档库
-- 为未来 AI agent 提供统一入口与默认阅读顺序
-- 不按固定文件数量拆文档，而是按真实职责建模
-- 覆盖功能行为、架构边界、业务规则、边界情况、测试点、代码引用、更新规则
-- 适配多种项目形态：Web、CLI、AI/ML、嵌入式、IoT、库、基础设施等
+It is not:
 
-## 适用场景
+- a product requirements system
+- a roadmap
+- an implementation planning tool
+- a task generator
+- a spec-to-code workflow
 
-在这些场景下使用该 skill：
+It is:
 
-- 想为仓库接入 AI 辅助开发，但当前上下文混乱
-- 想把项目转换成结构化知识库
-- 想在迭代前先沉淀当前架构与功能行为
-- 想减少未来 agent 每次都全仓扫描的成本
-- 想给多 agent 协作、长期重构、交接维护建立稳定上下文
+- a current-code knowledge base
+- an AI reading entrypoint
+- a code-to-spec reverse index
+- a symbol-to-spec maintenance map
+- a project-level protocol for keeping specs synchronized with implementation changes
 
-## 安装
+## What It Creates
 
-这个仓库本质上是一个 skill 包。你可以把它安装为：
+Typical output in a target project:
 
-- **项目级 skill**：只在当前项目中生效
-- **用户级 skill**：对当前用户所有项目生效
+```text
+docs/specs/
+├── README.md
+├── constitution.md
+├── inventory.md
+├── project-overview.spec.md
+├── features/
+├── modules/
+├── interfaces/
+├── runtime/
+├── data/
+├── integrations/
+├── quality/
+└── decisions/
+```
 
-### Claude Code
+The exact structure follows the real project. Empty or speculative folders should not be created.
 
-#### 项目级安装（推荐）
+## Modes
+
+### `init`
+
+Builds a full-project implementation spec library from the current codebase.
+
+It creates:
+
+- `docs/specs/README.md`
+- `docs/specs/constitution.md`
+- `docs/specs/inventory.md`
+- `docs/specs/project-overview.spec.md`
+- type-specific specs for real features, modules, interfaces, runtime behavior, data, integrations, quality constraints, and implemented decisions
+- a marker-based project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`
+
+`init` is not complete until the Code-to-Spec Index covers all included implementation-relevant files and the protocol block is installed or updated.
+
+### `update`
+
+Synchronizes specs after implementation-relevant code changes.
+
+The agent must:
+
+- read `docs/specs/README.md` and `docs/specs/inventory.md`
+- use Code-to-Spec, Task-to-Spec, and Symbol-to-Spec mappings
+- update affected specs in the same change
+- update `inventory.md` when paths, symbols, or mappings changed
+- explain explicitly if no spec update is needed
+
+### `verify`
+
+Checks consistency before claiming specs are current.
+
+It validates:
+
+- project protocol block
+- required core files
+- frontmatter fields
+- source paths and globs
+- code-to-spec coverage
+- symbol mappings
+- absence of template placeholders, TODO/TBD text, and planned behavior
+
+### `repair`
+
+Realigns stale or inconsistent specs with current code.
+
+`repair` updates docs and project rules only. If it finds a likely code bug, it reports the implementation concern but does not modify code unless the user explicitly asks.
+
+## Implementation Mapping
+
+Specs are expected to map behavior to code precisely.
+
+Each spec can include:
+
+- technical stack
+- inputs and outputs
+- current behavior
+- implementation map
+- key functions/classes/routes/commands/schemas/jobs
+- call flow
+- data flow
+- state changes and side effects
+- edge cases and errors
+- tests and verification points
+- change boundaries and precision notes
+
+This helps future AI agents answer:
+
+- Which spec describes this file?
+- Which files implement this behavior?
+- Which symbols affect this feature?
+- What should not be changed for this task?
+- Which specs must be updated after this change?
+
+## Inventory
+
+`docs/specs/inventory.md` is the objective reverse index for the spec library.
+
+It contains:
+
+- Coverage Scope with included and excluded globs
+- Spec List
+- Code-to-Spec Index
+- Task-to-Spec Map
+- Symbol-to-Spec Index
+
+It does not contain planned specs, coverage gaps, todo items, or roadmap entries.
+
+## Project Maintenance Protocol
+
+After `init`, Spec Docs installs a marked protocol block into project-level agent instructions:
+
+- update existing `AGENTS.md`
+- update existing `CLAUDE.md`
+- update both if both exist
+- create `AGENTS.md` if neither exists
+
+The block is wrapped with `<!-- SPEC-DOCS-PROTOCOL:BEGIN -->` and `<!-- SPEC-DOCS-PROTOCOL:END -->` markers. Future `init` or `repair` runs can replace the marked block without rewriting unrelated project instructions.
+
+The block requires future AI agents to read relevant specs before implementation changes, update affected specs after those changes, and run or apply `spec-docs verify` before claiming completion.
+
+## Source-of-Truth Priority
+
+When sources conflict:
+
+1. code, contracts, and configs
+2. tests
+3. existing docs
+4. commit history
+5. existing specs
+
+If behavior cannot be confirmed, specs must use:
+
+```text
+[NEEDS CLARIFICATION: <specific question>]
+```
+
+Agents must not guess.
+
+## Installation
+
+### Claude Code project-level install
 
 ```bash
 mkdir -p .claude/skills/spec-docs
 cp -R ./* .claude/skills/spec-docs/
 ```
 
-#### 用户级安装
+### Claude Code user-level install
 
 ```bash
 mkdir -p ~/.claude/skills/spec-docs
 cp -R ./* ~/.claude/skills/spec-docs/
 ```
 
-### Codex / 兼容 skills 目录的 agent
+### Other agents
 
-如果你的 agent 使用类似 skills 目录机制，也可以安装到该 agent 的 skills 目录。例如：
+If your agent supports a skills or prompt-package directory, install this repository into the equivalent location and keep the directory name `spec-docs`.
 
-```bash
-mkdir -p ~/.agents/skills/spec-docs
-cp -R ./* ~/.agents/skills/spec-docs/
-```
-
-### Linux / macOS / Windows 说明
-
-- **Linux / macOS**：直接使用上面的 `mkdir` + `cp` 命令即可
-- **Windows PowerShell**：
-
-```powershell
-New-Item -ItemType Directory -Force "$HOME/.claude/skills/spec-docs" | Out-Null
-Copy-Item -Recurse . "$HOME/.claude/skills/spec-docs"
-```
-
-### 适用的 agent
-
-本仓库优先面向支持“skills / prompt package / project prompt”机制的 agent，例如：
-
-- Claude Code
-- Codex / Codex CLI
-- 其他支持项目级或用户级 skills 目录的 agent
-
-如果某个 agent 不直接支持 skills 目录，也可以把本仓库当作**可复制的 prompt + 规范文档**手动接入。
-
-## 让 AI 代你安装
-
-如果你不想手动安装，可以直接把下面这段话复制给 AI：
+The installation should include:
 
 ```text
-请将当前目录中的 spec-docs 仓库安装为当前项目可用的 skill：
-1. 在当前项目下创建 `.claude/skills/spec-docs/`
-2. 将仓库中的 `SKILL.md` 以及安装所需的说明文件复制进去
-3. 保持目录名为 `spec-docs`
-4. 安装完成后检查 `./.claude/skills/spec-docs/SKILL.md` 是否存在
-5. 如果当前环境不是 Claude Code，而是其他支持 skills 目录的 agent，请改装到对应的 skills 目录
-6. 不要修改 skill 内容，只做安装与校验
+SKILL.md
+README.md
+README.zh-CN.md
+INSTALL-FOR-AI.md
+head.png
+agents/
+templates/
 ```
 
-如果你希望给 AI 更完整的执行说明，见：[INSTALL-FOR-AI.md](./INSTALL-FOR-AI.md)
+## Usage
 
-## 使用方式
-
-在项目工作目录中调用这个 skill，例如：
+Initialize a project:
 
 ```text
-$spec-docs 将当前项目完整 Spec 化
+Use $spec-docs init to build a full implementation-first spec knowledge base for this project.
 ```
 
-典型输出结构：
+Update specs after code changes:
 
 ```text
-docs/specs/
-├── README.md
-├── project-overview.spec.md
-├── features/
-├── architecture/
-├── runtime/
-├── interfaces/
-└── <project-specific folders>
+Use $spec-docs update to synchronize specs with the current code changes.
 ```
 
-实际结构应根据项目真实形态动态变化。比如：
+Verify consistency:
 
-- Web 项目可能包含 `frontend/`、`backend/`
-- AI/ML 项目可能包含 `data/`、`training/`、`inference/`、`evaluation/`
-- 嵌入式项目可能包含 `firmware/`、`hardware/`、`drivers/`、`protocols/`
-- CLI 项目可能包含 `cli/`、`commands/`、`config/`、`packaging/`
+```text
+Use $spec-docs verify to check whether docs/specs is current and complete.
+```
 
-该 skill 的原则是：**让文档结构服从真实项目，而不是强行套固定模板。**
+Repair stale specs:
 
-## 仓库内容
+```text
+Use $spec-docs repair to realign stale specs with the current implementation.
+```
+
+## Repository Contents
 
 ```text
 .
 ├── SKILL.md
+├── README.md
+├── README.zh-CN.md
+├── INSTALL-FOR-AI.md
+├── head.png
 ├── agents/
 │   └── openai.yaml
-├── README.md
-├── README.en.md
-├── INSTALL-FOR-AI.md
+├── templates/
+│   ├── agent-protocol-block.md
+│   ├── specs-readme.md
+│   ├── constitution.md
+│   ├── inventory.md
+│   ├── project-overview.spec.md
+│   ├── feature.spec.md
+│   ├── module.spec.md
+│   ├── interface.spec.md
+│   ├── runtime.spec.md
+│   ├── data.spec.md
+│   ├── integration.spec.md
+│   ├── quality.spec.md
+│   └── decision.spec.md
 ├── LICENSE
 └── .gitignore
 ```

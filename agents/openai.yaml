@@ -1,4 +1,4 @@
 interface:
   display_name: "Spec Docs"
-  short_description: "Turn a project into AI-readable specs"
-  default_prompt: "Use $spec-docs to convert this project into an AI-readable spec documentation library."
+  short_description: "Build and maintain implementation-first AI specs"
+  default_prompt: "Use $spec-docs in the appropriate mode: init to build a full implementation-first spec knowledge base, update to synchronize specs after code changes, verify to check consistency, or repair to realign stale specs with current implementation."
