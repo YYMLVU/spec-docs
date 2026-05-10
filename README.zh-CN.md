@@ -10,7 +10,9 @@ Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 **impl
 
 它记录当前已经实现的代码事实：代码行为、技术栈、模块约束、接口、数据流、关键符号、调用关系、边界和验证点。后续 AI agent 可以通过这些 spec 精准维护项目，减少重复全仓扫描，也避免牵连无关代码。
 
-## 一键安装到你的项目（通过 AI）
+## 安装方式
+
+### 1. 通过 AI 助手
 
 将以下文本发给你的 AI 助手（Claude Code、Cursor、GitHub Copilot 等），它会自动完成安装：
 
@@ -19,7 +21,7 @@ Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 **impl
 然后使用 spec-docs skill 的init mode，为本项目构建一个完整的、以实现为先的Spec docs库。
 ```
 
-## 通过 Claude Code 插件安装
+### 2. 通过 Claude Code 插件
 
 在 Claude Code 中运行：
 
@@ -27,7 +29,7 @@ Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 **impl
 /plugin install spec-docs
 ```
 
-## 通过 npx 安装
+### 3. 通过 npx
 
 ```bash
 npx spec-docs
@@ -38,6 +40,24 @@ npx spec-docs
 ```text
 Use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
+
+### 4. 手动安装
+
+**Claude Code 项目级：**
+
+```bash
+mkdir -p .claude/skills/spec-docs
+cp -R skills/spec-docs/* .claude/skills/spec-docs/
+```
+
+**Claude Code 用户级：**
+
+```bash
+mkdir -p ~/.claude/skills/spec-docs
+cp -R skills/spec-docs/* ~/.claude/skills/spec-docs/
+```
+
+**其他 agent：** 如果你的 agent 支持 skills 或 prompt-package 目录，将 `skills/spec-docs/` 的内容安装到对应位置，并保持目录名为 `spec-docs`。
 
 ## 核心定位
 
@@ -203,38 +223,6 @@ AI 必须：
 
 AI 不允许猜测。
 
-## 安装
-
-### Claude Code 项目级安装
-
-```bash
-mkdir -p .claude/skills/spec-docs
-cp -R ./* .claude/skills/spec-docs/
-```
-
-### Claude Code 用户级安装
-
-```bash
-mkdir -p ~/.claude/skills/spec-docs
-cp -R ./* ~/.claude/skills/spec-docs/
-```
-
-### 其他 agent
-
-如果你的 agent 支持 skills 或 prompt-package 目录，可以安装到对应位置，并保持目录名为 `spec-docs`。
-
-安装时应包含：
-
-```text
-SKILL.md
-README.md
-README.zh-CN.md
-INSTALL-FOR-AI.md
-head.png
-agents/
-templates/
-```
-
 ## 使用方式
 
 初始化项目：
@@ -265,27 +253,34 @@ Use $spec-docs repair to realign stale specs with the current implementation.
 
 ```text
 .
-├── SKILL.md
+├── .claude-plugin/
+│   └── plugin.json
+├── skills/
+│   └── spec-docs/
+│       ├── SKILL.md
+│       └── templates/
+│           ├── agent-protocol-block.md
+│           ├── specs-readme.md
+│           ├── constitution.md
+│           ├── inventory.md
+│           ├── project-overview.spec.md
+│           ├── feature.spec.md
+│           ├── module.spec.md
+│           ├── interface.spec.md
+│           ├── runtime.spec.md
+│           ├── data.spec.md
+│           ├── integration.spec.md
+│           ├── quality.spec.md
+│           └── decision.spec.md
+├── bin/
+│   └── spec-docs.js
+├── agents/
+│   └── openai.yaml
+├── package.json
 ├── README.md
 ├── README.zh-CN.md
 ├── INSTALL-FOR-AI.md
 ├── head.png
-├── agents/
-│   └── openai.yaml
-├── templates/
-│   ├── agent-protocol-block.md
-│   ├── specs-readme.md
-│   ├── constitution.md
-│   ├── inventory.md
-│   ├── project-overview.spec.md
-│   ├── feature.spec.md
-│   ├── module.spec.md
-│   ├── interface.spec.md
-│   ├── runtime.spec.md
-│   ├── data.spec.md
-│   ├── integration.spec.md
-│   ├── quality.spec.md
-│   └── decision.spec.md
 ├── LICENSE
 └── .gitignore
 ```

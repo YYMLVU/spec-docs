@@ -10,7 +10,9 @@ Spec Docs is a reusable skill for building and maintaining an **implementation-f
 
 It documents the current implementation: code behavior, technical stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. Future AI agents can use the generated specs to maintain the project precisely without repeatedly scanning the whole repository or changing unrelated code.
 
-## One-Click Installation into Your Project (via AI)
+## Installation
+
+### 1. Via AI Assistant
 
 Send the following text to your AI assistant (Claude Code, Cursor, GitHub Copilot, etc.), and it will automatically complete the installation:
 
@@ -19,7 +21,7 @@ Please follow the guidelines in https://github.com/YYMLVU/spec-docs/blob/main/IN
 And use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
 
-## Install via Claude Code Plugin
+### 2. Via Claude Code Plugin
 
 In Claude Code, run:
 
@@ -27,7 +29,7 @@ In Claude Code, run:
 /plugin install spec-docs
 ```
 
-## Install via npx
+### 3. Via npx
 
 ```bash
 npx spec-docs
@@ -38,6 +40,24 @@ This copies the skill into `.claude/skills/spec-docs/` in the current project. T
 ```text
 Use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
+
+### 4. Manual Install
+
+**Claude Code project-level:**
+
+```bash
+mkdir -p .claude/skills/spec-docs
+cp -R skills/spec-docs/* .claude/skills/spec-docs/
+```
+
+**Claude Code user-level:**
+
+```bash
+mkdir -p ~/.claude/skills/spec-docs
+cp -R skills/spec-docs/* ~/.claude/skills/spec-docs/
+```
+
+**Other agents:** If your agent supports a skills or prompt-package directory, install the contents of `skills/spec-docs/` into the equivalent location and keep the directory name `spec-docs`.
 
 ## Core Idea
 
@@ -203,38 +223,6 @@ If behavior cannot be confirmed, specs must use:
 
 Agents must not guess.
 
-## Installation
-
-### Claude Code project-level install
-
-```bash
-mkdir -p .claude/skills/spec-docs
-cp -R ./* .claude/skills/spec-docs/
-```
-
-### Claude Code user-level install
-
-```bash
-mkdir -p ~/.claude/skills/spec-docs
-cp -R ./* ~/.claude/skills/spec-docs/
-```
-
-### Other agents
-
-If your agent supports a skills or prompt-package directory, install this repository into the equivalent location and keep the directory name `spec-docs`.
-
-The installation should include:
-
-```text
-SKILL.md
-README.md
-README.zh-CN.md
-INSTALL-FOR-AI.md
-head.png
-agents/
-templates/
-```
-
 ## Usage
 
 Initialize a project:
@@ -265,27 +253,34 @@ Use $spec-docs repair to realign stale specs with the current implementation.
 
 ```text
 .
-├── SKILL.md
+├── .claude-plugin/
+│   └── plugin.json
+├── skills/
+│   └── spec-docs/
+│       ├── SKILL.md
+│       └── templates/
+│           ├── agent-protocol-block.md
+│           ├── specs-readme.md
+│           ├── constitution.md
+│           ├── inventory.md
+│           ├── project-overview.spec.md
+│           ├── feature.spec.md
+│           ├── module.spec.md
+│           ├── interface.spec.md
+│           ├── runtime.spec.md
+│           ├── data.spec.md
+│           ├── integration.spec.md
+│           ├── quality.spec.md
+│           └── decision.spec.md
+├── bin/
+│   └── spec-docs.js
+├── agents/
+│   └── openai.yaml
+├── package.json
 ├── README.md
 ├── README.zh-CN.md
 ├── INSTALL-FOR-AI.md
 ├── head.png
-├── agents/
-│   └── openai.yaml
-├── templates/
-│   ├── agent-protocol-block.md
-│   ├── specs-readme.md
-│   ├── constitution.md
-│   ├── inventory.md
-│   ├── project-overview.spec.md
-│   ├── feature.spec.md
-│   ├── module.spec.md
-│   ├── interface.spec.md
-│   ├── runtime.spec.md
-│   ├── data.spec.md
-│   ├── integration.spec.md
-│   ├── quality.spec.md
-│   └── decision.spec.md
 ├── LICENSE
 └── .gitignore
 ```
