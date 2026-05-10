@@ -21,15 +21,7 @@ Please follow the guidelines in https://github.com/YYMLVU/spec-docs/blob/main/IN
 And use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
 
-### 2. Via Claude Code Plugin
-
-In Claude Code, run:
-
-```text
-/plugin install spec-docs
-```
-
-### 3. Via npx
+### 2. Via npx
 
 ```bash
 npx spec-docs
@@ -41,7 +33,7 @@ This copies the skill into `.claude/skills/spec-docs/` in the current project. T
 Use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
 
-### 4. Manual Install
+### 3. Manual Install
 
 **Claude Code project-level:**
 
@@ -253,8 +245,6 @@ Use $spec-docs repair to realign stale specs with the current implementation.
 
 ```text
 .
-├── .claude-plugin/
-│   └── plugin.json
 ├── skills/
 │   └── spec-docs/
 │       ├── SKILL.md
