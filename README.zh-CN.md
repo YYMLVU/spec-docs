@@ -67,7 +67,9 @@ docs/specs/
 
 从当前代码库首次构建全项目 implementation spec library。
 
-会创建：
+对于空项目目录，`init` 会创建一份极简项目原则种子，而不是完整 implementation spec library。它记录经确认的项目用途、预期技术栈、长期有效的编码/测试/依赖原则、目录组织约束和项目外边界。它不会创建 `inventory.md`、空索引、plan、脚手架、未来 feature spec 或 roadmap。当实现文件出现后，`update` 会吸收这份种子并生成正常的 implementation-first spec library。
+
+对于已有实现的项目，会创建：
 
 - `docs/specs/README.md`
 - `docs/specs/constitution.md`
@@ -76,7 +78,7 @@ docs/specs/
 - 面向真实 feature、module、interface、runtime、data、integration、quality、decision 的类型化 specs
 - 写入 `AGENTS.md` 和/或 `CLAUDE.md` 的 marker-based 项目维护协议块
 
-只有当 Code-to-Spec Index 覆盖所有 included implementation-relevant files，并且项目协议块已经安装或更新时，`init` 才算完成。
+对于已有实现的项目，只有当 Code-to-Spec Index 覆盖所有 included implementation-relevant files，并且项目协议块已经安装或更新时，`init` 才算完成。
 
 ### `update`
 

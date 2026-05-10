@@ -67,7 +67,9 @@ The exact structure follows the real project. Empty or speculative folders shoul
 
 Builds a full-project implementation spec library from the current codebase.
 
-It creates:
+For empty project directories, `init` creates a minimal project-principles seed instead of a full implementation spec library. It records confirmed project purpose, intended technology stack, durable coding/testing/dependency principles, directory organization constraints, and out-of-scope boundaries. It does not create `inventory.md`, empty indexes, plans, scaffolding, future feature specs, or roadmap items. When implementation files appear, `update` absorbs this seed into the normal implementation-first spec library.
+
+For existing-implementation projects, it creates:
 
 - `docs/specs/README.md`
 - `docs/specs/constitution.md`
@@ -76,7 +78,7 @@ It creates:
 - type-specific specs for real features, modules, interfaces, runtime behavior, data, integrations, quality constraints, and implemented decisions
 - a marker-based project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`
 
-`init` is not complete until the Code-to-Spec Index covers all included implementation-relevant files and the protocol block is installed or updated.
+For existing-implementation projects, `init` is not complete until the Code-to-Spec Index covers all included implementation-relevant files and the protocol block is installed or updated.
 
 ### `update`
 

@@ -8,6 +8,10 @@ This constitution defines how the project maintains implementation-first specs. 
 
 Specs must not contain future plans, roadmap items, task lists, planned specs, or speculative behavior.
 
+## Empty-Project Baseline Rule
+
+When the project has no implementation-relevant files, specs may record only user-confirmed purpose, technology choices, durable coding/testing/dependency principles, directory organization constraints, and out-of-scope boundaries. These principles are constraints, not plans, and must not describe unimplemented features, scaffolding, or reserved future paths as current behavior.
+
 ## Source-of-Truth Priority
 
 1. Code, contracts, and configs.

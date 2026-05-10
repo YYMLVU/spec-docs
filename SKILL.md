@@ -38,6 +38,18 @@ If behavior still cannot be confirmed, write `[NEEDS CLARIFICATION: <specific qu
 
 Use when `docs/specs/` does not exist or the user asks to spec-ify a project.
 
+First determine whether the target has implementation-relevant files.
+
+Implementation-relevant files include source code, tests, runtime/config files, schemas/contracts, and public docs that define current behavior. Ignore generated files, build artifacts, vendored dependencies, lock files unless they define runtime behavior, and static assets unless they define behavior or interfaces.
+
+If implementation-relevant files exist, run **existing-implementation init**.
+
+If no implementation-relevant files exist, run **empty-project init**.
+
+If classification is unclear, ask the user which files are implementation-relevant. Do not guess.
+
+#### Existing-implementation init
+
 Must produce a full-project implementation spec library:
 
 1. Explore code, tests, configs, contracts, docs, and recent history.
@@ -50,11 +62,61 @@ Must produce a full-project implementation spec library:
 8. Install the project instruction protocol block into `AGENTS.md` and/or `CLAUDE.md`.
 9. Run `verify`.
 
-Do not declare `init` complete until `verify` passes and the Code-to-Spec Index covers all included implementation-relevant files.
+Do not declare existing-implementation `init` complete until `verify` passes and the Code-to-Spec Index covers all included implementation-relevant files.
+
+#### Empty-project init
+
+Use only when there are no implementation-relevant files to describe.
+
+Empty-project init creates a minimal project-principles seed, not an implementation spec library.
+
+Allowed outputs:
+
+1. `docs/specs/README.md` as the temporary entrypoint.
+2. `docs/specs/constitution.md` for durable project principles.
+3. `docs/specs/project-overview.spec.md` as a minimal baseline overview.
+4. Project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`.
+
+Do not create `docs/specs/inventory.md`, child spec directories, child specs, empty indexes, source code, tests, package manifests, scaffolding, future directory trees, plans, roadmaps, or task lists during empty-project init.
+
+Required empty-project conversation flow:
+
+1. Confirm the project purpose or responsibility boundary in one or two sentences.
+2. Confirm the intended technology stack if known. If unknown, record `[NEEDS CLARIFICATION: technology stack is not selected yet]`.
+3. Present a concise principles draft for user confirmation covering coding principles, testing principles, dependency principles, error/security boundary principles, directory organization principles, and out-of-scope boundaries.
+4. Write only user-confirmed principles and explicit unresolved clarification markers.
+5. Run `verify` using the empty-project checklist.
+
+`project-overview.spec.md` for an empty project must stay minimal:
+
+- State that no implementation-relevant files exist yet.
+- Record confirmed project purpose and confirmed technology choices.
+- Link to `constitution.md` for principles.
+- State that `update` must absorb the baseline once implementation-relevant files exist.
+- Omit runtime units, entrypoints, implementation map, key symbols, call flow, data flow, test surface, and child spec links until real implementation exists.
+
+Directory organization principles are allowed only as constraints, not scaffolding. For example, "shared logic should live behind stable boundaries" is allowed; "create `src/pages`, `src/components`, and `src/utils`" is scaffolding and forbidden unless the user separately asks for project setup.
 
 ### `update`
 
 Use when implementation-relevant files changed and specs must stay in sync.
+
+#### Baseline Absorption
+
+If the project has an empty-project baseline and implementation-relevant files now exist, `update` must absorb the baseline into a normal implementation spec library:
+
+1. Read `docs/specs/README.md`, `docs/specs/constitution.md`, and `docs/specs/project-overview.spec.md`.
+2. Preserve and respect all durable principles in `constitution.md`.
+3. Explore current code, tests, configs, contracts, docs, and recent history.
+4. Replace the minimal overview's no-implementation state with actual project purpose, tech stack, runtime units, entrypoints, architecture, implementation map, call flow, data flow, quality surface, and change boundaries discovered from current implementation.
+5. Create `docs/specs/inventory.md` with real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index.
+6. Create only the child spec directories and specs that match the real implementation.
+7. Remove empty-project baseline wording after it has been replaced by implementation facts.
+8. Run `verify` using the existing-implementation checklist.
+
+Do not require a separate command for this transition. Do not discard confirmed principles while absorbing the baseline.
+
+#### Routine Update
 
 1. Read `docs/specs/README.md` and `docs/specs/inventory.md`.
 2. Inspect the changed files from git diff or user input. Useful discovery commands include `git diff --name-only`, `git diff --cached --name-only`, and `git diff --name-only HEAD~1..HEAD` when reviewing the latest commit.
@@ -72,7 +134,7 @@ Do not accept "docs can wait" for implementation-relevant changes. The protocol 
 
 Use before declaring `init`, `update`, or `repair` complete, or when the user asks whether specs are current.
 
-Check:
+For existing-implementation specs, check:
 
 - Project protocol block exists exactly once in the target instruction files.
 - Core files exist.
@@ -85,6 +147,24 @@ Check:
 - README, constitution, inventory, and specs do not contradict each other.
 - No `{{template_variables}}`, `TODO`, `TBD`, `待补充`, or planned behavior remains.
 - `[NEEDS CLARIFICATION: ...]` entries are specific.
+
+For empty-project baselines, check:
+
+- Project protocol block exists exactly once in the target instruction files.
+- `docs/specs/README.md`, `docs/specs/constitution.md`, and `docs/specs/project-overview.spec.md` exist.
+- `docs/specs/inventory.md` does not exist yet, or if it exists, it directs the agent to run `update` for baseline absorption rather than containing empty indexes.
+- `project-overview.spec.md` explicitly states that no implementation-relevant files exist yet.
+- `constitution.md` contains only durable principles, not feature plans, roadmap items, task lists, scaffolding instructions, or reserved future paths.
+- Current project inspection confirms no implementation-relevant files exist.
+- No `{{template_variables}}`, `TODO`, `TBD`, `待补充` remains.
+- `[NEEDS CLARIFICATION: ...]` entries are specific.
+
+If implementation-relevant files exist while the specs are still in empty-project baseline mode, output FAIL with:
+
+```text
+NOTICE: project has implementation code but specs are still in empty-project baseline mode.
+Recommended action: run spec-docs update to absorb baseline and generate implementation specs.
+```
 
 Output PASS or FAIL. If FAIL, list the files and whether the next mode should be `update` or `repair`.
 
@@ -119,6 +199,8 @@ If you find a likely code bug during repair, report it as an implementation conc
 - No implementation-relevant code completion claim until affected specs are updated or a no-update reason is stated.
 - No `verify` success claim without checking protocol, core files, frontmatter, references, coverage, content, and index consistency.
 - No code modifications during `repair` without explicit user approval.
+- No empty-project `init` completion until the user has confirmed project purpose and durable principles or unresolved items are marked with specific `[NEEDS CLARIFICATION: ...]` entries.
+- No empty-project `init` may create `inventory.md`, empty indexes, child specs, code, scaffolding, roadmap items, or future path reservations unless the user separately asks for project setup.
 
 ## Project Instruction Installation
 
@@ -317,3 +399,7 @@ Also verify globs and coverage by inspecting the project; do not rely only on te
 | "A path list is enough." | Specs must include implementation mapping, symbols, call flow, data flow, and change boundaries. |
 | "Inventory can track missing areas." | Inventory is objective metadata and reverse index, not a backlog. |
 | "A glob can describe future files." | Globs must match real project areas and current coverage scope. |
+| "There is no code, so invent a reasonable stack." | Empty-project init records only user-confirmed principles or specific clarification markers. |
+| "Create starter files so specs have paths." | Spec Docs must not scaffold implementation during init unless the user separately asks for code. |
+| "Empty indexes prove the project is covered." | Empty-project init should not create empty indexes; `update` creates real indexes when implementation exists. |
+| "Directory principles mean pre-creating a tree." | Principles may constrain future changes, but reserved paths or scaffolding are plans unless the user asks for setup. |

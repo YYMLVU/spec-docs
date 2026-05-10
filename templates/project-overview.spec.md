@@ -17,6 +17,8 @@ related_specs:
 
 # Project Overview Spec
 
+> For an empty-project baseline, keep this file minimal: state that no implementation exists, record confirmed purpose and technology choices, link to `constitution.md`, and omit implementation sections until code exists.
+
 ## Purpose
 
 {{current_project_purpose}}
@@ -24,6 +26,14 @@ related_specs:
 ## Technology Stack
 
 {{languages_frameworks_runtimes_libraries_and_tools_used_by_current_code}}
+
+## Project State
+
+{{current_state_of_existing_implementation}}
+
+## Confirmed Project Principles
+
+{{user_confirmed_coding_testing_dependency_error_security_directory_and_boundary_principles_or_not_applicable_for_existing_implementation}}
 
 ## Runtime Units and Entrypoints
 
