@@ -19,6 +19,26 @@ Please follow the guidelines in https://github.com/YYMLVU/spec-docs/blob/main/IN
 And use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
 
+## Install via Claude Code Plugin
+
+In Claude Code, run:
+
+```text
+/plugin install spec-docs
+```
+
+## Install via npx
+
+```bash
+npx spec-docs
+```
+
+This copies the skill into `.claude/skills/spec-docs/` in the current project. Then send the following to your AI:
+
+```text
+Use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
+```
+
 ## Core Idea
 
 Spec Docs treats the current implementation as the source of truth.

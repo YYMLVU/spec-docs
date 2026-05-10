@@ -19,6 +19,26 @@ Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 **impl
 然后使用 spec-docs skill 的init mode，为本项目构建一个完整的、以实现为先的Spec docs库。
 ```
 
+## 通过 Claude Code 插件安装
+
+在 Claude Code 中运行：
+
+```text
+/plugin install spec-docs
+```
+
+## 通过 npx 安装
+
+```bash
+npx spec-docs
+```
+
+这会将 skill 复制到当前项目的 `.claude/skills/spec-docs/` 中。然后将以下内容发送给你的 AI：
+
+```text
+Use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
+```
+
 ## 核心定位
 
 Spec Docs 把当前实现作为事实源。

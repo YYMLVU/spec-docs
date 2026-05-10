@@ -1,0 +1,25 @@
+{
+  "name": "spec-docs",
+  "version": "1.0.0",
+  "description": "Implementation-first AI spec knowledge base skill for Claude Code",
+  "bin": {
+    "spec-docs": "./bin/spec-docs.js"
+  },
+  "files": [
+    "skills/",
+    "bin/",
+    "agents/"
+  ],
+  "keywords": [
+    "claude-code",
+    "skill",
+    "spec",
+    "documentation",
+    "ai"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/YYMLVU/spec-docs.git"
+  }
+}

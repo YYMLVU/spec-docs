@@ -10,15 +10,9 @@ Please install the `spec-docs` skill from the current repository into the target
 Requirements:
 1. If the target project uses Claude Code, install it into `.claude/skills/spec-docs/` under the project root.
 2. If the target environment uses another agent with a skills directory, install it into that agent's equivalent project-level or user-level skills path.
-3. Copy at least the following files and directories when they exist:
+3. Copy the contents of `skills/spec-docs/` from this repository into the target directory. This includes:
    - `SKILL.md`
-   - `README.md`
-   - `README.zh-CN.md`
-   - `INSTALL-FOR-AI.md`
-   - `head.png`
-   - `LICENSE`
-   - `templates/`
-   - `agents/` (if useful for that agent)
+   - `templates/` (all files)
 4. Keep the installed directory name exactly `spec-docs`.
 5. Do not rewrite or summarize the skill during installation; copy it as-is.
 6. After installation, verify that the installed `SKILL.md` exists in the destination.
@@ -42,6 +36,16 @@ test -f .claude/skills/spec-docs/templates/agent-protocol-block.md
 ```
 
 Expected result: exit code `0`.
+
+## Alternative: Install via npx
+
+If Node.js is available, you can run:
+
+```bash
+npx spec-docs
+```
+
+This automatically copies the skill files into `.claude/skills/spec-docs/` in the current project directory.
 
 ## Installation Is Not Initialization
 
