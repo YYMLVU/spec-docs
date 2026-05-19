@@ -1,6 +1,6 @@
 {
   "name": "spec-docs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Implementation-first AI spec knowledge base skill for Claude Code",
   "bin": {
     "spec-docs": "./bin/spec-docs.js"
