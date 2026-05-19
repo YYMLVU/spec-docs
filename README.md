@@ -1,55 +1,80 @@
-<p align="center">
-  <img src="./head.png" alt="Spec Docs" />
-</p>
+<div align="center">
+  <img src="./head.png" alt="Spec Docs" width="320" />
 
-# Spec Docs
+  <h1>Spec Docs</h1>
 
-[简体中文](./README.zh-CN.md)
+  <p><strong>Implementation-first AI spec knowledge bases for real codebases.</strong></p>
+
+  <p>
+    <a href="./README.zh-CN.md">简体中文</a>
+    ·
+    <a href="https://www.npmjs.com/package/spec-docs">npm package</a>
+    ·
+    <a href="./LICENSE">MIT License</a>
+  </p>
+
+  <p>
+    <img alt="npm" src="https://img.shields.io/npm/v/spec-docs" />
+    <img alt="license" src="https://img.shields.io/badge/license-MIT-blue" />
+    <img alt="AI skill" src="https://img.shields.io/badge/AI-skill-7c3aed" />
+  </p>
+</div>
 
 Spec Docs is a reusable skill for building and maintaining an **implementation-first AI spec knowledge base** with **optional architecture governance** for software projects.
 
-It documents the current implementation: code behavior, technical stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. It can also govern architecture rules, record decisions (ADRs), and track rebuild progress. Future AI agents can use the generated specs to maintain the project precisely without repeatedly scanning the whole repository or changing unrelated code.
+It documents what the code does now: behavior, stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, verification points, architecture rules, ADRs, and rebuild status. Future AI agents can use those specs to make precise changes without repeatedly scanning the whole repository or touching unrelated code.
 
-## Installation
+## Quick Start
 
-### 1. Via AI Assistant
+### Option 1: Ask your AI assistant
 
-Send the following text to your AI assistant (Claude Code, Cursor, GitHub Copilot, etc.), and it will automatically complete the installation:
+Send this to Claude Code, Cursor, GitHub Copilot, or another AI coding assistant:
 
 ```text
 Please follow the guidelines in https://github.com/YYMLVU/spec-docs/blob/main/INSTALL-FOR-AI.md to install the spec-docs skill into the current project.
 And use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
 
-### 2. Via npx
+### Option 2: Install with npx
 
 ```bash
 npx spec-docs
 ```
 
-This copies the skill into `.claude/skills/spec-docs/` in the current project. Then send the following to your AI:
+This copies the skill into `.claude/skills/spec-docs/` in the current project. Then ask your AI assistant:
 
 ```text
 Use the spec-docs skill in init mode to build a full implementation-first spec knowledge base for this project.
 ```
 
-### 3. Manual Install
+### Option 3: Manual install
 
-**Claude Code project-level:**
+Claude Code project-level install:
 
 ```bash
 mkdir -p .claude/skills/spec-docs
 cp -R skills/spec-docs/* .claude/skills/spec-docs/
 ```
 
-**Claude Code user-level:**
+Claude Code user-level install:
 
 ```bash
 mkdir -p ~/.claude/skills/spec-docs
 cp -R skills/spec-docs/* ~/.claude/skills/spec-docs/
 ```
 
-**Other agents:** If your agent supports a skills or prompt-package directory, install the contents of `skills/spec-docs/` into the equivalent location and keep the directory name `spec-docs`.
+Other agents: if your agent supports a skills or prompt-package directory, install the contents of `skills/spec-docs/` into the equivalent location and keep the directory name `spec-docs`.
+
+## What You Get
+
+| Capability | Purpose |
+| --- | --- |
+| Implementation specs | Capture confirmed behavior, stack, interfaces, data flow, edge cases, and verification points. |
+| Inventory reverse index | Map files, tasks, symbols, and specs so agents know what to read and update. |
+| Architecture governance | Record placement rules, current architecture, target architecture, and architecture reviews. |
+| ADRs | Preserve why architecture decisions were made and where implementation evidence lives. |
+| Rebuild tracking | Coordinate controlled subsystem rewrites without losing spec/code alignment. |
+| Agent protocol block | Install durable instructions into `AGENTS.md` or `CLAUDE.md` so future agents keep specs synchronized. |
 
 ## Core Idea
 
@@ -90,96 +115,61 @@ docs/spec-docs/
 │   ├── integrations/
 │   └── quality/
 ├── architecture/
-│   └── (architecture rules and placement constraints)
+│   ├── current-architecture.md
+│   ├── placement-rules.md
+│   ├── target-architecture.md
+│   └── adoption-plan.md
 ├── decisions/
-│   └── (ADR records)
+│   └── adr-001-example.md
+├── reviews/
 └── rebuild/
-    └── status.md
+    ├── status.md
+    └── archive/
 ```
 
-The exact structure follows the real project. Empty or speculative folders should not be created.
+Create only directories needed by the current mode and confirmed project reality. Empty or speculative child spec folders should not be created.
 
 ### Workspace Directories
 
-- `specs/` -- implementation facts: code behavior, stack, constraints, mappings
-- `architecture/` -- rules and placement constraints that govern how code is organized
-- `decisions/` -- Architecture Decision Records (ADR), the single source for why decisions were made
-- `rebuild/status.md` -- rebuild mode source of truth for tracking in-progress rebuilds
+| Directory | Role |
+| --- | --- |
+| `specs/` | Implementation facts: code behavior, stack, constraints, mappings, and verification points. |
+| `architecture/` | Current architecture rules, placement rules, target architecture, and adoption plans during rebuilds. |
+| `decisions/` | ADRs, the single source for why architecture decisions were made. |
+| `reviews/` | Placement and architecture review records produced by governance workflows. |
+| `rebuild/status.md` | Rebuild mode source of truth for active, paused, or completed migrations. |
 
 ## Modes
 
-### `init`
+| Mode | Use it when | What it does |
+| --- | --- | --- |
+| `init` | Starting Spec Docs in a project | Builds the implementation spec library, creates core files, records architecture governance when present, and installs the marked agent protocol block. |
+| `update` | Code changed | Synchronizes affected specs and `inventory.md` using Code-to-Spec, Task-to-Spec, and Symbol-to-Spec mappings. |
+| `verify` | Before claiming specs are current | Checks protocol blocks, required files, frontmatter, source paths, coverage, symbol mappings, and placeholder-free content. |
+| `repair` | Specs are stale or inconsistent | Realigns docs and project rules with current code; reports likely code issues without modifying code unless explicitly requested. |
+| `place` | Deciding where a new module or change belongs | Checks proposed placement against `architecture/` rules without creating files and records the review in `docs/spec-docs/reviews/`. |
+| `rebuild` | Starting a target architecture migration | Defines target architecture, an adoption plan, and rebuild status while keeping specs aligned during the migration. |
+| `adopt` | Completing a rebuild migration | Merges target architecture into current architecture, updates ADR evidence, completes rebuild status, and archives rebuild documents. |
 
-Builds a full-project implementation spec library from the current codebase.
+### Empty project behavior
 
 For empty project directories, `init` creates a minimal project-principles seed instead of a full implementation spec library. It records confirmed project purpose, intended technology stack, durable coding/testing/dependency principles, directory organization constraints, and out-of-scope boundaries. It does not create `inventory.md`, empty indexes, plans, scaffolding, future feature specs, or roadmap items. When implementation files appear, `update` absorbs this seed into the normal implementation-first spec library.
 
-For existing-implementation projects, it creates:
+### Existing implementation behavior
 
-- `docs/spec-docs/README.md`
-- `docs/spec-docs/constitution.md`
-- `docs/spec-docs/inventory.md`
-- `docs/spec-docs/specs/project-overview.spec.md`
-- type-specific specs for real features, modules, interfaces, runtime behavior, data, integrations, quality constraints, and implemented decisions
-- `docs/spec-docs/decisions/` with ADR records
-- `docs/spec-docs/architecture/` with rules and placement constraints
-- a marker-based project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`
-
-For existing-implementation projects, `init` is not complete until the Code-to-Spec Index covers all included implementation-relevant files and the protocol block is installed or updated.
-
-### `update`
-
-Synchronizes specs after implementation-relevant code changes.
-
-The agent must:
-
-- read `docs/spec-docs/README.md` and `docs/spec-docs/inventory.md`
-- use Code-to-Spec, Task-to-Spec, and Symbol-to-Spec mappings
-- update affected specs in the same change
-- update `inventory.md` when paths, symbols, or mappings changed
-- explain explicitly if no spec update is needed
-
-### `verify`
-
-Checks consistency before claiming specs are current.
-
-It validates:
-
-- project protocol block
-- required core files
-- frontmatter fields
-- source paths and globs
-- code-to-spec coverage
-- symbol mappings
-- absence of template placeholders, TODO/TBD text, and planned behavior
-
-### `repair`
-
-Realigns stale or inconsistent specs with current code.
-
-`repair` updates docs and project rules only. If it finds a likely code bug, it reports the implementation concern but does not modify code unless the user explicitly asks.
-
-### `place`
-
-Checks whether a proposed module or file belongs in an existing location or needs a new one, according to `architecture/` rules. Reports a placement decision without creating files.
-
-### `rebuild`
-
-Tracks a controlled rewrite of a module or subsystem. Reads `docs/spec-docs/rebuild/status.md` to determine current rebuild state, updates it as work progresses, and moves specs from old to new structure when the rebuild completes.
-
-### `adopt`
-
-Completes a rebuild migration by merging `target-architecture.md` into `current-architecture.md`, updating ADR implementation evidence, marking `rebuild/status.md` completed, and archiving target/adoption documents under `docs/spec-docs/rebuild/archive/`.
+For existing-implementation projects, `init` is not complete until the Code-to-Spec Index covers all included implementation-relevant files and the protocol block is installed or updated in `AGENTS.md` and/or `CLAUDE.md`.
 
 ## Architecture Governance
 
-Spec Docs optionally enforces architecture governance through the `docs/spec-docs/architecture/` directory:
+Spec Docs can enforce architecture governance through `docs/spec-docs/architecture/`, `docs/spec-docs/decisions/`, and `docs/spec-docs/reviews/`:
 
-- **Rules** define where modules must live, which dependencies are allowed, and how code is organized.
-- **Placement constraints** determine whether a new file or module belongs in an existing location or requires a new one.
-- **Decisions** (ADRs) in `docs/spec-docs/decisions/` are the single source for why architectural choices were made.
+- `current-architecture.md` records current architecture rules and constraints derived from implementation.
+- `placement-rules.md` records where new code and modules should be placed.
+- `target-architecture.md` and `adoption-plan.md` guide active rebuild migrations.
+- ADRs in `docs/spec-docs/decisions/` explain why architecture decisions were made and where implementation evidence lives.
+- Placement and architecture reviews in `docs/spec-docs/reviews/` record governance decisions without changing code.
 
-When architecture governance is active, `place` mode uses these rules to validate module placement, and `verify` checks that the codebase still conforms to declared constraints.
+When architecture governance is active, `place` checks proposed module placement before implementation planning, and `verify` checks that code still conforms to declared current or active target architecture constraints.
 
 ## Standalone and Integrated Workflows
 
@@ -253,6 +243,7 @@ When sources conflict:
 3. existing docs
 4. commit history
 5. existing specs
+6. ADRs in `docs/spec-docs/decisions/`
 
 If behavior cannot be confirmed, specs must use:
 
@@ -264,29 +255,15 @@ Agents must not guess.
 
 ## Usage
 
-Initialize a project:
-
-```text
-Use $spec-docs init to build a full implementation-first spec knowledge base for this project.
-```
-
-Update specs after code changes:
-
-```text
-Use $spec-docs update to synchronize specs with the current code changes.
-```
-
-Verify consistency:
-
-```text
-Use $spec-docs verify to check whether docs/spec-docs is current and complete.
-```
-
-Repair stale specs:
-
-```text
-Use $spec-docs repair to realign stale specs with the current implementation.
-```
+| Task | Prompt |
+| --- | --- |
+| Initialize a project | `Use $spec-docs init to build a full implementation-first spec knowledge base for this project.` |
+| Update specs after code changes | `Use $spec-docs update to synchronize specs with the current code changes.` |
+| Verify consistency | `Use $spec-docs verify to check whether docs/spec-docs is current and complete.` |
+| Repair stale specs | `Use $spec-docs repair to realign stale specs with the current implementation.` |
+| Review module placement | `Use $spec-docs place to decide where this change belongs before implementation planning.` |
+| Start a rebuild migration | `Use $spec-docs rebuild to define and track a target architecture migration for this project.` |
+| Adopt a completed rebuild | `Use $spec-docs adopt to merge the completed target architecture into the current architecture and archive rebuild documents.` |
 
 ## Repository Contents
 
@@ -298,6 +275,7 @@ Use $spec-docs repair to realign stale specs with the current implementation.
 │       └── templates/
 │           ├── agent-protocol-block.md
 │           ├── specs-readme.md
+│           ├── workspace-readme.md
 │           ├── constitution.md
 │           ├── inventory.md
 │           ├── project-overview.spec.md
@@ -307,7 +285,16 @@ Use $spec-docs repair to realign stale specs with the current implementation.
 │           ├── runtime.spec.md
 │           ├── data.spec.md
 │           ├── integration.spec.md
-│           └── quality.spec.md
+│           ├── quality.spec.md
+│           ├── current-architecture.md
+│           ├── target-architecture.md
+│           ├── placement-rules.md
+│           ├── architecture-review.md
+│           ├── placement-review.md
+│           ├── adr.md
+│           ├── rebuild-status.md
+│           ├── adoption-plan.md
+│           └── minimal-implementation-plan.md
 ├── bin/
 │   └── spec-docs.js
 ├── agents/
