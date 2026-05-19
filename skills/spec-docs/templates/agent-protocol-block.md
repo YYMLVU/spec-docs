@@ -7,12 +7,13 @@ Before changing implementation-relevant files:
 
 - Read `docs/spec-docs/README.md`.
 - Read `docs/spec-docs/constitution.md`.
-- Read `docs/spec-docs/inventory.md`.
-- Read specs under `docs/spec-docs/specs/`.
-- Read `docs/spec-docs/architecture/current-architecture.md`.
-- Read `docs/spec-docs/architecture/placement-rules.md`.
-- Read ADRs under `docs/spec-docs/decisions/`.
-- Use the Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index to identify relevant specs.
+- Read `docs/spec-docs/inventory.md` if it exists.
+- Read related specs under `docs/spec-docs/specs/` if they exist.
+- Read `docs/spec-docs/architecture/current-architecture.md` if it exists.
+- Read `docs/spec-docs/architecture/placement-rules.md` if it exists.
+- Read ADRs under `docs/spec-docs/decisions/` if they exist.
+- If `inventory.md` is missing but implementation-relevant files now exist, run `spec-docs update` to absorb the empty-project baseline first.
+- When `inventory.md` exists, use the Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index to identify relevant specs.
 - Read all relevant specs before editing code.
 
 For every non-trivial implementation change:

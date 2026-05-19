@@ -1,9 +1,12 @@
-# ADR-000: Decision Title
+---
+type: adr
+status: Proposed | Accepted | Deprecated | Superseded
+implementation_status: Pending | InProgress | Implemented
+date: YYYY-MM-DD
+compliance: Manual | Automated
+---
 
-Status: Proposed | Accepted | Deprecated | Superseded
-ImplementationStatus: Pending | InProgress | Implemented
-Date: YYYY-MM-DD
-Compliance: Manual | Automated
+# ADR-000: Decision Title
 
 ## Context
 
@@ -27,7 +30,7 @@ Compliance: Manual | Automated
 
 ## Implementation Evidence
 
-[Reference code paths, specs, or other artifacts that demonstrate this decision has been implemented. Leave empty if ImplementationStatus is Pending.]
+[Reference code paths, specs, or other artifacts that demonstrate this decision has been implemented. Use `N/A while implementation_status is Pending` when implementation is pending.]
 
 ## Related ADRs
 

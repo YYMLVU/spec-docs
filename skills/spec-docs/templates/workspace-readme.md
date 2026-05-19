@@ -45,7 +45,7 @@ Architecture decisions are stored in `docs/spec-docs/decisions/` using the ADR f
 
 ## Rebuild Mode
 
-When `docs/spec-docs/rebuild/status.md` has `mode: rebuild` and `status: active`, `verify` checks code against both current and target architecture. Target architecture and adoption plan are defined in `docs/spec-docs/architecture/target-architecture.md` and `docs/spec-docs/architecture/adoption-plan.md`. After `spec-docs adopt`, target architecture and adoption plan are archived to `docs/spec-docs/rebuild/archive/`.
+When `docs/spec-docs/rebuild/status.md` has `mode: rebuild` and `status: active`, `verify` checks code against both current and target architecture. When status is `paused`, `verify` may report target architecture gaps as warning/info and should not block normal maintenance unless the changed area touches migration scope. Target architecture and adoption plan are defined in `docs/spec-docs/architecture/target-architecture.md` and `docs/spec-docs/architecture/adoption-plan.md`. After `spec-docs adopt`, target architecture and adoption plan are archived to `docs/spec-docs/rebuild/archive/`.
 
 ## Verification
 
@@ -57,4 +57,5 @@ Run `spec-docs verify` to check:
 - No `{{template_variables}}`, unresolved task markers, or unresolved decision markers remain in generated specs.
 - Code does not violate current architecture rules.
 - If rebuild is active, code does not violate target architecture rules.
+- If rebuild is paused, target architecture gaps are warning/info unless the changed area touches migration scope.
 - ADR implementation evidence matches code.

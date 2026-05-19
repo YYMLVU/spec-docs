@@ -20,9 +20,9 @@
   </p>
 </div>
 
-Spec Docs is a reusable skill for building and maintaining an **implementation-first AI spec knowledge base** with **optional architecture governance** for software projects.
+Spec Docs is a reusable skill for building and maintaining a `docs/spec-docs/` workspace with an **implementation-first AI spec knowledge base** and **optional architecture governance** for software projects.
 
-It documents what the code does now: behavior, stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, verification points, architecture rules, ADRs, and rebuild status. Future AI agents can use those specs to make precise changes without repeatedly scanning the whole repository or touching unrelated code.
+Within that workspace, `specs/` records what the code does now: behavior, stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. `architecture/`, `decisions/`, `reviews/`, and `rebuild/` provide optional architecture governance, ADRs, review records, and migration state. Future AI agents can use this workspace to make precise changes without repeatedly scanning the whole repository or touching unrelated code.
 
 ## Quick Start
 
@@ -179,7 +179,7 @@ Spec Docs detects whether the project already uses an external Spec Skill or wor
 2. If no known external Spec Skill is found, Spec Docs asks once whether another module- or feature-level Spec Skill exists.
 3. If none exists, Spec Docs runs in **Standalone Mode** with a **Minimal Implementation Plan** -- recording only what is needed to keep specs synchronized with current code, without becoming a full requirements system, roadmap, backlog, or replacement for external Spec Skills.
 
-Standalone Mode never creates roadmap items, backlog entries, or feature plans. It only documents what is implemented and what is decided.
+Standalone Mode never creates roadmap items, backlog entries, or feature plans. It may perform lightweight intent clarification, placement review, and a Minimal Implementation Plan before implementation; those are temporary execution aids or reviews, not implementation facts stored under `specs/`.
 
 ## Implementation Mapping
 
@@ -236,7 +236,7 @@ The block requires future AI agents to read relevant specs before implementation
 
 ## Source-of-Truth Priority
 
-When sources conflict:
+When implementation behavior sources conflict:
 
 1. code, contracts, and configs
 2. tests
@@ -244,6 +244,8 @@ When sources conflict:
 4. commit history
 5. existing specs
 6. ADRs in `docs/spec-docs/decisions/`
+
+For architecture rules, use `architecture/current-architecture.md`, `architecture/placement-rules.md`, accepted ADRs, then specs. For decision rationale, use ADRs first.
 
 If behavior cannot be confirmed, specs must use:
 
@@ -264,6 +266,19 @@ Agents must not guess.
 | Review module placement | `Use $spec-docs place to decide where this change belongs before implementation planning.` |
 | Start a rebuild migration | `Use $spec-docs rebuild to define and track a target architecture migration for this project.` |
 | Adopt a completed rebuild | `Use $spec-docs adopt to merge the completed target architecture into the current architecture and archive rebuild documents.` |
+
+## Migration from the previous `docs/specs/` layout
+
+Older versions used `docs/specs/` directly. The current workspace layout is `docs/spec-docs/specs/`.
+
+Migration steps:
+
+1. Move `docs/specs/*` to `docs/spec-docs/specs/`.
+2. Move `constitution.md` and `inventory.md` to `docs/spec-docs/` if they exist.
+3. Update the `AGENTS.md` or `CLAUDE.md` protocol block.
+4. Run `spec-docs verify`.
+
+No compatibility layer is required after migration.
 
 ## Repository Contents
 

@@ -16,13 +16,29 @@ When the project has no implementation-relevant files, specs may record only use
 
 ## Source-of-Truth Priority
 
+Implementation behavior:
+
 1. Code, contracts, and configs.
 2. Tests.
 3. Existing docs.
 4. Commit history.
 5. Existing specs.
+6. ADRs in `docs/spec-docs/decisions/`.
 
-If behavior cannot be confirmed, write `[NEEDS CLARIFICATION: <specific question>]`.
+Architecture rules:
+
+1. `docs/spec-docs/architecture/current-architecture.md`.
+2. `docs/spec-docs/architecture/placement-rules.md`.
+3. Accepted ADRs in `docs/spec-docs/decisions/`.
+4. Existing specs.
+
+Decision rationale:
+
+1. ADRs in `docs/spec-docs/decisions/`.
+2. Architecture docs.
+3. Existing specs.
+
+Architecture docs and ADRs must not override current code facts. If behavior cannot be confirmed, write `[NEEDS CLARIFICATION: <specific question>]`.
 
 ## Coverage Principle
 

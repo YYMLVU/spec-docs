@@ -27,7 +27,9 @@ Do not create or maintain:
 
 ## Source-of-Truth Priority
 
-When sources conflict, use this order:
+Use different priority orders for different claim types.
+
+Implementation behavior:
 
 1. Code, contracts, and configs.
 2. Tests.
@@ -36,7 +38,20 @@ When sources conflict, use this order:
 5. Existing specs.
 6. ADRs in `docs/spec-docs/decisions/`.
 
-If behavior still cannot be confirmed, write `[NEEDS CLARIFICATION: <specific question>]`. Do not guess.
+Architecture rules:
+
+1. `docs/spec-docs/architecture/current-architecture.md`.
+2. `docs/spec-docs/architecture/placement-rules.md`.
+3. Accepted ADRs in `docs/spec-docs/decisions/`.
+4. Existing specs.
+
+Decision rationale:
+
+1. ADRs in `docs/spec-docs/decisions/`.
+2. Architecture docs.
+3. Existing specs.
+
+Architecture docs and ADRs must not override current code facts. If behavior still cannot be confirmed, write `[NEEDS CLARIFICATION: <specific question>]`. Do not guess.
 
 ## Directory Model
 
@@ -127,6 +142,9 @@ Allowed outputs:
 2. `docs/spec-docs/constitution.md` for durable project principles.
 3. `docs/spec-docs/specs/project-overview.spec.md` as a minimal baseline overview.
 4. Project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`.
+5. If the user confirms an architecture preset or architecture constraints, `docs/spec-docs/architecture/current-architecture.md` and `docs/spec-docs/architecture/placement-rules.md`.
+
+Empty-project architecture files describe confirmed architecture constraints, not implementation facts.
 
 Do not create `docs/spec-docs/inventory.md`, child spec directories, child specs, empty indexes, source code, tests, package manifests, scaffolding, future directory trees, plans, roadmaps, or task lists during empty-project init.
 
@@ -211,7 +229,8 @@ Each finding has severity: `error`, `warning`, or `info`.
 - No `{{template_variables}}`, `TODO`, `TBD`, or planned behavior remains.
 - `[NEEDS CLARIFICATION: ...]` entries are specific.
 - If `docs/spec-docs/architecture/current-architecture.md` exists, check code against current architecture rules.
-- If `docs/spec-docs/rebuild/status.md` exists with `mode: rebuild` and `status: active`, also check code against target architecture rules.
+- If `docs/spec-docs/rebuild/status.md` exists with `mode: rebuild` and `status: active`, check code against target architecture rules as `error` or `warning` according to the adoption plan.
+- If `docs/spec-docs/rebuild/status.md` exists with `mode: rebuild` and `status: paused`, report target architecture gaps as `warning` or `info`; do not block normal maintenance unless the changed area touches migration scope.
 - If `docs/spec-docs/decisions/` contains ADRs, check decision status and implementation evidence against code.
 
 #### Empty-project baselines checks
@@ -234,7 +253,13 @@ Recommended action: run spec-docs update to absorb baseline and generate impleme
 
 Normal `verify` must not read `docs/spec-docs/rebuild/archive/`.
 
-Output PASS or FAIL. If FAIL, list the files and whether the next mode should be `update` or `repair`.
+Verify status rules:
+
+- `PASS`: no `error` findings.
+- `PASS WITH WARNINGS`: no `error` findings, but `warning` or `info` findings exist.
+- `FAIL`: one or more `error` findings exist.
+
+Output PASS, PASS WITH WARNINGS, or FAIL. If FAIL, list the files and whether the next mode should be `update` or `repair`.
 
 ### `repair`
 
@@ -303,11 +328,18 @@ Steps to initiate:
 4. Initialize `docs/spec-docs/rebuild/status.md` with `mode: rebuild`, `status: active`, and target summary.
 5. Create ADR in `docs/spec-docs/decisions/` documenting the rebuild rationale.
 
-While active:
+While status is `active`:
 
 - `verify` checks code against both current and target architecture rules.
+- Target architecture gaps may be `error` or `warning` according to the adoption plan.
 - `update` may note alignment with target but must not silently rewrite current architecture rules.
 - `place` considers target architecture placement rules.
+
+While status is `paused`:
+
+- `verify` may report target architecture gaps as `warning` or `info`.
+- Target architecture gaps do not block normal maintenance unless the changed area touches migration scope.
+- `place` still considers target architecture placement rules when the task touches migration scope.
 
 ### `adopt`
 

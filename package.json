@@ -1,7 +1,7 @@
 {
   "name": "spec-docs",
   "version": "1.0.2",
-  "description": "Implementation-first AI spec knowledge base skill for Claude Code",
+  "description": "AI skill for implementation-first specs and optional architecture governance",
   "bin": {
     "spec-docs": "./bin/spec-docs.js"
   },
