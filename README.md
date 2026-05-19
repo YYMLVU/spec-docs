@@ -6,9 +6,9 @@
 
 [简体中文](./README.zh-CN.md)
 
-Spec Docs is a reusable skill for building and maintaining an **implementation-first AI spec knowledge base** for software projects.
+Spec Docs is a reusable skill for building and maintaining an **implementation-first AI spec knowledge base** with **optional architecture governance** for software projects.
 
-It documents the current implementation: code behavior, technical stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. Future AI agents can use the generated specs to maintain the project precisely without repeatedly scanning the whole repository or changing unrelated code.
+It documents the current implementation: code behavior, technical stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. It can also govern architecture rules, record decisions (ADRs), and track rebuild progress. Future AI agents can use the generated specs to maintain the project precisely without repeatedly scanning the whole repository or changing unrelated code.
 
 ## Installation
 
@@ -76,22 +76,35 @@ It is:
 Typical output in a target project:
 
 ```text
-docs/specs/
+docs/spec-docs/
 ├── README.md
 ├── constitution.md
 ├── inventory.md
-├── project-overview.spec.md
-├── features/
-├── modules/
-├── interfaces/
-├── runtime/
-├── data/
-├── integrations/
-├── quality/
-└── decisions/
+├── specs/
+│   ├── project-overview.spec.md
+│   ├── features/
+│   ├── modules/
+│   ├── interfaces/
+│   ├── runtime/
+│   ├── data/
+│   ├── integrations/
+│   └── quality/
+├── architecture/
+│   └── (architecture rules and placement constraints)
+├── decisions/
+│   └── (ADR records)
+└── rebuild/
+    └── status.md
 ```
 
 The exact structure follows the real project. Empty or speculative folders should not be created.
+
+### Workspace Directories
+
+- `specs/` -- implementation facts: code behavior, stack, constraints, mappings
+- `architecture/` -- rules and placement constraints that govern how code is organized
+- `decisions/` -- Architecture Decision Records (ADR), the single source for why decisions were made
+- `rebuild/status.md` -- rebuild mode source of truth for tracking in-progress rebuilds
 
 ## Modes
 
@@ -103,11 +116,13 @@ For empty project directories, `init` creates a minimal project-principles seed 
 
 For existing-implementation projects, it creates:
 
-- `docs/specs/README.md`
-- `docs/specs/constitution.md`
-- `docs/specs/inventory.md`
-- `docs/specs/project-overview.spec.md`
+- `docs/spec-docs/README.md`
+- `docs/spec-docs/constitution.md`
+- `docs/spec-docs/inventory.md`
+- `docs/spec-docs/specs/project-overview.spec.md`
 - type-specific specs for real features, modules, interfaces, runtime behavior, data, integrations, quality constraints, and implemented decisions
+- `docs/spec-docs/decisions/` with ADR records
+- `docs/spec-docs/architecture/` with rules and placement constraints
 - a marker-based project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`
 
 For existing-implementation projects, `init` is not complete until the Code-to-Spec Index covers all included implementation-relevant files and the protocol block is installed or updated.
@@ -118,7 +133,7 @@ Synchronizes specs after implementation-relevant code changes.
 
 The agent must:
 
-- read `docs/specs/README.md` and `docs/specs/inventory.md`
+- read `docs/spec-docs/README.md` and `docs/spec-docs/inventory.md`
 - use Code-to-Spec, Task-to-Spec, and Symbol-to-Spec mappings
 - update affected specs in the same change
 - update `inventory.md` when paths, symbols, or mappings changed
@@ -143,6 +158,38 @@ It validates:
 Realigns stale or inconsistent specs with current code.
 
 `repair` updates docs and project rules only. If it finds a likely code bug, it reports the implementation concern but does not modify code unless the user explicitly asks.
+
+### `place`
+
+Checks whether a proposed module or file belongs in an existing location or needs a new one, according to `architecture/` rules. Reports a placement decision without creating files.
+
+### `rebuild`
+
+Tracks a controlled rewrite of a module or subsystem. Reads `docs/spec-docs/rebuild/status.md` to determine current rebuild state, updates it as work progresses, and moves specs from old to new structure when the rebuild completes.
+
+### `adopt`
+
+Completes a rebuild migration by merging `target-architecture.md` into `current-architecture.md`, updating ADR implementation evidence, marking `rebuild/status.md` completed, and archiving target/adoption documents under `docs/spec-docs/rebuild/archive/`.
+
+## Architecture Governance
+
+Spec Docs optionally enforces architecture governance through the `docs/spec-docs/architecture/` directory:
+
+- **Rules** define where modules must live, which dependencies are allowed, and how code is organized.
+- **Placement constraints** determine whether a new file or module belongs in an existing location or requires a new one.
+- **Decisions** (ADRs) in `docs/spec-docs/decisions/` are the single source for why architectural choices were made.
+
+When architecture governance is active, `place` mode uses these rules to validate module placement, and `verify` checks that the codebase still conforms to declared constraints.
+
+## Standalone and Integrated Workflows
+
+Spec Docs detects whether the project already uses an external Spec Skill or workflow that manages requirements, plans, or feature-level specs (e.g., Superpowers, OpenSpec, Spec-Kit).
+
+1. If a known external Spec Skill is detected, Spec Docs runs in **Integrated Mode** and defers requirement-level and planning concerns to that skill.
+2. If no known external Spec Skill is found, Spec Docs asks once whether another module- or feature-level Spec Skill exists.
+3. If none exists, Spec Docs runs in **Standalone Mode** with a **Minimal Implementation Plan** -- recording only what is needed to keep specs synchronized with current code, without becoming a full requirements system, roadmap, backlog, or replacement for external Spec Skills.
+
+Standalone Mode never creates roadmap items, backlog entries, or feature plans. It only documents what is implemented and what is decided.
 
 ## Implementation Mapping
 
@@ -172,7 +219,7 @@ This helps future AI agents answer:
 
 ## Inventory
 
-`docs/specs/inventory.md` is the objective reverse index for the spec library.
+`docs/spec-docs/inventory.md` is the objective reverse index for the spec library.
 
 It contains:
 
@@ -232,7 +279,7 @@ Use $spec-docs update to synchronize specs with the current code changes.
 Verify consistency:
 
 ```text
-Use $spec-docs verify to check whether docs/specs is current and complete.
+Use $spec-docs verify to check whether docs/spec-docs is current and complete.
 ```
 
 Repair stale specs:
@@ -260,8 +307,7 @@ Use $spec-docs repair to realign stale specs with the current implementation.
 │           ├── runtime.spec.md
 │           ├── data.spec.md
 │           ├── integration.spec.md
-│           ├── quality.spec.md
-│           └── decision.spec.md
+│           └── quality.spec.md
 ├── bin/
 │   └── spec-docs.js
 ├── agents/

@@ -5,6 +5,9 @@
   "bin": {
     "spec-docs": "./bin/spec-docs.js"
   },
+  "scripts": {
+    "test": "node --check bin/spec-docs.js && ROOT=$PWD; tmp=$(mktemp -d); (cd \"$tmp\" && node \"$ROOT/bin/spec-docs.js\" >/dev/null); test -f \"$tmp/.claude/skills/spec-docs/SKILL.md\"; rm -rf \"$tmp\""
+  },
   "files": [
     "skills/",
     "bin/",

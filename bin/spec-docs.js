@@ -40,7 +40,14 @@ function main() {
   console.log("Next step: send the following to your AI assistant:");
   console.log();
   console.log("  Use the spec-docs skill in init mode to build a full");
-  console.log("  implementation-first spec knowledge base for this project.");
+  console.log("  implementation-first spec knowledge base with optional");
+  console.log("  architecture governance for this project.");
+  console.log();
+  console.log("Output workspace: docs/spec-docs/");
+  console.log("  specs/        = implementation facts");
+  console.log("  architecture/ = rules and placement");
+  console.log("  decisions/    = ADR single source");
+  console.log("  rebuild/      = rebuild mode source");
   console.log();
 }
 

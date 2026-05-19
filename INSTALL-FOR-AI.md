@@ -59,12 +59,17 @@ Use the spec-docs skill in init mode to build a full implementation-first spec k
 
 `init` creates or updates project files such as:
 
-- `docs/specs/`
-- `docs/specs/README.md`
-- `docs/specs/constitution.md`
-- `docs/specs/inventory.md`
-- implementation specs
+- `docs/spec-docs/`
+- `docs/spec-docs/README.md`
+- `docs/spec-docs/constitution.md`
+- `docs/spec-docs/inventory.md`
+- `docs/spec-docs/specs/` implementation specs
+- `docs/spec-docs/architecture/` architecture rules and placement constraints
+- `docs/spec-docs/decisions/` ADR records
+- `docs/spec-docs/rebuild/status.md` rebuild mode source of truth
 - marker-based `AGENTS.md` or `CLAUDE.md` protocol block, using `<!-- SPEC-DOCS-PROTOCOL:BEGIN -->` and `<!-- SPEC-DOCS-PROTOCOL:END -->`
+
+The workspace at `docs/spec-docs/` is an implementation-first spec knowledge base with optional architecture governance.
 
 ## Notes
 

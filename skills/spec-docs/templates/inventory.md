@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This file is the metadata index and reverse lookup table for the implementation spec library.
+Inventory indexes implementation facts. It may link to relevant architecture and ADR entrypoints, but it must not define architecture rules or decision content.
 
 It answers:
 
@@ -32,13 +32,13 @@ It does not track planned specs, missing specs, roadmap items, or subjective cov
 
 | Spec | Kind | Source Files / Globs | Verified Commit | Verified Date |
 |---|---|---|---|---|
-| `docs/specs/{{spec_path}}.spec.md` | {{spec_kind}} | `{{source_glob}}` | {{git_sha}} | {{verified_date}} |
+| `docs/spec-docs/specs/{{spec_path}}.spec.md` | {{spec_kind}} | `{{source_glob}}` | {{git_sha}} | {{verified_date}} |
 
 ## Code-to-Spec Index
 
 | Code Path / Glob | Specs To Read | Specs To Update When Changed |
 |---|---|---|
-| `{{code_glob}}` | `docs/specs/{{spec_path}}.spec.md` | `docs/specs/{{spec_path}}.spec.md` |
+| `{{code_glob}}` | `docs/spec-docs/specs/{{spec_path}}.spec.md` | `docs/spec-docs/specs/{{spec_path}}.spec.md` |
 
 ## Task-to-Spec Map
 
@@ -50,4 +50,4 @@ It does not track planned specs, missing specs, roadmap items, or subjective cov
 
 | Symbol / Entry Point | Kind | Spec | Role |
 |---|---|---|---|
-| `{{symbol_or_entrypoint}}` | {{symbol_kind}} | `docs/specs/{{spec_path}}.spec.md` | {{role_in_current_implementation}} |
+| `{{symbol_or_entrypoint}}` | {{symbol_kind}} | `docs/spec-docs/specs/{{spec_path}}.spec.md` | {{role_in_current_implementation}} |

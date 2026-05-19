@@ -12,7 +12,7 @@ symbols:
 tech_stack:
   - {{technology}}
 related_specs:
-  - docs/specs/{{related_spec}}.spec.md
+  - docs/spec-docs/specs/{{related_spec}}.spec.md
 ---
 
 # {{Data Area}} Spec

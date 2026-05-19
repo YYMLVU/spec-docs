@@ -1,15 +1,19 @@
 ---
 name: spec-docs
-description: Use when a project needs an implementation-first AI spec knowledge base for current code behavior, module constraints, interfaces, data flow, implementation mapping, or ongoing spec maintenance before or during AI-assisted development.
+description: Use when a project needs an implementation-first AI spec knowledge base with optional architecture governance for current code behavior, module constraints, interfaces, data flow, implementation mapping, architecture rules, placement decisions, or ongoing spec maintenance before or during AI-assisted development.
 ---
 
 # Spec Docs
 
 ## Identity
 
-Spec Docs builds and maintains an implementation-first spec knowledge base for a project. The specs describe what the current code, contracts, configs, tests, and runtime behavior actually do.
+Spec Docs builds and maintains an implementation-first spec knowledge base with optional architecture governance.
 
-Spec Docs is not a planning system. It must not create future implementation plans, roadmap docs, task lists, or speculative requirements.
+`docs/spec-docs/specs/` describes current implementation facts.
+`docs/spec-docs/architecture/` describes architecture rules, placement rules, target architecture, and rebuild state.
+`docs/spec-docs/decisions/` stores ADRs as the single decision source.
+
+Spec Docs must not become a full requirements system, roadmap tool, backlog generator, or replacement for an existing feature/spec/planning workflow.
 
 ## Non-Goals
 
@@ -19,6 +23,7 @@ Do not create or maintain:
 - Aspirational product requirements not implemented in code.
 - Spec-generated-code workflows where the spec outranks current implementation.
 - Coverage gap backlogs. `inventory.md` is an objective index, not a todo list.
+- Full requirements systems, roadmaps, or replacements for external spec workflows.
 
 ## Source-of-Truth Priority
 
@@ -29,14 +34,59 @@ When sources conflict, use this order:
 3. Existing docs.
 4. Commit history.
 5. Existing specs.
+6. ADRs in `docs/spec-docs/decisions/`.
 
 If behavior still cannot be confirmed, write `[NEEDS CLARIFICATION: <specific question>]`. Do not guess.
+
+## Directory Model
+
+```text
+docs/spec-docs/
+├── README.md
+├── constitution.md
+├── inventory.md
+├── specs/
+│   ├── project-overview.spec.md
+│   ├── features/
+│   ├── modules/
+│   ├── interfaces/
+│   ├── runtime/
+│   ├── data/
+│   ├── integrations/
+│   └── quality/
+├── architecture/
+│   ├── current-architecture.md
+│   ├── placement-rules.md
+│   ├── target-architecture.md
+│   └── adoption-plan.md
+├── decisions/
+│   └── adr-001-example.md
+├── reviews/
+└── rebuild/
+    ├── status.md
+    └── archive/
+```
+
+Create only directories needed by the current mode and confirmed project reality. Do not create empty speculative child spec folders.
+
+## Workflow Compatibility
+
+Spec Docs should prefer integration with an existing feature/spec/planning workflow.
+
+Detection order:
+
+1. Detect known workflows such as Superpowers, OpenSpec, or Spec-Kit.
+2. If none are detected, ask the user once whether another module-level or feature-level Spec Skill exists.
+3. If the user identifies one, inspect/use that workflow.
+4. If none exists or it cannot be found, use Standalone Mode.
+
+Standalone Mode may perform lightweight intent clarification, `spec-docs place`, and a Minimal Implementation Plan. It must not expand into a full requirements system, roadmap, backlog, or replacement for external spec workflows.
 
 ## Modes
 
 ### `init`
 
-Use when `docs/specs/` does not exist or the user asks to spec-ify a project.
+Use when `docs/spec-docs/` does not exist or the user asks to spec-ify a project.
 
 First determine whether the target has implementation-relevant files.
 
@@ -54,13 +104,14 @@ Must produce a full-project implementation spec library:
 
 1. Explore code, tests, configs, contracts, docs, and recent history.
 2. Identify tech stack, entrypoints, runtime units, source roots, tests, schemas, external interfaces, and integration surfaces.
-3. Define coverage scope in `docs/specs/inventory.md` with included and excluded globs.
-4. Create core files: `README.md`, `constitution.md`, `inventory.md`, `project-overview.spec.md`.
-5. Create specs under only the directories that match the real project: `features/`, `modules/`, `interfaces/`, `runtime/`, `data/`, `integrations/`, `quality/`, `decisions/`.
-6. Include implementation mapping in every spec: tech stack, key symbols, call flow, data flow, state changes, boundaries, tests, and code references.
-7. Build `inventory.md` with spec metadata, code-to-spec index, task-to-spec map, and symbol-to-spec index.
-8. Install the project instruction protocol block into `AGENTS.md` and/or `CLAUDE.md`.
-9. Run `verify`.
+3. Define coverage scope in `docs/spec-docs/inventory.md` with included and excluded globs.
+4. Create core files: `README.md`, `constitution.md`, `inventory.md`, `specs/project-overview.spec.md`.
+5. Create specs under only the directories that match the real project: `features/`, `modules/`, `interfaces/`, `runtime/`, `data/`, `integrations/`, `quality/`.
+6. If architecture rules are evident from code, create `docs/spec-docs/architecture/current-architecture.md` and `placement-rules.md`.
+7. Include implementation mapping in every spec: tech stack, key symbols, call flow, data flow, state changes, boundaries, tests, and code references.
+8. Build `inventory.md` with spec metadata, code-to-spec index, task-to-spec map, and symbol-to-spec index.
+9. Install the project instruction protocol block into `AGENTS.md` and/or `CLAUDE.md`.
+10. Run `verify`.
 
 Do not declare existing-implementation `init` complete until `verify` passes and the Code-to-Spec Index covers all included implementation-relevant files.
 
@@ -72,12 +123,12 @@ Empty-project init creates a minimal project-principles seed, not an implementat
 
 Allowed outputs:
 
-1. `docs/specs/README.md` as the temporary entrypoint.
-2. `docs/specs/constitution.md` for durable project principles.
-3. `docs/specs/project-overview.spec.md` as a minimal baseline overview.
+1. `docs/spec-docs/README.md` as the temporary entrypoint.
+2. `docs/spec-docs/constitution.md` for durable project principles.
+3. `docs/spec-docs/specs/project-overview.spec.md` as a minimal baseline overview.
 4. Project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`.
 
-Do not create `docs/specs/inventory.md`, child spec directories, child specs, empty indexes, source code, tests, package manifests, scaffolding, future directory trees, plans, roadmaps, or task lists during empty-project init.
+Do not create `docs/spec-docs/inventory.md`, child spec directories, child specs, empty indexes, source code, tests, package manifests, scaffolding, future directory trees, plans, roadmaps, or task lists during empty-project init.
 
 Required empty-project conversation flow:
 
@@ -101,15 +152,17 @@ Directory organization principles are allowed only as constraints, not scaffoldi
 
 Use when implementation-relevant files changed and specs must stay in sync.
 
+`update` updates `docs/spec-docs/specs/` and `inventory.md`. It must not silently rewrite `architecture/` rules.
+
 #### Baseline Absorption
 
 If the project has an empty-project baseline and implementation-relevant files now exist, `update` must absorb the baseline into a normal implementation spec library:
 
-1. Read `docs/specs/README.md`, `docs/specs/constitution.md`, and `docs/specs/project-overview.spec.md`.
+1. Read `docs/spec-docs/README.md`, `docs/spec-docs/constitution.md`, and `docs/spec-docs/specs/project-overview.spec.md`.
 2. Preserve and respect all durable principles in `constitution.md`.
 3. Explore current code, tests, configs, contracts, docs, and recent history.
 4. Replace the minimal overview's no-implementation state with actual project purpose, tech stack, runtime units, entrypoints, architecture, implementation map, call flow, data flow, quality surface, and change boundaries discovered from current implementation.
-5. Create `docs/specs/inventory.md` with real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index.
+5. Create `docs/spec-docs/inventory.md` with real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index.
 6. Create only the child spec directories and specs that match the real implementation.
 7. Remove empty-project baseline wording after it has been replaced by implementation facts.
 8. Run `verify` using the existing-implementation checklist.
@@ -118,7 +171,7 @@ Do not require a separate command for this transition. Do not discard confirmed 
 
 #### Routine Update
 
-1. Read `docs/specs/README.md` and `docs/specs/inventory.md`.
+1. Read `docs/spec-docs/README.md` and `docs/spec-docs/inventory.md`.
 2. Inspect the changed files from git diff or user input. Useful discovery commands include `git diff --name-only`, `git diff --cached --name-only`, and `git diff --name-only HEAD~1..HEAD` when reviewing the latest commit.
 3. Use Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index to identify all affected specs.
 4. Read those specs before editing implementation files when the task includes code changes.
@@ -134,7 +187,17 @@ Do not accept "docs can wait" for implementation-relevant changes. The protocol 
 
 Use before declaring `init`, `update`, or `repair` complete, or when the user asks whether specs are current.
 
-For existing-implementation specs, check:
+#### Output Contract
+
+Verify findings use these categories:
+
+- `[FACT DRIFT]` -- code and `docs/spec-docs/specs/` disagree.
+- `[ARCHITECTURE VIOLATION]` -- code violates current or active target architecture rules.
+- `[DECISION DRIFT]` -- ADR status, implementation status, or implementation evidence disagrees with code.
+
+Each finding has severity: `error`, `warning`, or `info`.
+
+#### Existing-implementation specs checks
 
 - Project protocol block exists exactly once in the target instruction files.
 - Core files exist.
@@ -145,18 +208,21 @@ For existing-implementation specs, check:
 - Code-to-Spec Index covers every included implementation-relevant file.
 - Symbol-to-Spec Index covers key entrypoints, public APIs, exported symbols, schemas, jobs, commands, and cross-module functions.
 - README, constitution, inventory, and specs do not contradict each other.
-- No `{{template_variables}}`, `TODO`, `TBD`, `待补充`, or planned behavior remains.
+- No `{{template_variables}}`, `TODO`, `TBD`, or planned behavior remains.
 - `[NEEDS CLARIFICATION: ...]` entries are specific.
+- If `docs/spec-docs/architecture/current-architecture.md` exists, check code against current architecture rules.
+- If `docs/spec-docs/rebuild/status.md` exists with `mode: rebuild` and `status: active`, also check code against target architecture rules.
+- If `docs/spec-docs/decisions/` contains ADRs, check decision status and implementation evidence against code.
 
-For empty-project baselines, check:
+#### Empty-project baselines checks
 
 - Project protocol block exists exactly once in the target instruction files.
-- `docs/specs/README.md`, `docs/specs/constitution.md`, and `docs/specs/project-overview.spec.md` exist.
-- `docs/specs/inventory.md` does not exist yet, or if it exists, it directs the agent to run `update` for baseline absorption rather than containing empty indexes.
+- `docs/spec-docs/README.md`, `docs/spec-docs/constitution.md`, and `docs/spec-docs/specs/project-overview.spec.md` exist.
+- `docs/spec-docs/inventory.md` does not exist yet, or if it exists, it directs the agent to run `update` for baseline absorption rather than containing empty indexes.
 - `project-overview.spec.md` explicitly states that no implementation-relevant files exist yet.
 - `constitution.md` contains only durable principles, not feature plans, roadmap items, task lists, scaffolding instructions, or reserved future paths.
 - Current project inspection confirms no implementation-relevant files exist.
-- No `{{template_variables}}`, `TODO`, `TBD`, `待补充` remains.
+- No `{{template_variables}}`, `TODO`, `TBD` remains.
 - `[NEEDS CLARIFICATION: ...]` entries are specific.
 
 If implementation-relevant files exist while the specs are still in empty-project baseline mode, output FAIL with:
@@ -166,6 +232,8 @@ NOTICE: project has implementation code but specs are still in empty-project bas
 Recommended action: run spec-docs update to absorb baseline and generate implementation specs.
 ```
 
+Normal `verify` must not read `docs/spec-docs/rebuild/archive/`.
+
 Output PASS or FAIL. If FAIL, list the files and whether the next mode should be `update` or `repair`.
 
 ### `repair`
@@ -174,6 +242,8 @@ Use when specs are stale, inconsistent, missing mappings, or no longer trustwort
 
 Repair is documentation alignment, not code repair.
 
+`repair architecture` requires explicit user confirmation or an ADR. It must not automatically relax architecture rules to match violating code.
+
 Allowed:
 
 - Re-read code, tests, configs, contracts, docs, and history.
@@ -181,6 +251,7 @@ Allowed:
 - Merge, split, delete, or rename specs when the code reality changed.
 - Rebuild `inventory.md`.
 - Fix `README.md`, `constitution.md`, and project protocol blocks.
+- Repair `architecture/current-architecture.md` with user confirmation or ADR.
 - Run `verify`.
 
 Forbidden unless the user explicitly asks for code changes:
@@ -189,8 +260,70 @@ Forbidden unless the user explicitly asks for code changes:
 - Modify tests to match specs.
 - Refactor implementation to satisfy specs.
 - Treat a stale spec as higher priority than code.
+- Automatically relax architecture rules to match violating code.
 
 If you find a likely code bug during repair, report it as an implementation concern with code/spec references. Do not fix it.
+
+### `place`
+
+Use when a new feature, module, or significant change needs placement guidance.
+
+`place` runs after lightweight requirement intake and before detailed implementation planning.
+
+Placement reviews may be tentative. Every placement review must include:
+
+- `Decision`: `Final | Tentative | Needs ADR | Needs User Decision`
+- `Confidence`: `High | Medium | Low`
+- `Reasoning`
+- `Missing Information`
+- `Recommended Next Step`
+
+Steps:
+
+1. Read `docs/spec-docs/architecture/current-architecture.md` and `placement-rules.md` if they exist.
+2. Read `docs/spec-docs/architecture/target-architecture.md` if rebuild mode is active.
+3. Analyze the change scope against placement rules.
+4. Produce a placement review with the required fields above.
+5. If `Decision` is `Needs ADR` or `Needs User Decision`, do not proceed with implementation until resolved.
+6. Store the placement review in `docs/spec-docs/reviews/`.
+
+`place` must run before detailed implementation planning for non-trivial feature changes.
+
+### `rebuild`
+
+Use when the project needs a target architecture migration.
+
+`rebuild` is active only when `docs/spec-docs/rebuild/status.md` says `mode: rebuild` and `status: active` or `paused`.
+
+Steps to initiate:
+
+1. Document current architecture in `docs/spec-docs/architecture/current-architecture.md`.
+2. Define target architecture in `docs/spec-docs/architecture/target-architecture.md`.
+3. Create adoption plan in `docs/spec-docs/architecture/adoption-plan.md`.
+4. Initialize `docs/spec-docs/rebuild/status.md` with `mode: rebuild`, `status: active`, and target summary.
+5. Create ADR in `docs/spec-docs/decisions/` documenting the rebuild rationale.
+
+While active:
+
+- `verify` checks code against both current and target architecture rules.
+- `update` may note alignment with target but must not silently rewrite current architecture rules.
+- `place` considers target architecture placement rules.
+
+### `adopt`
+
+Use when a rebuild's target architecture has been fully implemented.
+
+`adopt` merges completed target architecture into current architecture, updates ADR implementation evidence, marks rebuild completed, and archives target/adoption docs.
+
+Steps:
+
+1. Verify that code matches `target-architecture.md` rules.
+2. Merge `target-architecture.md` content into `current-architecture.md`.
+3. Update placement rules if they changed.
+4. Update the ADR in `docs/spec-docs/decisions/` with implementation evidence.
+5. Set `docs/spec-docs/rebuild/status.md` to `mode: rebuild`, `status: completed`.
+6. Move `target-architecture.md` and `adoption-plan.md` to `docs/spec-docs/rebuild/archive/`.
+7. Run `verify`.
 
 ## Hard Gates
 
@@ -201,6 +334,15 @@ If you find a likely code bug during repair, report it as an implementation conc
 - No code modifications during `repair` without explicit user approval.
 - No empty-project `init` completion until the user has confirmed project purpose and durable principles or unresolved items are marked with specific `[NEEDS CLARIFICATION: ...]` entries.
 - No empty-project `init` may create `inventory.md`, empty indexes, child specs, code, scaffolding, roadmap items, or future path reservations unless the user separately asks for project setup.
+- `update` must not silently rewrite architecture rules.
+- `repair architecture` requires explicit user confirmation or an ADR.
+- `inventory.md` must not define architecture rules.
+- `docs/spec-docs/specs/` must not contain planned behavior or decisions.
+- Decisions must live in `docs/spec-docs/decisions/`, not `docs/spec-docs/specs/decisions/`.
+- Rebuild mode must be determined by `docs/spec-docs/rebuild/status.md`, not by the mere existence of target files.
+- Normal `verify` must not read `docs/spec-docs/rebuild/archive/`.
+- `place` must run before detailed implementation planning for non-trivial feature changes.
+- Standalone Mode must remain lightweight and must not become a roadmap or backlog system.
 
 ## Project Instruction Installation
 
@@ -221,34 +363,17 @@ Update strategy:
 - Do not rewrite unrelated user instructions.
 - If existing instructions conflict, report the conflict and preserve the stricter rule where possible.
 
-## Directory Model
-
-Default structure:
-
-```text
-docs/specs/
-├── README.md
-├── constitution.md
-├── inventory.md
-├── project-overview.spec.md
-├── features/
-├── modules/
-├── interfaces/
-├── runtime/
-├── data/
-├── integrations/
-├── quality/
-└── decisions/
-```
-
-Create only directories that match the real project. Do not create empty speculative folders.
-
 ## Core Files
 
 - `README.md`: AI entrypoint, reading order, maintenance workflow, and verification guidance.
 - `constitution.md`: durable principles, source priority, coverage principle, conflict handling, and spec quality rules.
 - `inventory.md`: metadata aggregation, coverage scope, code-to-spec index, task-to-spec map, and symbol-to-spec index.
-- `project-overview.spec.md`: current project purpose, tech stack, runtime units, entrypoints, architecture map, and links to detailed specs.
+- `specs/project-overview.spec.md`: current project purpose, tech stack, runtime units, entrypoints, architecture map, and links to detailed specs.
+- `architecture/current-architecture.md`: current architecture rules and constraints derived from implementation.
+- `architecture/placement-rules.md`: rules for where new code and modules should be placed.
+- `architecture/target-architecture.md`: target architecture during rebuild mode.
+- `architecture/adoption-plan.md`: plan for migrating from current to target architecture.
+- `rebuild/status.md`: rebuild mode status (`mode: rebuild`, `status: active | paused | completed`).
 
 ## Frontmatter Schema
 
@@ -257,7 +382,7 @@ Every `.spec.md` must start with:
 ```yaml
 ---
 type: implementation-spec
-spec_kind: feature | module | interface | runtime | data | integration | quality | decision | overview
+spec_kind: feature | module | interface | runtime | data | integration | quality | overview
 status: current | needs-review | partial
 owned_by_code: true
 verified_commit: {{git_sha}}
@@ -269,7 +394,7 @@ symbols:
 tech_stack:
   - {{technology}}
 related_specs:
-  - docs/specs/{{related_spec}}.spec.md
+  - docs/spec-docs/specs/{{related_spec}}.spec.md
 ---
 ```
 
@@ -306,8 +431,9 @@ Each spec should include relevant sections from the templates:
 - `data`: schemas, storage, migrations, data flow, consistency.
 - `integration`: third-party or external system contracts and side effects.
 - `quality`: tests, security, observability, performance, reliability, compatibility.
-- `decision`: decisions already embodied by current code, with evidence and consequences.
 - `overview`: project-level current implementation summary.
+
+Decisions are not a spec kind. Record decisions as ADRs under `docs/spec-docs/decisions/` using `templates/adr.md`.
 
 Use `templates/` for canonical file shapes.
 
@@ -315,7 +441,8 @@ Use `templates/` for canonical file shapes.
 
 | Template | Use for |
 |---|---|
-| `templates/specs-readme.md` | `docs/specs/README.md` AI entrypoint and maintenance workflow |
+| `templates/workspace-readme.md` | `docs/spec-docs/README.md` workspace entrypoint, reading order, and governance overview |
+| `templates/specs-readme.md` | Optional `docs/spec-docs/specs/README.md` implementation specs entrypoint |
 | `templates/constitution.md` | Durable spec principles and conflict rules |
 | `templates/inventory.md` | Coverage scope, spec metadata, code/task/symbol reverse indexes |
 | `templates/project-overview.spec.md` | Project-level current implementation overview |
@@ -326,7 +453,7 @@ Use `templates/` for canonical file shapes.
 | `templates/data.spec.md` | Schemas, storage, migrations, read/write paths, and consistency |
 | `templates/integration.spec.md` | External systems, providers, credentials, and side effects |
 | `templates/quality.spec.md` | Testing, security, observability, performance, reliability, compatibility |
-| `templates/decision.spec.md` | Architecture decisions already embodied by current code |
+| `templates/adr.md` | Architectural decision records under `docs/spec-docs/decisions/` |
 | `templates/agent-protocol-block.md` | Marker-based AGENTS.md/CLAUDE.md maintenance protocol |
 
 ## Inventory Rules
@@ -341,7 +468,7 @@ Use `templates/` for canonical file shapes.
 
 `source_files` and index paths may use globs. Globs must match real project paths and must not reserve future paths.
 
-`inventory.md` must not contain planned specs, coverage gaps, todo lists, or roadmap items.
+`inventory.md` must not contain planned specs, coverage gaps, todo lists, roadmap items, or architecture rules.
 
 ## Implementation Mapping Rules
 
@@ -380,10 +507,10 @@ Actual include/exclude globs belong in `inventory.md`.
 Use repo-appropriate commands. Common useful checks:
 
 ```bash
-rg --files docs/specs
-rg "\{\{[^}]+\}\}|\b(TB[D]|TO[D]O)\b|待补[充]" docs/specs
-rg "^---$|^type: implementation-spec|^spec_kind:|^verified_commit:|^## Implementation Map|^## Update Rules" docs/specs
-git diff --check -- docs/specs AGENTS.md CLAUDE.md
+rg --files docs/spec-docs
+rg "\{\{[^}]+\}\}|\b(TB[D]|TO[D]O)\b" docs/spec-docs
+rg "^---$|^type: implementation-spec|^spec_kind:|^verified_commit:|^## Implementation Map|^## Update Rules" docs/spec-docs
+git diff --check -- docs/spec-docs AGENTS.md CLAUDE.md
 ```
 
 Also verify globs and coverage by inspecting the project; do not rely only on text search.
@@ -403,3 +530,7 @@ Also verify globs and coverage by inspecting the project; do not rely only on te
 | "Create starter files so specs have paths." | Spec Docs must not scaffold implementation during init unless the user separately asks for code. |
 | "Empty indexes prove the project is covered." | Empty-project init should not create empty indexes; `update` creates real indexes when implementation exists. |
 | "Directory principles mean pre-creating a tree." | Principles may constrain future changes, but reserved paths or scaffolding are plans unless the user asks for setup. |
+| "Update can rewrite architecture rules too." | `update` must not silently rewrite `architecture/` rules. Use `repair architecture` with confirmation or ADR. |
+| "Relax the architecture rule since code violates it." | `repair architecture` must not automatically relax rules to match violating code. |
+| "Rebuild mode because target files exist." | Rebuild mode is determined by `rebuild/status.md`, not by target file existence. |
+| "Standalone mode can manage the full backlog." | Standalone Mode must remain lightweight and must not become a roadmap or backlog system. |

@@ -2,11 +2,13 @@
 
 ## Purpose
 
-This constitution defines how the project maintains implementation-first specs. Specs describe the current implementation only.
+This constitution defines project-level durable constraints for the spec library. It governs how the project maintains implementation-first specs. Specs describe the current implementation only.
+
+This document does not duplicate placement rules; see `placement-rules.md` for spec placement and routing decisions.
 
 ## Non-Goals
 
-Specs must not contain future plans, roadmap items, task lists, planned specs, or speculative behavior.
+Specs must not contain future plans, roadmap items, task lists, planned specs, or speculative behavior. Architecture decisions are recorded as ADRs under `docs/spec-docs/decisions/adr-xxx.md` rather than as a separate spec kind.
 
 ## Empty-Project Baseline Rule
 
@@ -30,7 +32,7 @@ Implementation-relevant files include source code, tests, runtime/config files, 
 
 Excluded files include generated files, build artifacts, vendored dependencies, lock files unless they define runtime behavior, and static assets unless they define behavior or interfaces.
 
-The current project's actual include/exclude globs are maintained in `docs/specs/inventory.md`.
+The current project's actual include/exclude globs are maintained in `docs/spec-docs/inventory.md`.
 
 ## Spec Quality Standard
 

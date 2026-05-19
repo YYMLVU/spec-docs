@@ -6,14 +6,14 @@ This directory is the implementation-first spec knowledge base for the current p
 
 It is not a roadmap, planning system, or task list.
 
-For an empty-project baseline, this directory may temporarily contain only `README.md`, `constitution.md`, and `project-overview.spec.md`. Once implementation-relevant files exist, run `update` to absorb the baseline and generate standard implementation specs and `inventory.md`.
+For an empty-project baseline, `docs/spec-docs/` may temporarily contain only `README.md`, `constitution.md`, and `specs/project-overview.spec.md`. Once implementation-relevant files exist, run `update` to absorb the baseline and generate standard implementation specs and `inventory.md`.
 
 ## Default Reading Order
 
-1. `docs/specs/README.md`
-2. `docs/specs/constitution.md`
-3. `docs/specs/inventory.md`
-4. `docs/specs/project-overview.spec.md`
+1. `docs/spec-docs/README.md`
+2. `docs/spec-docs/constitution.md`
+3. `docs/spec-docs/inventory.md`
+4. `docs/spec-docs/specs/project-overview.spec.md`
 5. Specs matched by the Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index.
 
 ## Before Changing Code

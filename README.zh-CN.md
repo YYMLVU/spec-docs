@@ -6,9 +6,9 @@
 
 [English](./README.md)
 
-Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 **implementation-first AI spec 知识库**。
+Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 **implementation-first AI spec 知识库**，并提供**可选的架构治理**。
 
-它记录当前已经实现的代码事实：代码行为、技术栈、模块约束、接口、数据流、关键符号、调用关系、边界和验证点。后续 AI agent 可以通过这些 spec 精准维护项目，减少重复全仓扫描，也避免牵连无关代码。
+它记录当前已经实现的代码事实：代码行为、技术栈、模块约束、接口、数据流、关键符号、调用关系、边界和验证点。它还可以管理架构规则、记录决策（ADR）、追踪重建进度。后续 AI agent 可以通过这些 spec 精准维护项目，减少重复全仓扫描，也避免牵连无关代码。
 
 ## 安装方式
 
@@ -76,24 +76,37 @@ Spec Docs 把当前实现作为事实源。
 目标项目中的典型输出：
 
 ```text
-docs/specs/
+docs/spec-docs/
 ├── README.md
 ├── constitution.md
 ├── inventory.md
-├── project-overview.spec.md
-├── features/
-├── modules/
-├── interfaces/
-├── runtime/
-├── data/
-├── integrations/
-├── quality/
-└── decisions/
+├── specs/
+│   ├── project-overview.spec.md
+│   ├── features/
+│   ├── modules/
+│   ├── interfaces/
+│   ├── runtime/
+│   ├── data/
+│   ├── integrations/
+│   └── quality/
+├── architecture/
+│   └── (架构规则和放置约束)
+├── decisions/
+│   └── (ADR 记录)
+└── rebuild/
+    └── status.md
 ```
 
 实际结构服从真实项目。不要创建空目录或未来才可能用到的目录。
 
-## 四种模式
+### 工作区目录
+
+- `specs/` -- 实现事实：代码行为、技术栈、约束、映射
+- `architecture/` -- 规则和放置约束，决定代码的组织方式
+- `decisions/` -- 架构决策记录（ADR），决策原因的唯一来源
+- `rebuild/status.md` -- rebuild 模式的事实源，用于追踪进行中的重建
+
+## 七种模式
 
 ### `init`
 
@@ -103,11 +116,13 @@ docs/specs/
 
 对于已有实现的项目，会创建：
 
-- `docs/specs/README.md`
-- `docs/specs/constitution.md`
-- `docs/specs/inventory.md`
-- `docs/specs/project-overview.spec.md`
-- 面向真实 feature、module、interface、runtime、data、integration、quality、decision 的类型化 specs
+- `docs/spec-docs/README.md`
+- `docs/spec-docs/constitution.md`
+- `docs/spec-docs/inventory.md`
+- `docs/spec-docs/specs/project-overview.spec.md`
+- 面向真实 feature、module、interface、runtime、data、integration、quality 的类型化 specs
+- `docs/spec-docs/decisions/` 中的 ADR 记录
+- `docs/spec-docs/architecture/` 中的规则和放置约束
 - 写入 `AGENTS.md` 和/或 `CLAUDE.md` 的 marker-based 项目维护协议块
 
 对于已有实现的项目，只有当 Code-to-Spec Index 覆盖所有 included implementation-relevant files，并且项目协议块已经安装或更新时，`init` 才算完成。
@@ -118,7 +133,7 @@ docs/specs/
 
 AI 必须：
 
-- 阅读 `docs/specs/README.md` 和 `docs/specs/inventory.md`
+- 阅读 `docs/spec-docs/README.md` 和 `docs/spec-docs/inventory.md`
 - 使用 Code-to-Spec、Task-to-Spec、Symbol-to-Spec 映射
 - 在同一次变更中更新受影响 specs
 - 路径、symbols、映射变化时更新 `inventory.md`
@@ -143,6 +158,38 @@ AI 必须：
 当 specs 过期、漂移或索引不可信时，重新与当前代码对齐。
 
 `repair` 默认只更新文档和项目规则。如果发现疑似代码 bug，只报告 implementation concern，不修改代码，除非用户明确要求。
+
+### `place`
+
+根据 `architecture/` 规则检查提议的模块或文件是否应放在已有位置，还是需要新建位置。报告放置决策，不创建文件。
+
+### `rebuild`
+
+追踪模块或子系统的受控重写。读取 `docs/spec-docs/rebuild/status.md` 确定当前重建状态，随工作进展更新，重建完成后将 specs 从旧结构迁移到新结构。
+
+### `adopt`
+
+完成 rebuild 迁移：将 `target-architecture.md` 合并到 `current-architecture.md`，更新 ADR implementation evidence，将 `rebuild/status.md` 标记为 completed，并把 target/adoption 文档归档到 `docs/spec-docs/rebuild/archive/`。
+
+## 架构治理
+
+Spec Docs 通过 `docs/spec-docs/architecture/` 目录可选地执行架构治理：
+
+- **规则** 定义模块必须放置的位置、允许的依赖关系、以及代码的组织方式。
+- **放置约束** 决定新文件或模块应放在已有位置还是需要新建位置。
+- **决策**（ADR）在 `docs/spec-docs/decisions/` 中是架构决策原因的唯一来源。
+
+当架构治理激活时，`place` 模式使用这些规则验证模块放置，`verify` 检查代码库是否仍然符合声明的约束。
+
+## 独立模式与集成模式
+
+Spec Docs 检测项目是否已使用管理需求、计划或 feature 级 spec 的外部 Spec Skill 或工作流（例如 Superpowers、OpenSpec、Spec-Kit）。
+
+1. 如果检测到已知的外部 Spec Skill，Spec Docs 以**集成模式**运行，将需求级和规划事务交由该 skill 处理。
+2. 如果未发现已知的外部 Spec Skill，Spec Docs 会询问一次是否存在其他模块级或 feature 级 Spec Skill。
+3. 如果不存在，Spec Docs 以**独立模式**运行，使用**最小实现计划**——仅记录保持 specs 与当前代码同步所需的内容，不会成为完整的需求系统、roadmap、backlog 或外部 Spec Skill 的替代。
+
+独立模式不会创建 roadmap 条目、backlog 条目或 feature 计划。它只记录已实现的内容和已做出的决策。
 
 ## Implementation Mapping
 
@@ -172,7 +219,7 @@ AI 必须：
 
 ## Inventory
 
-`docs/specs/inventory.md` 是 spec library 的客观反向索引。
+`docs/spec-docs/inventory.md` 是 spec library 的客观反向索引。
 
 它包含：
 
@@ -232,7 +279,7 @@ Use $spec-docs update to synchronize specs with the current code changes.
 检查一致性：
 
 ```text
-Use $spec-docs verify to check whether docs/specs is current and complete.
+Use $spec-docs verify to check whether docs/spec-docs is current and complete.
 ```
 
 修复过期 specs：
@@ -260,8 +307,7 @@ Use $spec-docs repair to realign stale specs with the current implementation.
 │           ├── runtime.spec.md
 │           ├── data.spec.md
 │           ├── integration.spec.md
-│           ├── quality.spec.md
-│           └── decision.spec.md
+│           └── quality.spec.md
 ├── bin/
 │   └── spec-docs.js
 ├── agents/
