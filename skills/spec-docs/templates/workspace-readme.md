@@ -4,6 +4,15 @@
 
 [One or two sentences describing what this project does and its responsibility boundary.]
 
+## Skill Structure
+
+This workspace is maintained by the spec-docs skill, which uses a compact structure. The canonical entrypoint is `SKILL.md` -- this generated README summarizes workspace layout and maintenance; agents must follow the `SKILL.md` reference map.
+
+- **`SKILL.md`** is the execution router: identity, mode router, hard gates, and reference map. The agent reads this first.
+- **`references/`** contains normative rules. When a mode points to a reference, the agent must read and follow it before acting.
+- **`templates/`** provides the output shapes for specs, architecture docs, ADRs, and reviews.
+- **`hooks/`** (optional) provides agent hook scripts that remind or block at key actions. Hooks do not replace rules and must not automatically modify code, ADRs, or architecture rules.
+
 ## Directory Boundaries
 
 ```text
@@ -35,9 +44,11 @@ docs/spec-docs/
 - **Before declaring work done**: run `spec-docs verify`.
 - **Before non-trivial feature placement**: run `spec-docs place`.
 
-## Architecture Governance
+## Architecture Control Layer
 
-Architecture rules live in `docs/spec-docs/architecture/current-architecture.md` and `placement-rules.md`. When code violates these rules, `verify` reports `[ARCHITECTURE VIOLATION]` findings. Architecture rules must not be silently relaxed during `update`. Use `repair architecture` with explicit user confirmation or an ADR.
+Spec Docs provides an Architecture Control Layer with six responsibilities: Architecture Selection, Placement, Boundary Contract, Compliance Verification, Failure Localization, and Rebuild Evolution. Architecture governance is available and used when architecture docs exist or when the project needs it.
+
+Architecture rules live in `docs/spec-docs/architecture/current-architecture.md` and `placement-rules.md`. `current-architecture.md` records Architecture Selection (Primary Preset, confidence, source, Addons, Adoption Mode, rationale, known deviations). `placement-rules.md` records Boundary Contract and placement rules. Optional `debugging-rules.md` records architecture-guided debugging rules when the project needs them. When code violates these rules, `verify` reports `[ARCHITECTURE VIOLATION]` findings. Architecture rules must not be silently relaxed during `update`. Use `repair architecture` with explicit user confirmation or an ADR.
 
 ## ADRs
 

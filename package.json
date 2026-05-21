@@ -6,7 +6,7 @@
     "spec-docs": "./bin/spec-docs.js"
   },
   "scripts": {
-    "test": "node --check bin/spec-docs.js && ROOT=$PWD; tmp=$(mktemp -d); (cd \"$tmp\" && node \"$ROOT/bin/spec-docs.js\" >/dev/null); test -f \"$tmp/.claude/skills/spec-docs/SKILL.md\"; rm -rf \"$tmp\""
+    "test": "node --check bin/spec-docs.js && ROOT=$PWD; tmp=$(mktemp -d); (cd \"$tmp\" && node \"$ROOT/bin/spec-docs.js\" >/dev/null); test -f \"$tmp/.claude/skills/spec-docs/SKILL.md\"; test -f \"$tmp/.claude/skills/spec-docs/references/modes.md\"; test -f \"$tmp/.claude/skills/spec-docs/references/hooks.md\"; test -f \"$tmp/.claude/skills/spec-docs/templates/diagnosis.md\"; test -f \"$tmp/.claude/skills/spec-docs/hooks/hooks.json\"; rm -rf \"$tmp\""
   },
   "files": [
     "skills/",

@@ -20,9 +20,9 @@
   </p>
 </div>
 
-Spec Docs is a reusable skill for building and maintaining a `docs/spec-docs/` workspace with an **implementation-first AI spec knowledge base** and **optional architecture governance** for software projects.
+Spec Docs is a reusable skill for building and maintaining a `docs/spec-docs/` workspace with an **implementation-first AI spec knowledge base** and **architecture governance** (enforcement depth applied when needed) for software projects.
 
-Within that workspace, `specs/` records what the code does now: behavior, stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. `architecture/`, `decisions/`, `reviews/`, and `rebuild/` provide optional architecture governance, ADRs, review records, and migration state. Future AI agents can use this workspace to make precise changes without repeatedly scanning the whole repository or touching unrelated code.
+Within that workspace, `specs/` records what the code does now: behavior, stack, module constraints, interfaces, data flow, key symbols, call relationships, boundaries, and verification points. `architecture/`, `decisions/`, `reviews/`, and `rebuild/` provide architecture governance (enforced to the depth the project needs), ADRs, review records, and migration state. Future AI agents can use this workspace to make precise changes without repeatedly scanning the whole repository or touching unrelated code.
 
 ## Quick Start
 
@@ -96,6 +96,19 @@ It is:
 - a symbol-to-spec maintenance map
 - a project-level protocol for keeping specs synchronized with implementation changes
 
+## Compact Skill Structure
+
+The spec-docs skill uses a compact `SKILL.md` as the execution router, with detailed rules separated into dedicated layers:
+
+| Layer | Directory | Purpose |
+| --- | --- | --- |
+| Router | `SKILL.md` | Identity, mode router, hard gates, and reference map. The agent reads this first to determine which mode and reference to follow. |
+| Normative rules | `skills/spec-docs/references/` | Detailed per-mode rules, verification criteria, spec-authoring rules, architecture control, workflow integration, and hook policy. When a mode points to a reference, that reference is normative -- the agent must read and follow it before acting. |
+| Output shapes | `templates/` | File templates for specs, architecture docs, ADRs, reviews, and other workspace outputs. |
+| Optional hook layer | `hooks/` | Skeleton/reminder placeholders for future agent hook integration (e.g., session start, pre/post tool use, stop). Hooks do not replace rules; they detect events and point the agent to the required mode or reference. Hooks must not automatically modify code, ADRs, or architecture rules. Current hooks are not production-enforced; they serve as integration scaffolding. |
+
+This separation keeps the skill entry point small while ensuring all rules remain accessible and authoritative in their canonical location.
+
 ## What It Creates
 
 Typical output in a target project:
@@ -145,11 +158,12 @@ Create only directories needed by the current mode and confirmed project reality
 | --- | --- | --- |
 | `init` | Starting Spec Docs in a project | Builds the implementation spec library, creates core files, records architecture governance when present, and installs the marked agent protocol block. |
 | `update` | Code changed | Synchronizes affected specs and `inventory.md` using Code-to-Spec, Task-to-Spec, and Symbol-to-Spec mappings. |
-| `verify` | Before claiming specs are current | Checks protocol blocks, required files, frontmatter, source paths, coverage, symbol mappings, and placeholder-free content. |
+| `verify` | Before claiming specs are current | Checks protocol blocks, required files, frontmatter, source paths, coverage, symbol mappings, placeholder-free content, and architecture conformance. Reports `[ARCHITECTURE VIOLATION: <subtype>]` with expected behavior and recommended action. Severity reflects Adoption Mode and enabled Addons. |
 | `repair` | Specs are stale or inconsistent | Realigns docs and project rules with current code; reports likely code issues without modifying code unless explicitly requested. |
-| `place` | Deciding where a new module or change belongs | Checks proposed placement against `architecture/` rules without creating files and records the review in `docs/spec-docs/reviews/`. |
+| `place` | Deciding where a new module or change belongs | Runs Placement & Boundary Review against `architecture/` rules before implementation planning. Outputs ownership, layer placement, boundary contract (allowed/forbidden dependencies, required contracts, forbidden shortcuts), failure localization hints, and specs to update. Serves as boundary contract for later planning. Does not modify code. |
 | `rebuild` | Starting a target architecture migration | Defines target architecture, an adoption plan, and rebuild status while keeping specs aligned during the migration. |
 | `adopt` | Completing a rebuild migration | Merges target architecture into current architecture, updates ADR evidence, completes rebuild status, and archives rebuild documents. |
+| `diagnose` | A symptom needs architecture-guided triage | Identifies likely owner, likely layer, specs/files to inspect, signals to check, and debugging order. Does not perform direct repair. |
 
 ### Empty project behavior
 
@@ -161,11 +175,20 @@ For existing-implementation projects, `init` is not complete until the Code-to-S
 
 ## Architecture Governance
 
-Spec Docs can enforce architecture governance through `docs/spec-docs/architecture/`, `docs/spec-docs/decisions/`, and `docs/spec-docs/reviews/`:
+Spec Docs enforces an Architecture Control Layer with six responsibilities:
 
-- `current-architecture.md` records current architecture rules and constraints derived from implementation.
-- `placement-rules.md` records where new code and modules should be placed.
-- `target-architecture.md` and `adoption-plan.md` guide active rebuild migrations.
+1. **Architecture Selection** -- identify or choose the project's Primary Preset, Addons, and Adoption Mode.
+2. **Placement** -- decide where new code belongs before implementation planning.
+3. **Boundary Contract** -- define module boundaries, dependency direction, public contracts, shared code rules, and infrastructure access rules.
+4. **Compliance Verification** -- check that code conforms to architecture rules; report violations and drift.
+5. **Failure Localization** -- trace symptoms to owner module, failing layer, and debugging path.
+6. **Rebuild Evolution** -- track controlled migration from current to target architecture.
+
+Architecture governance operates through `docs/spec-docs/architecture/`, `docs/spec-docs/decisions/`, and `docs/spec-docs/reviews/`:
+
+- `current-architecture.md` records Architecture Selection (Primary Preset, confidence, source, Addons, Adoption Mode, rationale, known deviations) and current architecture rules.
+- `placement-rules.md` records Boundary Contract and placement rules.
+- `target-architecture.md` and `adoption-plan.md` record Target Architecture Selection and guide active rebuild migrations.
 - ADRs in `docs/spec-docs/decisions/` explain why architecture decisions were made and where implementation evidence lives.
 - Placement and architecture reviews in `docs/spec-docs/reviews/` record governance decisions without changing code.
 
@@ -287,6 +310,21 @@ No compatibility layer is required after migration.
 ├── skills/
 │   └── spec-docs/
 │       ├── SKILL.md
+│       ├── references/
+│       │   ├── modes.md
+│       │   ├── architecture-control.md
+│       │   ├── source-priority.md
+│       │   ├── verification.md
+│       │   ├── spec-authoring.md
+│       │   ├── workflow-integration.md
+│       │   ├── project-instructions.md
+│       │   ├── hard-gates.md
+│       │   ├── hooks.md
+│       │   └── common-mistakes.md
+│       ├── hooks/
+│       │   ├── hooks.json
+│       │   ├── hooks-cursor.json
+│       │   └── run-hook.cmd
 │       └── templates/
 │           ├── agent-protocol-block.md
 │           ├── specs-readme.md
