@@ -289,6 +289,7 @@ AI 不允许猜测。
 | 审查模块放置 | `Use $spec-docs place to decide where this change belongs before implementation planning.` |
 | 启动 rebuild 迁移 | `Use $spec-docs rebuild to define and track a target architecture migration for this project.` |
 | 采纳已完成的 rebuild | `Use $spec-docs adopt to merge the completed target architecture into the current architecture and archive rebuild documents.` |
+| 架构化排错 | `Use the spec-docs skill in diagnose mode for this symptom: <symptom>. Identify likely owner, failure boundary, specs/files to inspect, signals to check, and debugging order without claiming root cause prematurely.` |
 
 ## 从旧版 `docs/specs/` 布局迁移
 

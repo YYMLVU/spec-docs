@@ -95,6 +95,22 @@ Architecture docs must define enforceable boundaries:
 
 If ownership, dependency direction, or public contract is unclear, output `Needs ADR` or `Needs User Decision`.
 
+### Preset-specific Placement Checks
+
+`place` must consume the selected Primary Preset, Addons, and Adoption Mode before producing a placement review.
+
+- Layered Architecture: check layer responsibility and forbidden layer jumps.
+- Feature Modular Architecture: check owner feature/module and forbid imports into another feature's internal implementation.
+- Clean / Hexagonal Architecture: check ports/adapters and prevent domain-to-infrastructure dependency.
+- DDD Modular Monolith: check bounded context ownership and public contracts between contexts.
+- Microservices Architecture: check service ownership, API/event contracts, and data ownership boundaries.
+- Event-driven Architecture: check event ownership, publisher/consumer contracts, idempotency, and consistency boundaries.
+- Serverless Architecture: check function ownership, event triggers, external service boundaries, and deployment/runtime constraints.
+- Frontend Feature-Sliced Architecture: check feature/entity/shared slice boundaries and forbid cross-slice internal access.
+- AI / Agent / RAG Architecture: check agent/tool/memory/evaluation/RAG boundaries and prompt/tool contract ownership.
+- Lightweight Tooling Architecture: check simple module ownership without adding unnecessary layers.
+- Mixed / Hybrid: identify which local preset governs the changed area; if unclear, output `Needs ADR` or `Needs User Decision`.
+
 ### place Hard Rules
 
 1. `place` must run after intent intake and before detailed implementation planning for non-trivial changes.
@@ -109,6 +125,19 @@ If ownership, dependency direction, or public contract is unclear, output `Needs
 ## Debugging Rules
 
 An optional `docs/spec-docs/architecture/debugging-rules.md` may exist when the project needs architecture-guided debugging rules. Template: `templates/debugging-rules.md`. It defines boundary-first diagnosis: follow architecture boundaries, identify owner module and layer, check public contracts before internals, check adapters before external services, check state transitions before patching symptoms. Do not invent debugging paths; use `[NEEDS CLARIFICATION: ...]` when information is unknown.
+
+## Failure Localization
+
+Failure Localization uses architecture rules to narrow investigation scope without inventing root causes.
+
+It must identify:
+
+- Owner module or `[NEEDS CLARIFICATION: owner cannot be determined from available evidence]`.
+- Likely failing layer: UI/API, application, domain, adapter, external dependency, or cross-module contract.
+- Public contracts, ports, events, adapters, state owners, and observability signals to check before internal implementation.
+- Modules, shared utilities, or infrastructure that should not be modified first without evidence.
+
+Failure Localization must be grounded in code, tests, logs, existing docs, confirmed architecture, or user-confirmed operational knowledge. If evidence is missing, record a specific `[NEEDS CLARIFICATION: ...]` marker.
 
 ## Diagnose
 
@@ -169,5 +198,6 @@ Report as:
 13. Verify must report module boundary, layer, contract, infrastructure, shared-code, state/error, ownership, architecture drift, and observability violations when detectable.
 14. Verify severity must reflect Adoption Mode and enabled Addons.
 15. Diagnose must follow architecture boundaries and must not recommend modifying unrelated modules first.
-16. Failure Localization must be grounded in code, tests, logs, existing docs, confirmed architecture, or user-confirmed operational knowledge.
-17. Module specs should record boundary and failure localization information when such information is known.
+16. Diagnose is architecture-guided triage, not an automatic debugger or direct code repair mode.
+17. Failure Localization must be grounded in code, tests, logs, existing docs, confirmed architecture, or user-confirmed operational knowledge.
+18. Module specs should record boundary and failure localization information when such information is known.

@@ -43,6 +43,15 @@ related_specs:
 
 {{high_level_current_architecture_without_future_plans}}
 
+If `docs/spec-docs/architecture/current-architecture.md` exists, summarize its Architecture Selection here:
+
+- Primary Preset: {{primary_preset_or_needs_clarification}}
+- Addons: {{addons_or_none_confirmed}}
+- Adoption Mode: {{adoption_mode_or_needs_clarification}}
+- Architecture Source: `docs/spec-docs/architecture/current-architecture.md`
+
+Do not duplicate detailed architecture rules in this overview. Detailed boundary rules belong in `docs/spec-docs/architecture/current-architecture.md` and `docs/spec-docs/architecture/placement-rules.md`.
+
 ## Implementation Map
 
 | Concern | Code Reference | Symbol | Notes |

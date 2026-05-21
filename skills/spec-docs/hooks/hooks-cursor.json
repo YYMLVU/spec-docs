@@ -5,6 +5,11 @@
       {
         "command": "./hooks/scripts/session-start"
       }
+    ],
+    "stop": [
+      {
+        "command": "./hooks/scripts/stop-verify-reminder"
+      }
     ]
   }
 }

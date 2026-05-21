@@ -289,6 +289,7 @@ Agents must not guess.
 | Review module placement | `Use $spec-docs place to decide where this change belongs before implementation planning.` |
 | Start a rebuild migration | `Use $spec-docs rebuild to define and track a target architecture migration for this project.` |
 | Adopt a completed rebuild | `Use $spec-docs adopt to merge the completed target architecture into the current architecture and archive rebuild documents.` |
+| Architecture-guided diagnosis | `Use the spec-docs skill in diagnose mode for this symptom: <symptom>. Identify likely owner, failure boundary, specs/files to inspect, signals to check, and debugging order without claiming root cause prematurely.` |
 
 ## Migration from the previous `docs/specs/` layout
 

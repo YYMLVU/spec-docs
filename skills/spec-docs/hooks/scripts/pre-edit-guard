@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf '%s\n' 'spec-docs pre-edit reminder:'
+printf '%s\n' '- Before editing implementation-relevant files, read docs/spec-docs/README.md, constitution.md, inventory.md, related specs, architecture rules, and ADRs when present.'
+printf '%s\n' '- For non-trivial implementation changes, run/apply spec-docs place before detailed planning.'
+printf '%s\n' '- This hook is a reminder scaffold; rules live in SKILL.md and references/.'
