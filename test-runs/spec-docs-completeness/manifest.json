@@ -1,0 +1,24 @@
+{
+  "name": "spec-docs-completeness",
+  "sourceRoot": ".",
+  "workspaceRoot": "test-runs/spec-docs-completeness",
+  "sourceSnapshot": "test-runs/spec-docs-completeness/source-under-test",
+  "installedSnapshot": "test-runs/spec-docs-completeness/installed-under-test",
+  "expectedClaudeHookEvents": ["SessionStart", "Stop", "PreToolUse", "PostToolUse"],
+  "expectedCursorHookEvents": ["sessionStart", "stop"],
+  "modes": ["init", "update", "verify", "repair", "place", "rebuild", "adopt", "diagnose"],
+  "scenarios": [
+    { "id": "s01", "name": "Empty Project Init", "modes": ["init"], "type": "fixture" },
+    { "id": "s02", "name": "Existing Small App Init", "modes": ["init"], "type": "fixture-or-real" },
+    { "id": "s03", "name": "Placement Before Feature Work", "modes": ["place"], "type": "fixture" },
+    { "id": "s04", "name": "Implementation Update", "modes": ["update"], "type": "fixture" },
+    { "id": "s05", "name": "Verify Drift and Architecture Violations", "modes": ["verify"], "type": "fixture" },
+    { "id": "s06", "name": "Repair Without Unauthorized Code Changes", "modes": ["repair"], "type": "fixture" },
+    { "id": "s07", "name": "Rebuild State Machine", "modes": ["rebuild"], "type": "fixture" },
+    { "id": "s08", "name": "Adopt Legacy Project", "modes": ["adopt"], "type": "real-preferred" },
+    { "id": "s09", "name": "Architecture-Guided Diagnose", "modes": ["diagnose"], "type": "fixture" },
+    { "id": "s10", "name": "Hooks and Skill Collaboration", "modes": [], "type": "fixture" },
+    { "id": "s11", "name": "Architecture Drift Verify", "modes": ["verify"], "type": "fixture" },
+    { "id": "s12", "name": "True Adopt Completed Rebuild", "modes": ["adopt"], "type": "fixture" }
+  ]
+}

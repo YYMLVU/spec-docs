@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf '%s\n' 'spec-docs completion reminder:'
+printf '%s\n' '- If implementation-relevant files changed, affected specs must be updated or a no-update reason must be stated.'
+printf '%s\n' '- Run/apply spec-docs verify before claiming init/update/repair/rebuild/adopt completion.'
+printf '%s\n' '- Do not weaken architecture rules without explicit user confirmation or ADR.'

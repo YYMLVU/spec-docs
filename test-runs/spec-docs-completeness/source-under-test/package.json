@@ -1,6 +1,6 @@
 {
   "name": "spec-docs",
-  "version": "2.0.0",
+  "version": "1.0.2",
   "description": "AI skill for implementation-first specs and optional architecture governance",
   "bin": {
     "spec-docs": "./bin/spec-docs.js"
