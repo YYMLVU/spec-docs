@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf '%s\n' 'spec-docs post-edit reminder:'
+printf '%s\n' '- If implementation-relevant files changed, run/apply spec-docs update.'
+printf '%s\n' '- Before claiming completion, run/apply spec-docs verify or state why no spec update is needed.'
+printf '%s\n' '- Do not silently weaken architecture rules during update.'

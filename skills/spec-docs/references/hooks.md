@@ -21,6 +21,7 @@ Hooks detect events and point agents to required modes/references.
 - `PostToolUse` for edit/write tools: remind `update` after implementation-relevant changes.
 - `PreToolUse` for shell commands: warn on risky commands and remind update/verify around tests/builds when code changed.
 - `Stop` or response completion: remind or block completion if implementation-relevant changes lack update/verify.
+- Protocol block synchronization: remind agents to use `references/project-instructions.md` and `templates/agent-protocol-block.md` when `AGENTS.md` or `CLAUDE.md` is missing, duplicated, or stale.
 
 ## Behavior Levels
 

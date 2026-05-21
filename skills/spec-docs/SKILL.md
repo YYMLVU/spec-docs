@@ -49,13 +49,9 @@ The architecture governance layer has six responsibilities:
 
 ### Architecture Selection Summary
 
-**Primary Preset**: the project's main architecture style (e.g., Layered, Feature Modular, Clean/Hexagonal, DDD Modular Monolith, Microservices, Event-driven, Serverless, Frontend Feature-Sliced, AI/Agent/RAG, Lightweight Tooling, or Mixed/Hybrid).
+Architecture Selection records the project's Primary Preset, Addons, and Adoption Mode. `init`, `place`, `verify`, `rebuild`, and `diagnose` use that selection to decide boundary rules, severity, and debugging order.
 
-**Addons**: supplementary architecture patterns that strengthen boundary enforcement (e.g., Strong Module Boundaries, Dependency Inversion, State Machine, Typed Error Model, Testability First, Observability by Default, Event-driven Integration, Security Boundary, Performance and Resilience, Architecture Tests).
-
-**Adoption Mode**: how strictly architecture rules are enforced -- `strict`, `incremental`, `descriptive`, or `rebuild`.
-
-Full preset list, addon definitions, adoption mode details, and severity mappings are in `references/architecture-control.md`.
+Full preset list, addon definitions, adoption mode details, and severity mappings live in `references/architecture-control.md`.
 
 ## Reference Loading Rule
 
@@ -174,15 +170,15 @@ Standalone Mode may perform lightweight intent clarification, `spec-docs place`,
 
 ## Core Hard Gates
 
-These gates are non-negotiable. Additional mode-specific gates live in `references/hard-gates.md`.
+These gates are non-negotiable. Additional mode-specific and architecture-specific gates are indexed in `references/hard-gates.md`.
 
 1. No writing specs before exploring the current project.
 2. No final `init` completion until full included-scope coverage is verified.
 3. No implementation-relevant code completion claim until affected specs are updated or a no-update reason is stated.
 4. No `verify` success claim without checking protocol, core files, frontmatter, references, coverage, content, and index consistency.
 5. No code modifications during `repair` without explicit user approval.
-6. No future plans, roadmaps, backlogs, or planned behavior in `docs/spec-docs/specs/`.
-7. Code facts outrank stale specs; repair specs unless code changes were explicitly requested.
+6. Architecture rules must not be weakened without explicit user confirmation or ADR.
+7. `place` must run before detailed implementation planning for non-trivial feature/module changes.
 8. Empty-project init must not create fake implementation facts.
 9. Rebuild mode is determined by `rebuild/status.md`, not by target file existence.
 10. Standalone Mode must not become a roadmap or backlog system.
@@ -225,7 +221,7 @@ Hooks must not automatically modify code, create ADRs, weaken architecture rules
 | `references/project-instructions.md` | AGENTS.md / CLAUDE.md protocol block target selection, update strategy, protocol expectations |
 | `references/hooks.md` | Supported hook directions, trigger points, behavior levels, block candidates, safety boundaries |
 | `references/common-mistakes.md` | Full common mistakes table |
-| `references/hard-gates.md` | Complete hard gates list including mode-specific and architecture-specific gates |
+| `references/hard-gates.md` | Index of hard-gate canonical homes |
 
 ## Template Map
 

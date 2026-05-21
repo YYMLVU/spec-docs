@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf '%s\n' 'spec-docs bash reminder:'
+printf '%s\n' '- After tests/builds/git diff confirm implementation changes, update affected specs or state a no-update reason.'
+printf '%s\n' '- Before completion, run/apply spec-docs verify.'
+printf '%s\n' '- Read-only commands should not be blocked by this skeleton.'
