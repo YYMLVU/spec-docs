@@ -20,9 +20,9 @@
   </p>
 </div>
 
-Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 `docs/spec-docs/` 工作区，其中包含 **implementation-first AI spec 知识库**和**可选的架构治理**。
+Spec Docs 是一个可复用 skill，用于为软件项目构建和维护 `docs/spec-docs/` 工作区，其中包含 **implementation-first AI spec 知识库**和**架构治理**（根据项目需要执行治理深度）。
 
-在这个工作区中，`specs/` 记录代码当前已经实现的事实：行为、技术栈、模块约束、接口、数据流、关键符号、调用关系、边界和验证点。`architecture/`、`decisions/`、`reviews/` 和 `rebuild/` 提供可选架构治理、ADR、review 记录和迁移状态。后续 AI agent 可以通过这个工作区精准修改项目，减少重复全仓扫描，也避免牵连无关代码。
+在这个工作区中，`specs/` 记录代码当前已经实现的事实：行为、技术栈、模块约束、接口、数据流、关键符号、调用关系、边界和验证点。`architecture/`、`decisions/`、`reviews/` 和 `rebuild/` 提供架构治理（根据项目需要执行治理深度）、ADR、review 记录和迁移状态。后续 AI agent 可以通过这个工作区精准修改项目，减少重复全仓扫描，也避免牵连无关代码。
 
 ## 快速开始
 
@@ -96,6 +96,19 @@ Spec Docs 把当前实现作为事实源。
 - symbol 到 spec 的维护地图
 - 让项目在后续 AI 迭代中持续同步 spec 的项目级协议
 
+## 紧凑 Skill 结构
+
+spec-docs skill 使用紧凑的 `SKILL.md` 作为执行路由入口，详细规则被拆分到独立层级：
+
+| 层级 | 目录 | 职责 |
+| --- | --- | --- |
+| 路由 | `SKILL.md` | 身份、模式路由、硬门禁和引用索引。agent 首先读取此文件，确定应使用的模式和对应引用。 |
+| 规范性规则 | `skills/spec-docs/references/` | 各模式的详细规则、验证标准、spec 写作规则、架构控制、工作流集成和 hook 策略。当某个模式指向某个 reference 时，该 reference 是规范性的——agent 必须在执行前阅读并遵循。 |
+| 输出模板 | `templates/` | specs、架构文档、ADR、review 及其他工作区输出的文件模板。 |
+| 可选 Hook 层 | `hooks/` | 未来 agent hook 集成的骨架/提醒占位，覆盖 `SessionStart`、`PreToolUse`/`PostToolUse`、`Stop` 等事件。Hook 不替代规则；它只检测事件并指向所需的模式或引用。Hook 不得自动修改代码、ADR 或架构规则。当前 hooks 仅为集成脚手架，并非生产级强制层。 |
+
+这种分离使 skill 入口保持精简，同时确保所有规则在其规范位置可被引用且具有权威性。
+
 ## 它会生成什么
 
 目标项目中的典型输出：
@@ -139,17 +152,18 @@ docs/spec-docs/
 | `reviews/` | 治理工作流产生的放置和架构 review 记录。 |
 | `rebuild/status.md` | rebuild 模式事实源，用于 active、paused 或 completed 迁移。 |
 
-## 七种模式
+## 八种模式
 
 | Mode | 使用场景 | 行为 |
 | --- | --- | --- |
 | `init` | 在项目中首次启用 Spec Docs | 构建 implementation spec library，创建核心文件，在存在架构治理时记录规则，并安装带 marker 的 agent 协议块。 |
 | `update` | 代码已经变更 | 使用 Code-to-Spec、Task-to-Spec、Symbol-to-Spec 映射同步受影响 specs 和 `inventory.md`。 |
-| `verify` | 声明 specs 当前有效之前 | 检查协议块、必需文件、frontmatter、source paths、覆盖率、symbol 映射和无占位内容。 |
+| `verify` | 声明 specs 当前有效之前 | 检查协议块、必需文件、frontmatter、source paths、覆盖率、symbol 映射、无占位内容和架构一致性。报告 `[ARCHITECTURE VIOLATION: <subtype>]`，包含预期行为和建议操作。Severity 反映 Adoption Mode 和启用的 Addons。 |
 | `repair` | specs 过期、不一致或不可信 | 将文档和项目规则重新对齐当前代码；发现疑似代码问题时只报告，不主动修改代码。 |
-| `place` | 判断新模块或变更应放在哪里 | 根据 `architecture/` 规则检查 proposed placement，不创建文件，并将 review 记录到 `docs/spec-docs/reviews/`。 |
+| `place` | 判断新模块或变更应放在哪里 | 在实现规划前运行 Placement & Boundary Review，根据 `architecture/` 规则输出所有权、层级放置、边界合约（允许/禁止依赖、必需合约、禁止捷径）、故障定位提示和需更新的 specs。作为后续规划的边界合约。不修改代码。 |
 | `rebuild` | 项目需要目标架构迁移 | 定义目标架构、adoption plan 和 rebuild 状态，并在迁移期间保持 specs 对齐。 |
 | `adopt` | rebuild 的目标架构已经完成 | 将 target architecture 合并到 current architecture，更新 ADR evidence，标记 rebuild completed，并归档 rebuild 文档。 |
+| `diagnose` | 对症状进行架构引导的排查 | 识别可能的负责人、可能所属的层级、需要检查的 specs/文件、需要关注的信号，以及排查顺序。不执行直接修复。 |
 
 ### 空项目行为
 
@@ -161,11 +175,20 @@ docs/spec-docs/
 
 ## 架构治理
 
-Spec Docs 通过 `docs/spec-docs/architecture/`、`docs/spec-docs/decisions/` 和 `docs/spec-docs/reviews/` 执行架构治理：
+Spec Docs 执行一个架构控制层，包含六项职责：
 
-- `current-architecture.md` 记录从实现中推导出的当前架构规则和约束。
-- `placement-rules.md` 记录新代码和模块应放置的位置。
-- `target-architecture.md` 和 `adoption-plan.md` 指导活跃的 rebuild 迁移。
+1. **架构选择（Architecture Selection）** -- 识别或选择项目的 Primary Preset、Addons 和 Adoption Mode。
+2. **放置（Placement）** -- 在实现规划前决定新代码应放在哪里。
+3. **边界合约（Boundary Contract）** -- 定义模块边界、依赖方向、公共合约、共享代码规则和基础设施访问规则。
+4. **合规验证（Compliance Verification）** -- 检查代码是否符合架构规则；报告越界和漂移。
+5. **故障定位（Failure Localization）** -- 将症状追踪到负责模块、失败层级和排查路径。
+6. **重建演进（Rebuild Evolution）** -- 跟踪从当前架构到目标架构的受控迁移。
+
+架构治理通过 `docs/spec-docs/architecture/`、`docs/spec-docs/decisions/` 和 `docs/spec-docs/reviews/` 运作：
+
+- `current-architecture.md` 记录架构选择（Primary Preset、置信度、来源、Addons、Adoption Mode、理由、已知偏差）和当前架构规则。
+- `placement-rules.md` 记录边界合约和放置规则。
+- `target-architecture.md` 和 `adoption-plan.md` 记录目标架构选择，并指导活跃的 rebuild 迁移。
 - `docs/spec-docs/decisions/` 中的 ADRs 解释架构决策原因及对应的 implementation evidence。
 - `docs/spec-docs/reviews/` 中的放置和架构 review 记录治理决策，不修改代码。
 
@@ -287,6 +310,21 @@ AI 不允许猜测。
 ├── skills/
 │   └── spec-docs/
 │       ├── SKILL.md
+│       ├── references/
+│       │   ├── modes.md
+│       │   ├── architecture-control.md
+│       │   ├── source-priority.md
+│       │   ├── verification.md
+│       │   ├── spec-authoring.md
+│       │   ├── workflow-integration.md
+│       │   ├── project-instructions.md
+│       │   ├── hard-gates.md
+│       │   ├── hooks.md
+│       │   └── common-mistakes.md
+│       ├── hooks/
+│       │   ├── hooks.json
+│       │   ├── hooks-cursor.json
+│       │   └── run-hook.cmd
 │       └── templates/
 │           ├── agent-protocol-block.md
 │           ├── specs-readme.md

@@ -8,6 +8,19 @@ It is not a roadmap, planning system, or task list.
 
 For an empty-project baseline, `docs/spec-docs/` may temporarily contain only `README.md`, `constitution.md`, and `specs/project-overview.spec.md`. Once implementation-relevant files exist, run `update` to absorb the baseline and generate standard implementation specs and `inventory.md`.
 
+## Skill Structure
+
+This workspace is maintained by the spec-docs skill, which uses a compact structure. The canonical entrypoint is `SKILL.md` -- this generated README summarizes workspace layout and maintenance; agents must follow the `SKILL.md` reference map.
+
+- **`SKILL.md`** is the execution router: identity, mode router, hard gates, and reference map. The agent reads this first.
+- **`references/`** contains normative rules. When a mode points to a reference, the agent must read and follow it before acting.
+- **`templates/`** provides the output shapes for specs, architecture docs, ADRs, and reviews.
+- **`hooks/`** (optional) provides agent hook scripts that remind or block at key actions. Hooks do not replace rules and must not automatically modify code, ADRs, or architecture rules.
+
+## Reference Rules
+
+Spec authors should follow `references/spec-authoring.md` for frontmatter, sections, implementation mapping, coverage, inventory, and module boundary/failure-localization rules. When architecture docs exist or the project uses architecture governance, also follow `references/architecture-control.md`.
+
 ## Default Reading Order
 
 1. `docs/spec-docs/README.md`
@@ -69,3 +82,7 @@ Decision rationale:
 3. Existing specs.
 
 Architecture docs and ADRs must not override current code facts. If behavior cannot be confirmed, mark it with `[NEEDS CLARIFICATION: <specific question>]` instead of guessing.
+
+## Architecture Control Layer
+
+The architecture governance layer has six responsibilities: Architecture Selection (Primary Preset, Addons, Adoption Mode), Placement, Boundary Contract, Compliance Verification, Failure Localization, and Rebuild Evolution. See `docs/spec-docs/architecture/current-architecture.md` for the current architecture selection and `docs/spec-docs/architecture/placement-rules.md` for boundary contracts and placement rules.

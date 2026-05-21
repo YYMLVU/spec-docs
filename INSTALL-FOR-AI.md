@@ -12,7 +12,9 @@ Requirements:
 2. If the target environment uses another agent with a skills directory, install it into that agent's equivalent project-level or user-level skills path.
 3. Copy the contents of `skills/spec-docs/` from this repository into the target directory. This includes:
    - `SKILL.md`
+   - `references/` (all files)
    - `templates/` (all files)
+   - `hooks/` if present
 4. Keep the installed directory name exactly `spec-docs`.
 5. Do not rewrite or summarize the skill during installation; copy it as-is.
 6. After installation, verify that the installed `SKILL.md` exists in the destination.
@@ -29,13 +31,15 @@ test -f .claude/skills/spec-docs/SKILL.md
 
 Expected result: exit code `0`.
 
-Also verify that templates were copied:
+Also verify that references, templates, and hooks were copied:
 
 ```bash
+test -f .claude/skills/spec-docs/references/modes.md
 test -f .claude/skills/spec-docs/templates/agent-protocol-block.md
+test -f .claude/skills/spec-docs/hooks/hooks.json
 ```
 
-Expected result: exit code `0`.
+Expected result: exit code `0` for each.
 
 ## Alternative: Install via npx
 

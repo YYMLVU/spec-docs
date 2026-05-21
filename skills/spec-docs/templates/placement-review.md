@@ -1,55 +1,83 @@
-# Placement Review
+# Placement & Boundary Review
 
 ## Feature Intent
 
-[Short description of the feature or change being placed.]
+- Summary:
+- User/system behavior:
+- Acceptance criteria source:
+- Confidence: High | Medium | Low
+- Decision: Final | Tentative | Needs ADR | Needs User Decision
 
-## Decision
+## Ownership
 
-Final | Tentative | Needs ADR | Needs User Decision
+- Owning module:
+- Secondary modules:
+- Reason:
+- New module needed: yes / no
+- ADR needed: yes / no
 
-## Confidence
+## Layer Placement
 
-High | Medium | Low
+- UI/API:
+- Application:
+- Domain:
+- Infrastructure/Adapter:
+- Tests:
 
-## Reasoning
+## Boundary Contract
 
-[Why this placement decision fits the current architecture, or why it remains tentative.]
+### Allowed Dependencies
 
-## Owning Module
+- ...
 
-[Module or layer that should own this feature.]
+### Forbidden Dependencies
 
-## Target Layer
+- ...
 
-[Layer where the implementation should reside.]
+### Required Public Contracts
 
-## Required Contracts
+- Public API:
+- Port:
+- Adapter:
+- Event:
+- DTO/Schema:
 
-[Interfaces or contracts that must be defined or extended for this placement.]
+### Forbidden Shortcuts
 
-## Boundary Constraints
+- Do not import:
+- Do not bypass:
+- Do not place logic in:
 
-[Boundaries that must be respected and any cross-boundary access required.]
+## Specs and Architecture Files to Read
 
-## Specs to Read
+- `docs/spec-docs/constitution.md`
+- `docs/spec-docs/inventory.md` if present
+- Related specs:
+- Related architecture rules:
+- Related ADRs:
 
-[List specs that must be read before implementation begins.]
+## Implementation Constraints
+
+- Required tests:
+- Required error handling:
+- Required state handling:
+- Required observability:
+
+## Failure Localization Hints
+
+If this feature fails, inspect in this order:
+
+1. API/UI boundary:
+2. Application use case:
+3. Domain rule:
+4. Adapter/infrastructure:
+5. External dependency:
+6. Cross-module contract:
 
 ## Specs to Update After Implementation
 
-[List specs that will need updates after this feature is implemented.]
+- ...
 
-## ADR Needed
+## Open Questions
 
-Yes | No
-
-[If Yes, reference the ADR or describe the decision to be recorded.]
-
-## Missing Information
-
-[List any unknowns that prevent a Final decision.]
-
-## Recommended Next Step
-
-[Concrete next action, e.g., create ADR-XXX, confirm with user, proceed with implementation.]
+- ...

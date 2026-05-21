@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+printf '%s\n' 'spec-docs reminder:'
+printf '%s\n' '- If this project has docs/spec-docs/, use the compact SKILL.md as router.'
+printf '%s\n' '- For mode details, read skills/spec-docs/references/*.md before acting.'
+printf '%s\n' '- For non-trivial implementation changes, run/apply spec-docs place before detailed planning.'
+printf '%s\n' '- After implementation-relevant edits, run/apply spec-docs update and verify before claiming completion.'
+printf '%s\n' '- Hooks are reminders; rules live in SKILL.md and references/.'
