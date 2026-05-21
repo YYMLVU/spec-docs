@@ -105,7 +105,7 @@ The spec-docs skill uses a compact `SKILL.md` as the execution router, with deta
 | Router | `SKILL.md` | Identity, mode router, hard gates, and reference map. The agent reads this first to determine which mode and reference to follow. |
 | Normative rules | `skills/spec-docs/references/` | Detailed per-mode rules, verification criteria, spec-authoring rules, architecture control, workflow integration, and hook policy. When a mode points to a reference, that reference is normative -- the agent must read and follow it before acting. |
 | Output shapes | `templates/` | File templates for specs, architecture docs, ADRs, reviews, and other workspace outputs. |
-| Optional hook layer | `hooks/` | Skeleton/reminder placeholders for future agent hook integration (e.g., session start, pre/post tool use, stop). Hooks do not replace rules; they detect events and point the agent to the required mode or reference. Hooks must not automatically modify code, ADRs, or architecture rules. Current hooks are not production-enforced; they serve as integration scaffolding. |
+| Optional hook layer | `hooks/` | Skeleton/reminder placeholders for agent hook integration. Claude hook scaffolds cover `SessionStart`, `PreToolUse`, `PostToolUse`, and `Stop`; Cursor hook scaffolds cover `sessionStart` and `stop`. Hooks do not replace rules; they detect events and point the agent to the required mode or reference. Hooks must not automatically modify code, ADRs, or architecture rules. Current hooks are not production-enforced; they serve as integration scaffolding. |
 
 This separation keeps the skill entry point small while ensuring all rules remain accessible and authoritative in their canonical location.
 
@@ -193,6 +193,10 @@ Architecture governance operates through `docs/spec-docs/architecture/`, `docs/s
 - Placement and architecture reviews in `docs/spec-docs/reviews/` record governance decisions without changing code.
 
 When architecture governance is active, `place` checks proposed module placement before implementation planning, and `verify` checks that code still conforms to declared current or active target architecture constraints.
+
+Architecture verification reports specific violation subtypes instead of generic drift when evidence is available. For example, `verify` can report `[ARCHITECTURE VIOLATION: ARCHITECTURE DRIFT]` when feature-specific policy accumulates in shared utilities despite placement rules assigning that policy to an owning feature module. In strict Adoption Mode or with boundary-focused Addons, severity should reflect the stronger boundary contract.
+
+Completed rebuilds use `adopt` as a finalization step, not as another first-time `init`. When `rebuild/status.md` shows a ready-to-adopt phase and passing verification, `adopt` merges the target Architecture Selection into current architecture, preserves relevant placement rules, updates ADR evidence, marks rebuild completed, and archives target/adoption documents.
 
 ## Standalone and Integrated Workflows
 
@@ -291,6 +295,26 @@ Agents must not guess.
 | Adopt a completed rebuild | `Use $spec-docs adopt to merge the completed target architecture into the current architecture and archive rebuild documents.` |
 | Architecture-guided diagnosis | `Use the spec-docs skill in diagnose mode for this symptom: <symptom>. Identify likely owner, failure boundary, specs/files to inspect, signals to check, and debugging order without claiming root cause prematurely.` |
 
+## Release and Completeness Notes
+
+Version `2.0.0` has local completeness coverage for both the source tree and installed package form. The local suite covers twelve scenarios across all eight modes: `init`, `update`, `verify`, `repair`, `place`, `rebuild`, `adopt`, and `diagnose`.
+
+Coverage highlights:
+
+- source-form and installed-form checks
+- empty-project and existing-project `init`
+- architecture placement and boundary review
+- implementation/spec synchronization
+- fact drift plus architecture violation reporting
+- `[ARCHITECTURE VIOLATION: ARCHITECTURE DRIFT]` for policy moving into the wrong module
+- repair without unauthorized code changes
+- rebuild state tracking and completed-rebuild `adopt` finalization
+- architecture-guided diagnosis
+- Superpowers-present collaboration and no-Spec-Skill fallback reasoning
+- hook static checks, script execution checks, and matcher simulation for Claude and Cursor hook scaffolds; hooks are reminders, not production-enforced automation
+
+The remaining known limitations are deliberate: `greenfield` Adoption Mode semantics still need a product decision, and live protocol-block synchronization is not part of the local static/script/simulation hook suite.
+
 ## Migration from the previous `docs/specs/` layout
 
 Older versions used `docs/specs/` directly. The current workspace layout is `docs/spec-docs/specs/`.
@@ -325,7 +349,13 @@ No compatibility layer is required after migration.
 │       ├── hooks/
 │       │   ├── hooks.json
 │       │   ├── hooks-cursor.json
-│       │   └── run-hook.cmd
+│       │   ├── run-hook.cmd
+│       │   └── scripts/
+│       │       ├── session-start
+│       │       ├── pre-edit-guard
+│       │       ├── pre-bash-guard
+│       │       ├── post-edit-reminder
+│       │       └── stop-verify-reminder
 │       └── templates/
 │           ├── agent-protocol-block.md
 │           ├── specs-readme.md
@@ -353,6 +383,8 @@ No compatibility layer is required after migration.
 │   └── spec-docs.js
 ├── agents/
 │   └── openai.yaml
+├── test-runs/
+│   └── spec-docs-completeness/   # local completeness suite: 12 scenarios, all modes, source + installed checks
 ├── package.json
 ├── README.md
 ├── README.zh-CN.md
