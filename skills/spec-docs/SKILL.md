@@ -107,7 +107,7 @@ docs/spec-docs/
     └── archive/
 ```
 
-Create only directories needed by the current mode and confirmed project reality. Do not create empty speculative child spec folders.
+Create only directories needed by the current mode, project profile, and confirmed project reality. Do not create empty speculative child spec folders. Minimal projects should receive minimal docs; architecture, ADR, rebuild, and child spec directories are created only when evidenced or confirmed.
 
 ## Mode Router
 
@@ -130,7 +130,7 @@ All modes must apply `hard-gates.md`.
 
 ### `init`
 
-Create or repair the initial `docs/spec-docs/` workspace. Classify as existing-implementation or empty-project. For existing-implementation projects, identify the current architecture (Primary Preset, Addons, Adoption Mode) from code and record it in `current-architecture.md`; allow Mixed/Hybrid when no single preset fits. For empty-project projects, record user-confirmed architecture constraints only; do not create fake implementation facts. Existing-implementation init produces a full spec library; empty-project init produces a minimal principles seed only. Must run `verify` before declaring complete. Details in `references/modes.md` and `references/architecture-control.md`.
+Create or repair the initial `docs/spec-docs/` workspace. Classify init as Empty Project, Minimal Existing Project, Standard Existing Project, or Large Project / Phased Init using observable implementation signals. Empty projects produce a minimal principles seed only. Minimal existing projects produce README, constitution, inventory, and project overview without architecture/ADR/rebuild docs or empty child spec folders by default. Standard existing projects produce grounded child specs for observed implementation areas. Large projects may use `PARTIAL INIT` as a non-final state and must not claim final completion until full included-scope coverage is verified. Details in `references/modes.md` and `references/spec-authoring.md`.
 
 ### `update`
 

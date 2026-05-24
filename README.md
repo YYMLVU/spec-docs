@@ -144,6 +144,15 @@ Typical output in a target project:
 
 Create only directories needed by the current mode and confirmed project reality. Empty or speculative child spec folders should not be created.
 
+`init` scales output by project profile:
+
+- **Empty projects** receive only a minimal principle seed; no fake implementation specs or inventory indexes are created.
+- **Minimal existing projects** receive README, constitution, inventory, and project overview; architecture docs, ADRs, rebuild docs, and child spec folders are not created by default.
+- **Standard existing projects** receive grounded child specs only for observed implementation areas.
+- **Large projects** may use phased init with `PARTIAL INIT`; final init completion is not claimed until included-scope coverage is verified.
+
+Existing `docs/spec-docs/` workspaces remain valid. Adaptive profiles guide future `init` behavior and optional cleanup recommendations; they do not require deleting existing specs or architecture docs.
+
 ### Workspace Directories
 
 | Directory | Role |
