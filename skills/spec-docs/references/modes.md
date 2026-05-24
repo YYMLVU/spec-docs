@@ -25,9 +25,34 @@ Use when `docs/spec-docs/` does not exist or the user asks to spec-ify a project
 
 Implementation-relevant files include source code, tests, runtime/config files, schemas/contracts, and public docs that define current behavior. Ignore generated files, build artifacts, vendored dependencies, lock files unless they define runtime behavior, and static assets unless they define behavior or interfaces.
 
-If implementation-relevant files exist, run existing-implementation init. If no implementation-relevant files exist, run empty-project init. If classification is unclear, ask which files are implementation-relevant.
+Classify `init` into one of four project profiles:
 
-### Existing-implementation init
+1. **Empty Project** -- no implementation-relevant files exist.
+2. **Minimal Existing Project** -- implementation files exist, but the project has only a few files, one simple entrypoint or responsibility, and no meaningful module ownership, architecture, data, integration, or public API surface that needs separate specs.
+3. **Standard Existing Project** -- implementation files exist and the project has multiple modules, features, runtime units, interfaces, data models, integrations, or other implementation areas that need grounded child specs.
+4. **Large Project / Phased Init** -- implementation files exist, but a complete high-quality init would be too broad for one reliable pass.
+
+Heuristic anchors, not hard thresholds:
+
+- Minimal usually has one simple entrypoint and no separate public/API/data/integration boundary that would lose precision if summarized in one overview.
+- Standard is favored when the project has multiple implementation areas, multiple public entrypoints, a public API plus data access boundary, external integrations, or enough exported symbols that one overview would become imprecise.
+- Large / Phased is favored when the project has many source areas or the agent would need to choose between shallow full coverage and grounded partial coverage.
+
+Use observable signals first:
+
+- implementation file count;
+- source directory depth;
+- public entrypoints;
+- exported symbols or public interfaces;
+- persistent data models;
+- external integrations;
+- multiple ownership areas or module boundaries;
+- existing architecture docs or ADRs;
+- evidence that one complete init would produce shallow specs.
+
+If no implementation-relevant files exist, run Empty Project init. If implementation files exist but classification is unclear, choose the lightest profile that can accurately describe the implementation, state the uncertainty, and do not create speculative docs.
+
+### Standard Existing Project init
 
 1. Explore code, tests, configs, contracts, docs, and recent history.
 2. Identify tech stack, entrypoints, runtime units, source roots, tests, schemas, external interfaces, integration surfaces, and current architecture indicators.
@@ -41,7 +66,29 @@ If implementation-relevant files exist, run existing-implementation init. If no 
 10. Install the project instruction protocol block.
 11. Run `verify`.
 
-Do not declare existing-implementation `init` complete until `verify` passes and the Code-to-Spec Index covers all included implementation-relevant files.
+Do not declare Standard Existing Project `init` complete until `verify` passes and the Code-to-Spec Index covers all included implementation-relevant files.
+
+### Large Project / Phased Init
+
+Use when a single full `init` would likely exceed reliable context or produce shallow specs.
+
+Phase model:
+
+1. Phase 1: project overview, coverage scope, inventory draft, and source area inventory.
+2. Phase 2: core modules and public interfaces.
+3. Phase 3: runtime, data, integrations, and quality areas.
+4. Phase 4: feature specs and remaining mapped areas.
+5. Phase 5: full verify and documented remaining findings.
+
+Rules:
+
+1. `PARTIAL INIT` is allowed only as a non-final state.
+2. Record `PARTIAL INIT` in `docs/spec-docs/inventory.md` under Coverage Scope as `Init Status: PARTIAL INIT` when inventory exists; if inventory is not created yet, record it in `docs/spec-docs/README.md` until inventory is available.
+3. `PARTIAL INIT` must not claim final init completion.
+4. `PARTIAL INIT` must not claim full included-scope Code-to-Spec coverage.
+5. `PARTIAL INIT` must record the next batch explicitly.
+6. Low-confidence or deferred areas must be marked explicitly instead of represented by shallow specs.
+7. Do not satisfy the final init hard gate until full included-scope coverage is verified.
 
 ### Empty-project init
 
@@ -68,6 +115,30 @@ Conversation flow:
 
 Directory organization principles are constraints, not scaffolding or reserved paths.
 
+### Minimal Existing Project init
+
+Use for tiny existing projects whose implementation can be accurately described by a minimal workspace.
+
+Required outputs:
+
+1. `docs/spec-docs/README.md`.
+2. `docs/spec-docs/constitution.md`.
+3. `docs/spec-docs/inventory.md` with real included/excluded globs and minimal reverse indexes.
+4. `docs/spec-docs/specs/project-overview.spec.md` with current implementation facts.
+5. Project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`.
+
+Rules:
+
+1. Ground facts in code, tests, configs, contracts, and behavior-defining docs.
+2. Map all implementation-relevant files in `inventory.md`, even when they all map to `specs/project-overview.spec.md`.
+3. Do not create child spec directories by default.
+4. Do not create architecture docs, ADRs, or rebuild docs by default.
+5. Create a child spec only when one overview cannot accurately describe the current code.
+6. Record missing architecture evidence as not applicable or `[NEEDS CLARIFICATION: architecture boundaries are not evident from this minimal project]`; do not guess a Primary Preset.
+7. Run the normal `verify` mode with Minimal Existing Project checks before declaring init complete. Minimal-profile verify is not a new mode.
+
+Minimal existing init is a final init profile when its included implementation scope is fully covered by the minimal workspace.
+
 ## `update`
 
 Use when implementation-relevant files changed and specs must stay in sync.
@@ -82,10 +153,11 @@ If an empty-project baseline exists and implementation-relevant files now exist,
 2. Preserve and respect all durable principles in `constitution.md`.
 3. Explore current code, tests, configs, contracts, docs, and recent history.
 4. Replace the minimal overview's no-implementation state with actual project purpose, tech stack, runtime units, entrypoints, architecture, implementation map, call flow, data flow, quality surface, and change boundaries discovered from current implementation.
-5. Create `docs/spec-docs/inventory.md` with real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index.
-6. Create only child spec directories and specs that match real implementation.
-7. Remove empty-project baseline wording after it has been replaced by implementation facts.
-8. Run existing-implementation `verify`.
+5. Classify the resulting implementation as Minimal Existing, Standard Existing, or Large / Phased using the init profile rules.
+6. Create `docs/spec-docs/inventory.md` with real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index appropriate to the selected profile. Minimal Existing Project may map all included source files and high-value symbols to `specs/project-overview.spec.md`.
+7. Create only child spec directories and specs that match real implementation and the selected profile.
+8. Remove empty-project baseline wording after it has been replaced by implementation facts.
+9. Run normal `verify` with the selected profile's init checks.
 
 Do not require a separate command for this transition. Do not discard confirmed principles while absorbing the baseline.
 
