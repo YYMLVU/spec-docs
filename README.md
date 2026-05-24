@@ -314,7 +314,7 @@ Agents must not guess.
 
 > 📦 **Version `2.0.0`** has local completeness coverage for both the source tree and installed package form.
 >
-> The local suite covers twelve scenarios across all eight modes: `init`, `update`, `verify`, `repair`, `place`, `rebuild`, `adopt`, and `diagnose`.
+> The local suite covers fifteen scenarios across all eight modes: `init`, `update`, `verify`, `repair`, `place`, `rebuild`, `adopt`, and `diagnose`.
 
 Coverage highlights:
 
@@ -403,7 +403,7 @@ No compatibility layer is required after migration.
 ├── 📁 agents/
 │   └── openai.yaml
 ├── 📁 test-runs/
-│   └── 📁 spec-docs-completeness/   # local completeness suite: 12 scenarios, all modes, source + installed checks
+│   └── 📁 spec-docs-completeness/   # local completeness suite: 15 scenarios, all modes, source + installed checks
 ├── package.json
 ├── README.md
 ├── README.zh-CN.md
