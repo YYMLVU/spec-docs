@@ -2,7 +2,7 @@
 
 ## Overall Status: PASS_WITH_NOTES
 
-Automated checks passed. The suite now covers twelve scenarios. F-002, F-003, and F-004 are covered by S11, S12, and expanded hook matcher simulation. F-001 and F-005 remain out of scope and non-blocking.
+Automated checks passed. The suite now covers fifteen scenarios. F-002, F-003, and F-004 are covered by S11, S12, and expanded hook matcher simulation. F-001 and F-005 remain out of scope and non-blocking.
 
 ## Scenario Results
 
@@ -20,6 +20,9 @@ Automated checks passed. The suite now covers twelve scenarios. F-002, F-003, an
 | S10 (collaboration -- protocol reasoning) | PASS |
 | S11 (verify -- architecture drift) | PASS_WITH_NOTES |
 | S12 (adopt -- completed rebuild) | PASS |
+| S13 (init -- standard existing project) | PASS |
+| S14 (init -- large project phased) | PASS |
+| S15 (init -- profile boundary) | PASS |
 
 ## Findings
 
@@ -30,6 +33,16 @@ Automated checks passed. The suite now covers twelve scenarios. F-002, F-003, an
 | F-003 | covered | S12 demonstrates completed-rebuild adopt reasoning. |
 | F-004 | covered | Hook simulation explicitly covers clear, compact, and PostToolUse/MultiEdit. |
 | F-005 | remains | Protocol block sync live-test is out of scope. |
+
+## Adaptive Init Profile Coverage
+
+This run now covers four init profiles:
+
+- S1 Empty Project Init: no fake implementation facts, no inventory with fake content, and no Minimal Existing classification when implementation files are absent.
+- S2 Minimal Existing Project Init: minimal implementation docs without architecture/ADR/rebuild/empty category directories by default.
+- S13 Standard Existing Project Init: grounded child specs for observed runtime, route, domain, and integration areas.
+- S14 Large Project Phased Init: `PARTIAL INIT` is allowed only as a non-final state and does not satisfy final included-scope coverage.
+- S15 Init Profile Boundary: classification uses observable complexity signals beyond file count.
 
 ## Coverage Conclusion
 

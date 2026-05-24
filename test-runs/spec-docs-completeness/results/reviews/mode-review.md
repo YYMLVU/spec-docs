@@ -6,7 +6,7 @@ Status: PASS_WITH_NOTES
 
 | Mode | Scenario(s) |
 | --- | --- |
-| init | S1, S2 |
+| init | S1, S2, S13, S14, S15 |
 | place | S3 |
 | update | S4 |
 | verify | S5, S11 |
@@ -20,6 +20,7 @@ Status: PASS_WITH_NOTES
 - All eight modes remain covered.
 - S11 strengthens verify coverage for architecture drift.
 - S12 strengthens adopt coverage for completed-rebuild behavior.
+- Init coverage now includes Empty Project (S1), Minimal Existing Project (S2), Standard Existing Project (S13), Large Project / Phased Init (S14), and Init Profile Boundary (S15). These scenarios verify that init output scales with project complexity, `PARTIAL INIT` does not claim final completion, and classification uses observable complexity signals beyond file count.
 - Remaining notes are F-001 and F-005, which are out of scope for this extension.
 
 ## Mode Responsibility Confusion
