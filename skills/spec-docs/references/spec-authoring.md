@@ -62,6 +62,8 @@ Implementation-relevant files include source code, tests, runtime/config files, 
 
 Create only the documentation artifacts required by confirmed project reality.
 
+Full init profile procedures and classification rules live in `references/modes.md`; this section defines artifact creation constraints only.
+
 - Empty Project: create README, constitution, and empty-project overview only; do not create inventory or fake implementation specs.
 - Minimal Existing Project: create README, constitution, inventory, and project overview; avoid architecture, ADR, rebuild, and empty child spec directories by default.
 - Standard Existing Project: create child specs and child directories only for observed implementation areas.
