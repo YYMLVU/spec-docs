@@ -83,7 +83,7 @@ Phase model:
 Rules:
 
 1. `PARTIAL INIT` is allowed only as a non-final state.
-2. Record `PARTIAL INIT` in `docs/spec-docs/inventory.md` under Coverage Scope as `Init Status: PARTIAL INIT`.
+2. Record `PARTIAL INIT` in `docs/spec-docs/inventory.md` under Coverage Scope as `Init Status: PARTIAL INIT` when inventory exists; if inventory is not created yet, record it in `docs/spec-docs/README.md` until inventory is available.
 3. `PARTIAL INIT` must not claim final init completion.
 4. `PARTIAL INIT` must not claim full included-scope Code-to-Spec coverage.
 5. `PARTIAL INIT` must record the next batch explicitly.
