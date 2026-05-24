@@ -7,8 +7,8 @@ All scenarios require manual review (`yes`). Scenario S10 has no mode assigned b
 
 | Scenario | Type | Modes | Primary Capability | Manual Review Required |
 |---|---|---|---|---|
-| S1 Empty Project Init | fixture | init | empty-project facts + Architecture Selection | yes |
-| S2 Existing Small App Init | fixture-or-real | init | implementation-first coverage | yes |
+| S1 Empty Project Init | fixture | init | empty-project facts + optional confirmed architecture constraints | yes |
+| S2 Minimal Existing Project Init | fixture | init | minimal existing implementation profile | yes |
 | S3 Placement Before Feature Work | fixture | place | Placement & Boundary Review | yes |
 | S4 Implementation Update | fixture | update | affected-spec update | yes |
 | S5 Verify Drift and Architecture Violations | fixture | verify | fact drift + architecture violation subtype | yes |
@@ -19,6 +19,9 @@ All scenarios require manual review (`yes`). Scenario S10 has no mode assigned b
 | S10 Hooks and Skill Collaboration | fixture | (none) | hooks + superpowers/fallback order | yes |
 | S11 Architecture Drift Verify | fixture | verify | architecture drift subtype | yes |
 | S12 True Adopt Completed Rebuild | fixture | adopt | completed rebuild adopt merge/archive | yes |
+| S13 Standard Existing Project Init | fixture | init | standard implementation profile with grounded child specs | yes |
+| S14 Large Project Phased Init | fixture | init | partial init without final completion overclaim | yes |
+| S15 Init Profile Boundary | fixture | init | small file count with public/API/data boundary classification | yes |
 
 ## Mode Coverage
 
@@ -26,7 +29,7 @@ Eight modes from `manifest.json` must each be exercised by at least one scenario
 
 | Mode | Scenario | Responsibility Verification |
 |---|---|---|
-| init | S1, S2 | S1 validates empty-project init (no fake facts, principle seed only). S2 validates existing-implementation init (full spec library, coverage indexes). Neither creates fake implementation facts. |
+| init | S1, S2, S13, S14, S15 | S1 validates empty-project init. S2 validates minimal existing project init. S13 validates standard existing project init. S14 validates large phased init and confirms PARTIAL INIT does not claim final completion. S15 validates that profile classification uses observable complexity signals beyond file count. |
 | place | S3 | Placement & Boundary Review before detailed planning; must include allowed/forbidden dependencies, public contracts, forbidden shortcuts, and failure localization hints. Must not modify code. |
 | update | S4 | Same-change spec sync after implementation-relevant edits; baseline absorption when transitioning from empty-project. Must not silently rewrite architecture rules. |
 | verify | S5, S11 | Fact drift, decision drift, and architecture violation subtype reporting. Severity reflects Adoption Mode and Addons. Must cover all detectable violation types when architecture docs exist. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. |

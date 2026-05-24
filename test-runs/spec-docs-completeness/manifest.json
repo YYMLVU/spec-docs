@@ -19,6 +19,9 @@
     { "id": "s09", "name": "Architecture-Guided Diagnose", "modes": ["diagnose"], "type": "fixture" },
     { "id": "s10", "name": "Hooks and Skill Collaboration", "modes": [], "type": "fixture" },
     { "id": "s11", "name": "Architecture Drift Verify", "modes": ["verify"], "type": "fixture" },
-    { "id": "s12", "name": "True Adopt Completed Rebuild", "modes": ["adopt"], "type": "fixture" }
+    { "id": "s12", "name": "True Adopt Completed Rebuild", "modes": ["adopt"], "type": "fixture" },
+    { "id": "s13", "name": "Standard Existing Project Init", "modes": ["init"], "type": "fixture" },
+    { "id": "s14", "name": "Large Project Phased Init", "modes": ["init"], "type": "fixture" },
+    { "id": "s15", "name": "Init Profile Boundary", "modes": ["init"], "type": "fixture" }
   ]
 }

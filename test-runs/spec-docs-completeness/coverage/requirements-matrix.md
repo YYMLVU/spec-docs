@@ -29,6 +29,10 @@ Requirements focused on correctness, absence of placeholders, and internal consi
 | I4 | Hard gates are referenced but not duplicated; canonical homes indexed in hard-gates.md | Yes | -- | -- | mode-review.md |
 | I5 | Empty-project init produces only principle seed; no fake implementation facts | -- | -- | S1 | mode-review.md |
 | I6 | Existing-implementation init covers all included-scope files in Code-to-Spec Index | -- | -- | S2 | mode-review.md |
+| I6a | Minimal existing project init creates only minimal docs and avoids architecture/ADR/rebuild/empty category directories by default | -- | -- | S2 | mode-review.md |
+| I6b | Standard existing project init creates grounded child specs only for observed implementation areas | -- | -- | S13 | mode-review.md |
+| I6c | Large phased init records PARTIAL INIT and does not claim final included-scope coverage | -- | -- | S14 | mode-review.md |
+| I6d | Init profile classification uses observable complexity signals beyond file count | -- | -- | S15 | mode-review.md |
 | I7 | Update preserves architecture rules silently; architecture weakening requires ADR/confirmation | -- | -- | S4 | architecture-review.md |
 | I8 | Verify reports all detectable violation subtypes when architecture docs exist | -- | -- | S5, S11 | architecture-review.md |
 | I9 | Repair does not modify business code without explicit request | -- | -- | S6 | mode-review.md |
@@ -71,7 +75,7 @@ Requirements related to public README, INSTALL-FOR-AI, and references/ cross-che
 
 | Review Prompt | Covers Requirements | Inputs |
 |---|---|---|
-| mode-review.md | C5, I1, I2, I4, I5, I6, I9, P1 | results/scenario-outputs/, coverage/scenario-matrix.md |
+| mode-review.md | C5, I1, I2, I4, I5, I6, I6a, I6b, I6c, I6d, I9, P1 | results/scenario-outputs/, coverage/scenario-matrix.md |
 | architecture-review.md | C6, I3, I7, I8, I10, I11, G1, G2, G3, G4, G10 | results/scenario-outputs/ S1, S3, S4, S5, S7, S8, S9, S11, S12 |
 | hook-review.md | G5, G6 | results/automated/check-hooks.md, results/automated/simulate-hook-events.md |
 | collaboration-review.md | C7, I12, I13, G7, G8, G9 | results/scenario-outputs/S10, prompts/review/collaboration-review.md, source-under-test/skills/spec-docs/templates/agent-protocol-block.md |
