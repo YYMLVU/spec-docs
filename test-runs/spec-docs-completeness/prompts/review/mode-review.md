@@ -7,8 +7,8 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
 ## Inputs
 
 - `coverage/scenario-matrix.md` -- mode-to-scenario mapping and responsibility verification summary
-- `prompts/scenarios/s01.md` through `prompts/scenarios/s12.md` -- scenario checklists
-- `results/scenario-outputs/s01.md` through `results/scenario-outputs/s12.md` -- scenario execution outputs
+- `prompts/scenarios/s01.md` through `prompts/scenarios/s15.md` -- scenario checklists
+- `results/scenario-outputs/s01.md` through `results/scenario-outputs/s15.md` -- scenario execution outputs
 - `source-under-test/skills/spec-docs/references/modes.md` -- normative mode behavior
 - `source-under-test/skills/spec-docs/references/architecture-control.md` -- architecture mode contracts
 - `source-under-test/skills/spec-docs/references/hard-gates.md` -- hard gate index
@@ -16,10 +16,10 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
 
 ## Review Steps
 
-1. Confirm every scenario output file exists for S01-S12 (or document which are missing).
+1. Confirm every scenario output file exists for S01-S15 (or document which are missing).
 
 2. For each mode, verify the scenario(s) assigned to it exercise the mode properly:
-   - **init** (S1, S2): S1 validates empty-project init produces only principle seed, no fake facts. S2 validates existing-implementation init produces full spec library with coverage indexes.
+   - **init** (S1, S2, S13, S14, S15): S1 validates empty-project init produces only principle seed, no fake facts. S2 validates existing-implementation init produces full spec library with coverage indexes. S13 covers Standard Existing Project Init: grounded child specs for observed runtime, route, domain, and integration areas. S14 covers Large Project / Phased Init: `PARTIAL INIT` is allowed only as a non-final state and does not satisfy final included-scope coverage. S15 covers profile boundary classification beyond file count: classification uses observable complexity signals.
    - **place** (S3): Placement & Boundary Review before detailed planning; includes allowed/forbidden dependencies, public contracts, forbidden shortcuts, failure localization hints; does not modify code.
    - **update** (S4): Same-change spec sync; baseline absorption when transitioning from empty-project; does not silently rewrite architecture rules.
    - **verify** (S5, S11): Fact drift, decision drift, and architecture violation subtype reporting; severity matches Adoption Mode. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities.
@@ -51,7 +51,7 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 
 | Mode | Scenario(s) | Covered | Within Responsibility | Notes |
 |---|---|---|---|---|
-| init | S1, S2 | yes/no | yes/no | |
+| init | S1, S2, S13, S14, S15 | yes/no | yes/no | |
 | place | S3 | yes/no | yes/no | |
 | update | S4 | yes/no | yes/no | |
 | verify | S5, S11 | yes/no | yes/no | |

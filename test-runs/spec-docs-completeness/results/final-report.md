@@ -36,7 +36,7 @@ Automated checks passed. The suite now covers fifteen scenarios. F-002, F-003, a
 
 ## Adaptive Init Profile Coverage
 
-This run now covers four init profiles:
+This run now covers five init profile scenarios:
 
 - S1 Empty Project Init: no fake implementation facts, no inventory with fake content, and no Minimal Existing classification when implementation files are absent.
 - S2 Minimal Existing Project Init: minimal implementation docs without architecture/ADR/rebuild/empty category directories by default.
