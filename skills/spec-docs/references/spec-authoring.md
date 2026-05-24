@@ -58,6 +58,17 @@ Include precision notes for shared functions or risky coupling. Do not index eve
 
 Implementation-relevant files include source code, tests, runtime/config files, schemas/contracts, and public docs that define behavior. Exclude generated files, build artifacts, vendored dependencies, lock files unless they define runtime behavior, and static assets unless they define behavior or interfaces. Actual include/exclude globs belong in `inventory.md`.
 
+## Adaptive Output Rules
+
+Create only the documentation artifacts required by confirmed project reality.
+
+- Empty Project: create README, constitution, and empty-project overview only; do not create inventory or fake implementation specs.
+- Minimal Existing Project: create README, constitution, inventory, and project overview; avoid architecture, ADR, rebuild, and empty child spec directories by default.
+- Standard Existing Project: create child specs and child directories only for observed implementation areas.
+- Large Project / Phased Init: create phase-appropriate artifacts and mark `PARTIAL INIT` until full included-scope coverage is verified.
+
+Do not create architecture docs, ADRs, rebuild docs, or category folders merely because templates exist. Create them only when code evidence, existing docs, or user confirmation requires them.
+
 ## Inventory Rules
 
 `inventory.md` contains coverage scope, spec list, code-to-spec index, task-to-spec map, and symbol-to-spec index. It must not contain planned specs, coverage backlogs, todos, roadmap items, or architecture rules.

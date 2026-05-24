@@ -215,7 +215,7 @@ Hooks must not automatically modify code, create ADRs, weaken architecture rules
 | `references/modes.md` | Detailed mode procedures for init, update, verify, repair, place, rebuild, adopt, diagnose |
 | `references/architecture-control.md` | Architecture Selection, Primary Preset, Addons, Adoption Mode, Boundary Contract, Placement & Boundary Review, Diagnose, Architecture Review Cadence, Architecture Drift, Architecture Hard Gates |
 | `references/source-priority.md` | Conflict handling and priority rules for implementation facts, architecture rules, placement decisions, diagnosis, decision rationale |
-| `references/verification.md` | Verify output status, finding categories, architecture violation subtypes, addon severity mapping, existing-implementation checks, empty-project checks, verification commands |
+| `references/verification.md` | Verify output status, finding categories, architecture violation subtypes, addon severity mapping, profile-specific init checks, architecture checks, verification commands |
 | `references/spec-authoring.md` | Frontmatter schema, spec kinds, shared sections, implementation mapping, coverage rules, inventory rules, template map, module boundary and failure localization |
 | `references/workflow-integration.md` | Detection order, integrated mode, standalone mode |
 | `references/project-instructions.md` | AGENTS.md / CLAUDE.md protocol block target selection, update strategy, protocol expectations |

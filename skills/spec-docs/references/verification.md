@@ -78,7 +78,7 @@ When a rule cannot be confirmed from available evidence, use `[NEEDS CLARIFICATI
 | Performance and Resilience | `RESILIENCE`, `PERFORMANCE BOUNDARY` | `warning` by default; `error` for required resilience boundaries |
 | Architecture Tests | `AUTOMATED ARCHITECTURE TEST REQUIRED` | `warning` when missing; `error` in strict/rebuild mode |
 
-## Existing-implementation Checks
+## Standard Existing Project Checks
 
 - Protocol block exists exactly once in target instruction files.
 - Core files exist.
@@ -95,6 +95,18 @@ When a rule cannot be confirmed from available evidence, use `[NEEDS CLARIFICATI
 - Target architecture rules are checked when rebuild status is active.
 - Paused rebuild reports target gaps as warning/info unless the changed area touches migration scope.
 - Normal verify must not read `docs/spec-docs/rebuild/archive/`.
+
+## Large Project / Phased Init Checks
+
+- Protocol block exists exactly once.
+- Phase-1 artifacts exist: README, constitution, inventory draft or coverage scope, and project overview.
+- `PARTIAL INIT` is clearly recorded in `inventory.md` Coverage Scope as `Init Status: PARTIAL INIT`, or in `README.md` if inventory is not created yet.
+- Output does not claim final init completion.
+- Output does not claim full included-scope Code-to-Spec coverage.
+- Next batch is recorded explicitly.
+- Deferred or low-confidence areas are explicit and concrete.
+- Generated docs contain no template variables, unresolved placeholder markers, or planned behavior.
+- Final init completion remains blocked until full included-scope coverage is verified.
 
 ## Verification Commands
 
@@ -127,3 +139,19 @@ If implementation-relevant files exist while specs are still in empty-project ba
 NOTICE: project has implementation code but specs are still in empty-project baseline mode.
 Recommended action: run spec-docs update to absorb baseline and generate implementation specs.
 ```
+
+## Minimal Existing Project Checks
+
+Minimal Existing Project checks are normal `verify` mode checks scoped to the Minimal Existing Project profile; they are not a new mode.
+
+- Protocol block exists exactly once.
+- Minimal README, constitution, inventory, and project overview exist.
+- Current inspection confirms implementation-relevant files exist.
+- `inventory.md` includes real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index appropriate to the minimal profile.
+- `inventory.md` maps all included implementation-relevant files, even if all mappings point to `specs/project-overview.spec.md`.
+- `specs/project-overview.spec.md` records current implementation facts and maps to actual source files.
+- Architecture docs, ADRs, rebuild docs, and empty child spec directories are absent unless grounded by code evidence or user confirmation.
+- Any child spec that exists has source-backed rationale.
+- Generated docs contain no template variables, unresolved placeholder markers, or planned behavior.
+- `[NEEDS CLARIFICATION: ...]` entries are specific.
+- Missing architecture docs are PASS when no architecture evidence or user-confirmed architecture constraints exist.
