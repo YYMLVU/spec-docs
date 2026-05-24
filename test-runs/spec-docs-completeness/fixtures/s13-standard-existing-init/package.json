@@ -1,0 +1,9 @@
+{
+  "name": "s13-standard-existing-init",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {}
+}
