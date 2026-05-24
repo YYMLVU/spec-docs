@@ -83,7 +83,7 @@ Phase model:
 Rules:
 
 1. `PARTIAL INIT` is allowed only as a non-final state.
-2. Record `PARTIAL INIT` in `docs/spec-docs/inventory.md` under Coverage Scope as `Init Status: PARTIAL INIT` when inventory exists; if inventory is not created yet, record it in `docs/spec-docs/README.md` until inventory is available.
+2. Record `PARTIAL INIT` in `docs/spec-docs/inventory.md` under Coverage Scope as `Init Status: PARTIAL INIT`.
 3. `PARTIAL INIT` must not claim final init completion.
 4. `PARTIAL INIT` must not claim full included-scope Code-to-Spec coverage.
 5. `PARTIAL INIT` must record the next batch explicitly.
@@ -123,7 +123,7 @@ Required outputs:
 
 1. `docs/spec-docs/README.md`.
 2. `docs/spec-docs/constitution.md`.
-3. `docs/spec-docs/inventory.md` with real included/excluded globs and minimal reverse indexes.
+3. `docs/spec-docs/inventory.md` with real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index appropriate to the minimal profile; included files and high-value symbols may map to `specs/project-overview.spec.md`.
 4. `docs/spec-docs/specs/project-overview.spec.md` with current implementation facts.
 5. Project instruction protocol block in `AGENTS.md` and/or `CLAUDE.md`.
 
@@ -134,7 +134,7 @@ Rules:
 3. Do not create child spec directories by default.
 4. Do not create architecture docs, ADRs, or rebuild docs by default.
 5. Create a child spec only when one overview cannot accurately describe the current code.
-6. Record missing architecture evidence as not applicable or `[NEEDS CLARIFICATION: architecture boundaries are not evident from this minimal project]`; do not guess a Primary Preset.
+6. Record missing architecture evidence as not applicable or `[NEEDS CLARIFICATION: architecture boundaries are not evident from this minimal project]`; do not guess a Primary Preset -- minimal projects usually lack enough architecture boundary evidence for a Primary Preset, and if boundaries are evident the project should be classified as Standard instead.
 7. Run the normal `verify` mode with Minimal Existing Project checks before declaring init complete. Minimal-profile verify is not a new mode.
 
 Minimal existing init is a final init profile when its included implementation scope is fully covered by the minimal workspace.
@@ -153,7 +153,7 @@ If an empty-project baseline exists and implementation-relevant files now exist,
 2. Preserve and respect all durable principles in `constitution.md`.
 3. Explore current code, tests, configs, contracts, docs, and recent history.
 4. Replace the minimal overview's no-implementation state with actual project purpose, tech stack, runtime units, entrypoints, architecture, implementation map, call flow, data flow, quality surface, and change boundaries discovered from current implementation.
-5. Classify the resulting implementation as Minimal Existing, Standard Existing, or Large / Phased using the init profile rules.
+5. Classify the resulting implementation into one of the three existing-project profiles -- Minimal Existing, Standard Existing, or Large / Phased -- because implementation files now exist.
 6. Create `docs/spec-docs/inventory.md` with real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index appropriate to the selected profile. Minimal Existing Project may map all included source files and high-value symbols to `specs/project-overview.spec.md`.
 7. Create only child spec directories and specs that match real implementation and the selected profile.
 8. Remove empty-project baseline wording after it has been replaced by implementation facts.
