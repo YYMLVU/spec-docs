@@ -151,7 +151,7 @@ Create only directories needed by the current mode and confirmed project reality
 - **Standard existing projects** receive grounded child specs only for observed implementation areas.
 - **Large projects** may use phased init with `PARTIAL INIT`; final init completion is not claimed until included-scope coverage is verified.
 
-Existing `docs/spec-docs/` workspaces remain valid. Adaptive profiles guide future `init` behavior and optional cleanup recommendations; they do not require deleting existing specs or architecture docs.
+Existing `docs/spec-docs/` workspaces remain valid. Adaptive profiles guide future `init` behavior; they do not require deleting existing specs or architecture docs.
 
 ### Workspace Directories
 
@@ -182,7 +182,11 @@ For empty project directories, `init` creates a minimal project-principles seed 
 
 ### Existing implementation behavior
 
-For existing-implementation projects, `init` is not complete until the Code-to-Spec Index covers all included implementation-relevant files and the protocol block is installed or updated in `AGENTS.md` and/or `CLAUDE.md`.
+For existing-implementation projects, `init` completion depends on the adaptive profile:
+
+- **Minimal Existing Project:** `init` is complete when the minimal workspace covers included implementation files through inventory and project overview.
+- **Standard Existing Project:** `init` is complete when the Code-to-Spec Index covers all included implementation-relevant files.
+- **Large Project / Phased Init:** may use `PARTIAL INIT`, which is not final completion; final completion still requires included-scope coverage verification.
 
 ## 🏗️ Architecture Governance
 
