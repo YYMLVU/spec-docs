@@ -1,9 +1,9 @@
 {
   "name": "spec-docs",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "AI skill for implementation-first specs and optional architecture governance",
   "bin": {
-    "spec-docs": "./bin/spec-docs.js"
+    "spec-docs": "bin/spec-docs.js"
   },
   "scripts": {
     "test": "node --check bin/spec-docs.js && ROOT=$PWD; tmp=$(mktemp -d); (cd \"$tmp\" && node \"$ROOT/bin/spec-docs.js\" >/dev/null); test -f \"$tmp/.claude/skills/spec-docs/SKILL.md\"; test -f \"$tmp/.claude/skills/spec-docs/references/modes.md\"; test -f \"$tmp/.claude/skills/spec-docs/references/hooks.md\"; test -f \"$tmp/.claude/skills/spec-docs/templates/diagnosis.md\"; test -f \"$tmp/.claude/skills/spec-docs/hooks/hooks.json\"; test -f \"$tmp/.claude/skills/spec-docs/hooks/scripts/pre-edit-guard\"; test -f \"$tmp/.claude/skills/spec-docs/hooks/scripts/post-edit-reminder\"; test -f \"$tmp/.claude/skills/spec-docs/hooks/scripts/pre-bash-guard\"; rm -rf \"$tmp\""
@@ -23,6 +23,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YYMLVU/spec-docs.git"
+    "url": "git+https://github.com/YYMLVU/spec-docs.git"
   }
 }

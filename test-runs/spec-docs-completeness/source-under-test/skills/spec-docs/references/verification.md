@@ -78,36 +78,18 @@ When a rule cannot be confirmed from available evidence, use `[NEEDS CLARIFICATI
 | Performance and Resilience | `RESILIENCE`, `PERFORMANCE BOUNDARY` | `warning` by default; `error` for required resilience boundaries |
 | Architecture Tests | `AUTOMATED ARCHITECTURE TEST REQUIRED` | `warning` when missing; `error` in strict/rebuild mode |
 
-## Existing-implementation Checks
+## Profile Check Selection
 
-- Protocol block exists exactly once in target instruction files.
-- Core files exist.
-- Core files contain required structures: README has reading order and maintenance workflow; constitution has source priority, coverage principle, conflict handling, and quality standard; inventory has Coverage Scope, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index.
-- Every `.spec.md` has required frontmatter.
-- Source paths/globs and related specs resolve.
-- `inventory.md` includes every spec.
-- Code-to-Spec Index covers included implementation-relevant files.
-- Symbol-to-Spec Index covers key entrypoints, public APIs, exported symbols, schemas, jobs, commands, and cross-module functions.
-- README, constitution, inventory, specs, architecture docs, and ADRs do not contradict each other.
-- Generated docs contain no `{{template_variables}}`, `TODO`, `TBD`, or planned behavior.
-- `[NEEDS CLARIFICATION: ...]` entries are specific.
-- Current architecture rules are checked when architecture docs exist.
-- Target architecture rules are checked when rebuild status is active.
-- Paused rebuild reports target gaps as warning/info unless the changed area touches migration scope.
-- Normal verify must not read `docs/spec-docs/rebuild/archive/`.
+Apply the check set matching the project's init profile. Profile classification follows `references/modes.md` init Classification rules.
 
-## Verification Commands
+If the profile is not recorded, infer the check set from current evidence:
 
-Use repo-appropriate checks. Common commands:
+- no implementation-relevant files: Empty-project Checks;
+- implementation files exist, minimal workspace exists, and no grounded child specs are needed: Minimal Existing Project Checks;
+- grounded child specs or multiple implementation areas exist: Standard Existing Project Checks;
+- `Init Status: PARTIAL INIT` is recorded: Large Project / Phased Init Checks.
 
-```bash
-rg --files docs/spec-docs
-rg "\{\{[^}]+\}\}|\b(TB[D]|TO[D]O)\b" docs/spec-docs
-rg "^---$|^type: implementation-spec|^spec_kind:|^verified_commit:|^## Implementation Map|^## Update Rules" docs/spec-docs
-git diff --check -- docs/spec-docs AGENTS.md CLAUDE.md
-```
-
-Also verify globs and coverage by inspecting the project; do not rely only on text search.
+When evidence is ambiguous, report the ambiguity instead of silently choosing a heavier or lighter check set.
 
 ## Empty-project Checks
 
@@ -127,3 +109,63 @@ If implementation-relevant files exist while specs are still in empty-project ba
 NOTICE: project has implementation code but specs are still in empty-project baseline mode.
 Recommended action: run spec-docs update to absorb baseline and generate implementation specs.
 ```
+
+## Minimal Existing Project Checks
+
+Minimal Existing Project checks are normal `verify` mode checks scoped to the Minimal Existing Project profile; they are not a new mode.
+
+- Protocol block exists exactly once.
+- Minimal README, constitution, inventory, and project overview exist.
+- Current inspection confirms implementation-relevant files exist.
+- `inventory.md` includes real included/excluded globs, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index appropriate to the minimal profile.
+- `inventory.md` maps all included implementation-relevant files, even if all mappings point to `specs/project-overview.spec.md`.
+- `specs/project-overview.spec.md` records current implementation facts and maps to actual source files.
+- Every `.spec.md` has required frontmatter.
+- Architecture docs, ADRs, rebuild docs, and empty child spec directories are absent unless grounded by code evidence or user confirmation.
+- Any child spec that exists has source-backed rationale.
+- Generated docs contain no `{{template_variables}}`, `TODO`, `TBD`, or planned behavior.
+- `[NEEDS CLARIFICATION: ...]` entries are specific.
+- Missing architecture docs are PASS when no architecture evidence or user-confirmed architecture constraints exist.
+
+## Standard Existing Project Checks
+
+- Protocol block exists exactly once in target instruction files.
+- Core files exist.
+- Core files contain required structures: README has reading order and maintenance workflow; constitution has source priority, coverage principle, conflict handling, and quality standard; inventory has Coverage Scope, Spec List, Code-to-Spec Index, Task-to-Spec Map, and Symbol-to-Spec Index.
+- Every `.spec.md` has required frontmatter.
+- Source paths/globs and related specs resolve.
+- `inventory.md` includes every spec.
+- Code-to-Spec Index covers included implementation-relevant files.
+- Symbol-to-Spec Index covers key entrypoints, public APIs, exported symbols, schemas, jobs, commands, and cross-module functions.
+- README, constitution, inventory, specs, architecture docs, and ADRs do not contradict each other.
+- Generated docs contain no `{{template_variables}}`, `TODO`, `TBD`, or planned behavior.
+- `[NEEDS CLARIFICATION: ...]` entries are specific.
+- Current architecture rules are checked when architecture docs exist.
+- Target architecture rules are checked when rebuild status is active.
+- Paused rebuild reports target gaps as warning/info unless the changed area touches migration scope.
+- Normal verify must not read `docs/spec-docs/rebuild/archive/`.
+
+## Large Project / Phased Init Checks
+
+- Protocol block exists exactly once.
+- Phase-1 artifacts exist: README, constitution, inventory draft or coverage scope, and project overview.
+- `PARTIAL INIT` is clearly recorded in `inventory.md` Coverage Scope as `Init Status: PARTIAL INIT`, or in `README.md` if inventory is not created yet.
+- Output does not claim final init completion.
+- Output does not claim full included-scope Code-to-Spec coverage.
+- Next batch is recorded explicitly.
+- Deferred or low-confidence areas are explicit and concrete.
+- Generated docs contain no `{{template_variables}}`, `TODO`, `TBD`, or planned behavior.
+- Final init completion remains blocked until full included-scope coverage is verified.
+
+## Verification Commands
+
+Use repo-appropriate checks. Common commands:
+
+```bash
+rg --files docs/spec-docs
+rg "\{\{[^}]+\}\}|\b(TB[D]|TO[D]O)\b" docs/spec-docs
+rg "^---$|^type: implementation-spec|^spec_kind:|^verified_commit:|^## Implementation Map|^## Update Rules" docs/spec-docs
+git diff --check -- docs/spec-docs AGENTS.md CLAUDE.md
+```
+
+Also verify globs and coverage by inspecting the project; do not rely only on text search.
