@@ -9,7 +9,7 @@
   "modes": ["init", "update", "verify", "repair", "place", "rebuild", "adopt", "diagnose"],
   "scenarios": [
     { "id": "s01", "name": "Empty Project Init", "modes": ["init"], "type": "fixture" },
-    { "id": "s02", "name": "Existing Small App Init", "modes": ["init"], "type": "fixture-or-real" },
+    { "id": "s02", "name": "Minimal Existing Project Init", "modes": ["init"], "type": "fixture" },
     { "id": "s03", "name": "Placement Before Feature Work", "modes": ["place"], "type": "fixture" },
     { "id": "s04", "name": "Implementation Update", "modes": ["update"], "type": "fixture" },
     { "id": "s05", "name": "Verify Drift and Architecture Violations", "modes": ["verify"], "type": "fixture" },

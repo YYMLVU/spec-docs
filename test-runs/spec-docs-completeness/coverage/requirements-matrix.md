@@ -28,7 +28,7 @@ Requirements focused on correctness, absence of placeholders, and internal consi
 | I3 | Implementation facts recorded as-is; code outranks docs (source priority respected) | -- | -- | S4, S5, S6 | architecture-review.md |
 | I4 | Hard gates are referenced but not duplicated; canonical homes indexed in hard-gates.md | Yes | -- | -- | mode-review.md |
 | I5 | Empty-project init produces only principle seed; no fake implementation facts | -- | -- | S1 | mode-review.md |
-| I6 | Existing-implementation init covers all included-scope files in Code-to-Spec Index | -- | -- | S2 | mode-review.md |
+| I6 | Standard existing project init covers all included-scope files in Code-to-Spec Index | -- | -- | S13 | mode-review.md |
 | I6a | Minimal existing project init creates only minimal docs and avoids architecture/ADR/rebuild/empty category directories by default | -- | -- | S2 | mode-review.md |
 | I6b | Standard existing project init creates grounded child specs only for observed implementation areas | -- | -- | S13 | mode-review.md |
 | I6c | Large phased init records PARTIAL INIT and does not claim final included-scope coverage | -- | -- | S14 | mode-review.md |
