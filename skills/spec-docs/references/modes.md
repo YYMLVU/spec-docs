@@ -181,6 +181,8 @@ Higher-level signals override lower-level labels. A one-file change is not Level
 
 If non-architecture signals are ambiguous, choose the lightest safe level and state the uncertainty. If architecture risk is ambiguous, route to Level 4 unless current architecture references clearly show that no boundary, ownership, dependency-direction, ADR, or rebuild rule is implicated.
 
+**General frontmatter rule:** Any level that updates a spec must update affected frontmatter fields (`verified_commit`, `verified_date`, `source_files`, `symbols`, `tech_stack`, `related_specs`) as appropriate for the change scope.
+
 #### Level 0: No Spec Action
 
 Use when the change does not affect runtime behavior, public contracts, architecture boundaries, verification points, or implementation mappings.
@@ -259,7 +261,7 @@ Required behavior:
 
 - Update affected specs only.
 - Update affected inventory rows only if file mappings, symbol mappings, task mappings, or spec links changed.
-- Run a targeted light check.
+- Run a targeted light check following `references/verification.md` targeted light check rules.
 - Report the check as targeted; do not claim full `verify` success.
 
 #### Level 3: Full Update + Full Verify
