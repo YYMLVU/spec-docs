@@ -134,11 +134,11 @@ Create or repair the initial `docs/spec-docs/` workspace. Classify init as Empty
 
 ### `update`
 
-Synchronize implementation specs and inventory after implementation-relevant changes. Same-change spec maintenance is required; "docs can wait" is not accepted. Must not silently rewrite architecture rules. Includes baseline absorption when transitioning from empty-project to real implementation. Details in `references/modes.md`.
+Synchronize implementation specs and inventory after implementation-relevant changes using Level 0-4 impact routing. Same-change spec maintenance is required when behavior, contracts, mappings, or architecture-relevant facts changed; Level 0 changes satisfy the gate by stating a no-update reason. Level 1 updates one mapped spec only, Level 2 uses targeted light check, Level 3 uses full verify, and Level 4 reports architecture risk and recommends `place`, `repair`, `rebuild`, or `adopt`. Must not silently rewrite architecture rules. Includes baseline absorption when transitioning from empty-project to real implementation. Details in `references/modes.md`.
 
 ### `verify`
 
-Check facts, architecture, decisions, references, and indexes before declaring `init`, `update`, `repair`, or adoption complete. Output PASS / PASS WITH WARNINGS / FAIL. Findings use `[FACT DRIFT]`, `[ARCHITECTURE VIOLATION: <subtype>]`, and `[DECISION DRIFT]`. Each architecture violation must include: observed issue, expected architecture behavior, recommended action, evidence, and source documents checked. Severity reflects Adoption Mode and enabled Addons; verify reports detectable violations and is honest about manual review needs. Subtype list and severity mapping in `references/verification.md`.
+Check facts, architecture, decisions, references, and indexes with full verify or targeted light check depending on impact level. Output PASS / PASS WITH WARNINGS / FAIL. Findings use `[FACT DRIFT]`, `[ARCHITECTURE VIOLATION: <subtype>]`, and `[DECISION DRIFT]`. Each architecture violation must include: observed issue, expected architecture behavior, recommended action, evidence, and source documents checked. Severity reflects Adoption Mode and enabled Addons; verify reports detectable violations and is honest about manual review needs. Subtype list and severity mapping in `references/verification.md`.
 
 ### `repair`
 
@@ -174,7 +174,7 @@ These gates are non-negotiable. Additional mode-specific and architecture-specif
 
 1. No writing specs before exploring the current project.
 2. No final `init` completion until full included-scope coverage is verified.
-3. No implementation-relevant code completion claim until affected specs are updated or a no-update reason is stated.
+3. No implementation-relevant completion claim until impact level is handled: no-update reason for Level 0, affected spec update for Level 1, targeted light check for Level 2, or full verify/escalation for Level 3/4.
 4. No `verify` success claim without checking protocol, core files, frontmatter, references, coverage, content, and index consistency.
 5. No code modifications during `repair` without explicit user approval.
 6. Architecture rules must not be weakened without explicit user confirmation or ADR.
@@ -204,7 +204,7 @@ Hooks help enforce when it is required.
 
 Behavior levels: `info` (reminder), `warning` (missing step, continue), `block` (hard gate violation).
 
-Block candidates: repair edits business code without request; update silently weakens architecture rules; architecture rules weakened without ADR/confirmation; completion claimed without update/verify after implementation-relevant changes.
+Block candidates: repair edits business code without request; update silently weakens architecture rules; architecture rules weakened without ADR/confirmation; completion claimed without impact-appropriate spec action (level-specific criteria in references/hooks.md and references/modes.md) after implementation-relevant changes.
 
 Hooks must not automatically modify code, create ADRs, weaken architecture rules, generate future plans, or over-block normal read-only work. Details in `references/hooks.md`.
 
