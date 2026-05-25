@@ -20,7 +20,7 @@ Hooks detect events and point agents to required modes/references.
 - `PreToolUse` for edit/write tools: remind `place` before non-trivial implementation changes and required spec reads.
 - `PostToolUse` for edit/write tools: remind `update` after implementation-relevant changes.
 - `PreToolUse` for shell commands: warn on risky commands and remind update/verify around tests/builds when code changed.
-- `Stop` or response completion: remind or block completion if implementation-relevant changes lack update/verify.
+- `Stop` or response completion: remind or block completion if implementation-relevant changes lack impact-appropriate spec action.
 - Protocol block synchronization: remind agents to use `references/project-instructions.md` and `templates/agent-protocol-block.md` when `AGENTS.md` or `CLAUDE.md` is missing, duplicated, or stale.
 
 ## Behavior Levels
@@ -34,7 +34,9 @@ Hooks detect events and point agents to required modes/references.
 - Repair mode tries to edit business code without explicit request.
 - Update silently weakens architecture rules.
 - Architecture rules are weakened without ADR or user confirmation.
-- Agent claims completion after implementation-relevant changes without update/verify.
+- Agent claims completion after implementation-relevant changes without impact-appropriate spec action: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, or Level 3/4 full verify/escalation.
+
+Hooks are impact-aware reminders. They must not block merely because full verify was skipped for Level 0, Level 1, or Level 2 when the agent stated the impact level and completed the required action for that level. They may warn when the impact level is unstated or classification evidence is missing.
 
 ## Safety Boundaries
 
