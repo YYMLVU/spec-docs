@@ -12,7 +12,7 @@ Output PASS, PASS WITH WARNINGS, or FAIL. If FAIL, list affected files and wheth
 
 ## Targeted Light Check
 
-A targeted light check is a scoped verification variant for Level 2 update routing. It is not a full `verify` result and must not be reported as full `verify` PASS.
+A targeted light check is a scoped verification variant for Level 2 update routing. It is not a full `verify` result and must not be reported as full `verify` PASS. The human-readable term "targeted light check" corresponds to output scope token `targeted-check`.
 
 Use targeted light check only when `references/modes.md` classifies the change as Level 2.
 
