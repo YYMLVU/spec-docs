@@ -10,6 +10,38 @@ This file is the canonical home for verify rules.
 
 Output PASS, PASS WITH WARNINGS, or FAIL. If FAIL, list affected files and whether the next mode should be `update` or `repair`.
 
+## Targeted Light Check
+
+A targeted light check is a scoped verification variant for Level 2 update routing. It is not a full `verify` result and must not be reported as full `verify` PASS.
+
+Use targeted light check only when `references/modes.md` classifies the change as Level 2.
+
+Output format:
+
+```text
+Status: PASS | PASS WITH WARNINGS | FAIL
+Scope: targeted-check
+Checked specs: <list>
+Checked inventory rows: <list or none>
+Changed implementation evidence checked: <paths or symbols>
+Findings: <[FACT DRIFT] / [ARCHITECTURE VIOLATION] / [DECISION DRIFT] if any>
+Warnings: <non-blocking uncertainty, if any>
+Recommended next action: <none, update specific file, escalate, or run full verify>
+```
+
+Required checks:
+
+- Changed spec frontmatter is valid.
+- Referenced source paths still exist.
+- Changed spec sections contain no `{{template_variables}}`, `TBD`, or `TODO`.
+- Affected inventory mappings still point to existing specs and files.
+- Changed spec sections accurately describe the changed implementation behavior, edge case, contract, or verification point.
+- Architecture files and accepted ADRs were not modified unexpectedly, checked by changed-path inspection rather than broad architecture review.
+
+A targeted-check `FAIL` follows normal verify failure semantics for the checked scope. A targeted-check `PASS` confirms only the targeted scope.
+
+Full `verify` remains required for Level 3, Level 4 architecture-current claims, final init completion, repair/adopt/rebuild completion, release-level freshness claims, and explicit user request.
+
 ## Finding Categories
 
 - `[FACT DRIFT]`: code and implementation specs disagree.
