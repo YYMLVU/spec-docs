@@ -22,6 +22,11 @@
     { "id": "s12", "name": "True Adopt Completed Rebuild", "modes": ["adopt"], "type": "fixture" },
     { "id": "s13", "name": "Standard Existing Project Init", "modes": ["init"], "type": "fixture" },
     { "id": "s14", "name": "Large Project Phased Init", "modes": ["init"], "type": "fixture" },
-    { "id": "s15", "name": "Init Profile Boundary", "modes": ["init"], "type": "fixture" }
+    { "id": "s15", "name": "Init Profile Boundary", "modes": ["init"], "type": "fixture" },
+    { "id": "s16", "name": "Level 0 No Spec Action", "modes": ["update"], "type": "fixture" },
+    { "id": "s17", "name": "Level 1 Single-Spec Touch", "modes": ["update"], "type": "fixture" },
+    { "id": "s18", "name": "Level 2 Targeted Light Check", "modes": ["update"], "type": "fixture" },
+    { "id": "s19", "name": "Level 3 Full Update and Full Verify", "modes": ["update", "verify"], "type": "fixture" },
+    { "id": "s20", "name": "Level 4 Architecture-Risk Escalation", "modes": ["update", "place", "repair", "rebuild", "adopt", "verify"], "type": "fixture" }
   ]
 }

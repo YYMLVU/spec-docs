@@ -22,6 +22,11 @@ All scenarios require manual review (`yes`). Scenario S10 has no mode assigned b
 | S13 Standard Existing Project Init | fixture | init | standard implementation profile with grounded child specs | yes |
 | S14 Large Project Phased Init | fixture | init | partial init without final completion overclaim | yes |
 | S15 Init Profile Boundary | fixture | init | small file count with public/API/data boundary classification | yes |
+| S16 Level 0 No Spec Action | fixture | update | no spec action for non-behavior/non-mapping changes | yes |
+| S17 Level 1 Single-Spec Touch | fixture | update | one mapped spec update without full verify | yes |
+| S18 Level 2 Targeted Light Check | fixture | update | localized contract/mapping update with targeted-check output | yes |
+| S19 Level 3 Full Update and Full Verify | fixture | update, verify | broad multi-area update with full verify | yes |
+| S20 Level 4 Architecture-Risk Escalation | fixture | update, place, repair, rebuild, adopt, verify | architecture-risk update escalation without legalizing drift | yes |
 
 ## Mode Coverage
 
@@ -31,8 +36,8 @@ Eight modes from `manifest.json` must each be exercised by at least one scenario
 |---|---|---|
 | init | S1, S2, S13, S14, S15 | S1 validates empty-project init. S2 validates minimal existing project init. S13 validates standard existing project init. S14 validates large phased init and confirms PARTIAL INIT does not claim final completion. S15 validates that profile classification uses observable complexity signals beyond file count. |
 | place | S3 | Placement & Boundary Review before detailed planning; must include allowed/forbidden dependencies, public contracts, forbidden shortcuts, and failure localization hints. Must not modify code. |
-| update | S4 | Same-change spec sync after implementation-relevant edits; baseline absorption when transitioning from empty-project. Must not silently rewrite architecture rules. |
-| verify | S5, S11 | Fact drift, decision drift, and architecture violation subtype reporting. Severity reflects Adoption Mode and Addons. Must cover all detectable violation types when architecture docs exist. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. |
+| update | S4, S16, S17, S18, S19, S20 | Same-change spec sync after implementation-relevant edits using Level 0-4 impact routing. S4/S18 validate localized Level 2 targeted light check. S16 validates no-action Level 0. S17 validates one-spec Level 1. S19 validates broad Level 3 full verify. S20 validates Level 4 escalation and no silent architecture rule rewrite. |
+| verify | S5, S11, S19, S20 | Fact drift, decision drift, and architecture violation subtype reporting. Severity reflects Adoption Mode and Addons. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. S19 verifies full verify is required for Level 3 broad updates. S20 verifies full verify is required before architecture-current Level 4 claims. |
 | repair | S6 | Doc-only alignment with current implementation; no business-code modifications. Architecture repair requires explicit user confirmation or ADR. |
 | rebuild | S7 | Rebuild mode determined by `rebuild/status.md`, not by target file existence. Must select target preset, addons, adoption mode, migration strategy. |
 | adopt | S8, S12 | Gradual adoption through `init` for first-time projects; target-architecture merge when rebuild is complete. Must verify code matches target rules before merging. S12 verifies completed-rebuild adopt behavior: read rebuild status, verify target/code alignment, merge target into current, archive target docs, and mark rebuild completed. |
@@ -64,4 +69,4 @@ Five skeleton hook scripts are declared in the hooks directory. The hook layer i
 |---|---|---|
 | info | Routine reminders (session-start, post-edit-reminder, pre-edit-guard, pre-bash-guard) | S10 |
 | warning | Missing spec-docs step, continue | S10 |
-| block | Explicit hard-gate violations (repair edits business code without request, update silently weakens architecture rules, architecture rules weakened without ADR/confirmation, completion claimed without update/verify) | S10 |
+| block | Explicit hard gate violations (repair edits business code without request, update silently weakens architecture rules, architecture rules weakened without ADR/confirmation, completion claimed without impact-appropriate spec action) | S10, S16, S17, S18, S19, S20 |

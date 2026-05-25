@@ -33,13 +33,21 @@ Requirements focused on correctness, absence of placeholders, and internal consi
 | I6b | Standard existing project init creates grounded child specs only for observed implementation areas | -- | -- | S13 | mode-review.md |
 | I6c | Large phased init records PARTIAL INIT and does not claim final included-scope coverage | -- | -- | S14 | mode-review.md |
 | I6d | Init profile classification uses observable complexity signals beyond file count | -- | -- | S15 | mode-review.md |
-| I7 | Update preserves architecture rules silently; architecture weakening requires ADR/confirmation | -- | -- | S4 | architecture-review.md |
+| I7 | Impact-aware update preserves architecture rules; architecture weakening requires ADR/confirmation and Level 4 escalation | -- | -- | S4, S20 | architecture-review.md |
 | I8 | Verify reports all detectable violation subtypes when architecture docs exist | -- | -- | S5, S11 | architecture-review.md |
 | I9 | Repair does not modify business code without explicit request | -- | -- | S6 | mode-review.md |
 | I10 | Rebuild status is the single source of truth for rebuild mode (not target file existence) | -- | -- | S7 | architecture-review.md |
 | I11 | Diagnose follows architecture boundaries and does not claim root cause without evidence | -- | -- | S9 | architecture-review.md |
 | I12 | Known-workflow detection order is explicit and preserved (Superpowers, OpenSpec, Spec-Kit, then ask) | -- | -- | S10 | collaboration-review.md |
 | I13 | Standalone Mode stays lightweight; does not become roadmap or backlog system | -- | -- | S10 | collaboration-review.md |
+| I14 | Level 0 changes require no spec update and no verify claim when no behavior, contract, architecture, verification, or mapping signal changed | -- | -- | S16 | mode-review.md |
+| I15 | Level 1 changes update only one mapped spec and do not run full verify | -- | -- | S17 | mode-review.md |
+| I16 | Level 2 changes update only affected specs/inventory rows and use targeted light check without claiming full verify PASS | -- | -- | S4, S18 | mode-review.md |
+| I17 | Level 3 broad updates run full verify before broad currentness or release freshness is claimed | -- | -- | S19 | mode-review.md |
+| I18 | Level 4 architecture-risk changes escalate and do not ordinary-update architecture rules or accepted ADRs | -- | -- | S20 | architecture-review.md |
+| I19 | Higher-level signals override lower-level labels, including public contract, inventory mapping, layout, and architecture-risk signals | -- | -- | S18, S20 | mode-review.md |
+| I20 | Hooks and hard gates are impact-aware and do not require full verify for Level 0 through Level 2 | -- | -- | S10, S16, S17, S18 | hook-review.md |
+| I21 | Mid-update discovery of architecture risk reclassifies a localized update to Level 4 | -- | -- | S20 | architecture-review.md |
 
 ## Gap Closure: Coverage of Previously Untested Paths
 
@@ -75,7 +83,7 @@ Requirements related to public README, INSTALL-FOR-AI, and references/ cross-che
 
 | Review Prompt | Covers Requirements | Inputs |
 |---|---|---|
-| mode-review.md | C5, I1, I2, I4, I5, I6, I6a, I6b, I6c, I6d, I9, P1 | results/scenario-outputs/, coverage/scenario-matrix.md |
-| architecture-review.md | C6, I3, I7, I8, I10, I11, G1, G2, G3, G4, G10 | results/scenario-outputs/ S1, S3, S4, S5, S7, S8, S9, S11, S12 |
-| hook-review.md | G5, G6 | results/automated/check-hooks.md, results/automated/simulate-hook-events.md |
+| mode-review.md | C5, I1, I2, I4, I5, I6, I6a, I6b, I6c, I6d, I9, I14, I15, I16, I17, I19, P1 | results/scenario-outputs/, coverage/scenario-matrix.md |
+| architecture-review.md | C6, I3, I7, I8, I10, I11, I18, I21, G1, G2, G3, G4, G10 | results/scenario-outputs/ S1, S3, S4, S5, S7, S8, S9, S11, S12, S20 |
+| hook-review.md | G5, G6, I20 | results/automated/check-hooks.md, results/automated/simulate-hook-events.md |
 | collaboration-review.md | C7, I12, I13, G7, G8, G9 | results/scenario-outputs/S10, prompts/review/collaboration-review.md, source-under-test/skills/spec-docs/templates/agent-protocol-block.md |
