@@ -97,9 +97,22 @@ From `references/hooks.md`, verify the declared block candidates are:
 - Repair mode tries to edit business code without explicit request.
 - Update silently weakens architecture rules.
 - Architecture rules are weakened without ADR or user confirmation.
-- Agent claims completion after implementation-relevant changes without update/verify.
+- Agent claims completion after implementation-relevant changes without impact-appropriate spec action.
 
 Are these block candidates the only ones that would trigger `block` level behavior? Are there no extra block conditions invented in the hooks?
+
+### 6a. Impact-Aware Hook Behavior
+
+From `references/hooks.md`, verify that hooks are impact-aware:
+
+- Hooks must not block merely because full verify was skipped for Level 0, Level 1, or Level 2 when the agent stated the impact level and completed the required action for that level.
+- Level 0 satisfies the completion gate when the agent states the no-update reason.
+- Level 1 satisfies the completion gate when the mapped spec is updated or a specific no-update reason is stated for that mapped spec.
+- Level 2 satisfies the completion gate with affected spec/inventory updates plus targeted light check.
+- Level 3 and Level 4 still require full verify before broad currentness, release freshness, or architecture-current claims.
+- Hooks may warn when impact level is unstated or classification evidence is missing.
+
+Do scenarios S16-S18 cover the no-full-verify requirement for Level 0 through Level 2?
 
 ### 7. Safety Boundaries
 

@@ -8,8 +8,8 @@ Status: PASS_WITH_NOTES
 | --- | --- |
 | init | S1, S2, S13, S14, S15 |
 | place | S3 |
-| update | S4 |
-| verify | S5, S11 |
+| update | S4, S16, S17, S18, S19, S20 |
+| verify | S5, S11, S19, S20 |
 | repair | S6 |
 | rebuild | S7 |
 | adopt | S8, S12 |
@@ -30,6 +30,7 @@ None detected.
 - S1/S2 `init` does not perform placement or update work.
 - S3 `place` does not create implementation specs or modify code.
 - S4 `update` does not silently rewrite architecture rules.
+- Update coverage now includes Level 0 no-action, Level 1 single-spec touch, Level 2 targeted light check, Level 3 full verify, and Level 4 architecture-risk escalation. S4 remains the localized implementation update scenario and now validates Level 2 behavior instead of unconditional full verify.
 - S5 `verify` reports drift/violations without repairing.
 - S6 `repair` does not modify business code.
 - S7 `rebuild` uses `rebuild/status.md` as authoritative state.

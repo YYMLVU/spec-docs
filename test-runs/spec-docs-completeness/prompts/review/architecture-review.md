@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Review scenario outputs S1, S3, S4, S5, S7, S8, S9, S11, and S12 against the architecture governance layer defined in `references/architecture-control.md` and `SKILL.md`. Evaluate whether the six architecture control responsibilities are correctly exercised by their respective scenarios, and whether architecture gates are respected.
+Review scenario outputs S1, S3, S4, S5, S7, S8, S9, S11, S12, and S20 against the architecture governance layer defined in `references/architecture-control.md` and `SKILL.md`. Evaluate whether the six architecture control responsibilities are correctly exercised by their respective scenarios, and whether architecture gates are respected.
 
 ## Architecture Control Layer Responsibilities
 
@@ -14,6 +14,7 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 | Placement | S3 | Feature intent, ownership, layer placement, allowed/forbidden dependencies, required public contracts, forbidden shortcuts |
 | Boundary Contract | S3, S4, S5 | Module ownership rules, layer dependency rules, cross-module access rules, public contract rules, shared code rules, infrastructure access rules |
 | Compliance Verification | S5, S11 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited |
+| Level 4 Escalation | S20 | Architecture-risk change classified as Level 4, no silent rewrite of architecture rules or accepted ADRs, mid-update reclassification when architecture risk is discovered |
 | Failure Localization | S9 | Owner module, failing layer, signals to check, debugging order |
 | Rebuild Evolution | S7, S8, S12 | Target preset/addons, adoption plan, rebuild status, target-architecture merge |
 
@@ -28,6 +29,7 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 - `results/scenario-outputs/s09.md` -- Diagnose (architecture-guided triage)
 - `results/scenario-outputs/s11.md` -- Architecture Drift Verify (business policy accumulating in shared utilities)
 - `results/scenario-outputs/s12.md` -- True Adopt Completed Rebuild (merge/archive target docs)
+- `results/scenario-outputs/s20.md` -- Level 4 Architecture-Risk Escalation
 - `source-under-test/skills/spec-docs/references/architecture-control.md` -- normative architecture rules
 - `source-under-test/skills/spec-docs/references/verification.md` -- verify output status, finding categories, violation subtypes, addon severity mapping
 - `source-under-test/skills/spec-docs/SKILL.md` -- Architecture Gate Summary
@@ -114,13 +116,23 @@ For S12 (true adopt completed rebuild):
 - Follows architecture boundaries as defined in `current-architecture.md`, `placement-rules.md`, `debugging-rules.md`.
 - Failure Localization is grounded in code, tests, logs, existing docs, confirmed architecture, or user-confirmed operational knowledge. If evidence is missing, records `[NEEDS CLARIFICATION: ...]`.
 
-### 7. ADR and User-Decision Triggers
+### 7. Level 4 Escalation (S20)
+
+- The change is classified as Level 4 even though the diff is small, because a cross-module boundary is bypassed.
+- Architecture-risk signal is reported: cross-module access bypasses the declared public contract.
+- `architecture/current-architecture.md`, `architecture/placement-rules.md`, and accepted ADRs are NOT silently rewritten to legalize the change.
+- The appropriate mode (`place`, `repair`, `rebuild`, or `adopt`) is recommended.
+- Full verify is required before claiming architecture state is current.
+- If the change was initially treated as localized, reclassification upward to Level 4 occurs when the architecture risk is discovered (mid-update reclassification).
+- If a factual spec update is suggested, the output states that architecture risk remains and architecture currentness is not claimed.
+
+### 8. ADR and User-Decision Triggers
 
 For scenarios where ownership, dependency direction, or public contract is unclear:
 - Is `Needs ADR` or `Needs User Decision` output instead of guessing? (S3, S7, S8, S9)
-- When architecture rules need weakening, is explicit user confirmation or ADR required? (S4, S6, S7, S8)
+- When architecture rules need weakening, is explicit user confirmation or ADR required? (S4, S6, S7, S8, S20)
 
-### 8. Architecture Hard Gates
+### 9. Architecture Hard Gates
 
 Check the 18 Architecture Hard Gates from `references/architecture-control.md`:
 1. Architecture docs record Primary Preset, Addons, Adoption Mode, rationale, confidence, and known deviations.
@@ -157,6 +169,7 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 | Placement | covered/partial/missing | |
 | Boundary Contract | covered/partial/missing | |
 | Compliance Verification | covered/partial/missing | |
+| Level 4 Escalation | covered/partial/missing | |
 | Failure Localization | covered/partial/missing | |
 | Rebuild Evolution | covered/partial/missing | |
 
@@ -195,6 +208,10 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 (Status, gaps, evidence)
 
 #### S12 -- True Adopt Completed Rebuild
+
+(Status, gaps, evidence)
+
+#### S20 -- Level 4 Architecture-Risk Escalation
 
 (Status, gaps, evidence)
 

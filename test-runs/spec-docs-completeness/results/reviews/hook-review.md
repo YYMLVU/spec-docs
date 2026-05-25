@@ -54,3 +54,13 @@ None found.
 ## Overall Assessment
 
 The hook layer is complete and well-formed. All matcher granularity findings are resolved. Hook scripts are reminder-only and do not modify files, create ADRs, weaken rules, or enforce beyond the intended skeleton behavior.
+
+## Impact-Aware Hook Policy
+
+Hook policy is impact-aware: hooks do not block merely because full verify was skipped for Level 0, Level 1, or Level 2 when the agent stated the impact level and completed the required action for that level. Scenarios S16-S18 cover the no-full-verify requirement:
+
+- S16 validates Level 0: no spec update or verify is required when no behavior, contract, architecture, verification, or mapping signal changed, provided the agent states a no-update reason.
+- S17 validates Level 1: one mapped spec is updated without full verify.
+- S18 validates Level 2: localized update with targeted light check satisfies the completion gate without full verify.
+
+Level 3 and Level 4 still require full verify before broad currentness, release freshness, or architecture-current claims (S19, S20).
