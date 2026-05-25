@@ -101,7 +101,7 @@ From `references/hooks.md`, verify the declared block candidates are:
 
 Are these block candidates the only ones that would trigger `block` level behavior? Are there no extra block conditions invented in the hooks?
 
-### 6a. Impact-Aware Hook Behavior
+### 7. Impact-Aware Hook Behavior
 
 From `references/hooks.md`, verify that hooks are impact-aware:
 
@@ -114,7 +114,7 @@ From `references/hooks.md`, verify that hooks are impact-aware:
 
 Do scenarios S16-S18 cover the no-full-verify requirement for Level 0 through Level 2?
 
-### 7. Safety Boundaries
+### 8. Safety Boundaries
 
 Verify hooks respect safety boundaries:
 - Hooks must not automatically modify code.

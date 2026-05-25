@@ -21,6 +21,16 @@ The hook simulation explicitly covers:
 - Cursor `sessionStart`
 - Cursor `stop`
 
+## Hook Declaration Completeness
+
+| Hook | Declared | Matched to Correct Event | Script Exists | Status |
+| --- | --- | --- | --- | --- |
+| session-start | yes | yes | yes | pass |
+| pre-edit-guard | yes | yes | yes | pass |
+| pre-bash-guard | yes | yes | yes | pass |
+| post-edit-reminder | yes | yes | yes | pass |
+| stop-verify-reminder | yes | yes | yes | pass |
+
 ## Declaration Completeness
 
 All five expected hook scripts are declared and present:
@@ -41,9 +51,32 @@ None.
 
 None found.
 
+## Incorrect Matcher Behavior
+
+| Matcher Issue | Event | Expected | Actual |
+| --- | --- | --- | --- |
+| (none) | | | |
+
+No matcher issues detected. All matchers trigger correctly for their declared events and produce no false positives.
+
+## Side-Effect Concerns
+
+`check-hooks.md` reports no side effects in `skills/spec-docs` after executing hook scripts. No hook scripts write files, modify code, create directories, or have I/O beyond stdout. The hook directory structure is identical between source and installed forms.
+
 ## Side Effects
 
 `check-hooks.md` reports no side effects in `skills/spec-docs` after executing hook scripts.
+
+## Reminder-Only Validation
+
+| Script | Prints Reminder | Exits 0 | No File I/O | Status |
+| --- | --- | --- | --- | --- |
+| session-start | yes | yes | yes | pass |
+| pre-edit-guard | yes | yes | yes | pass |
+| pre-bash-guard | yes | yes | yes | pass |
+| post-edit-reminder | yes | yes | yes | pass |
+| stop-verify-reminder | yes | yes | yes | pass |
+| run-hook.cmd | yes | yes | yes | pass |
 
 ## Findings
 

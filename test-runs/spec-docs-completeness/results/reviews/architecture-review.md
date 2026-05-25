@@ -23,6 +23,48 @@ Status: PASS_WITH_NOTES
 | Failure Localization | covered | S9 uses debugging rules and module failure localization. |
 | Rebuild Evolution | covered | S7 state-machine behavior covered; S12 now strengthens true adopt with completed-rebuild fixture. |
 
+## Per-Scenario Findings
+
+### S1 -- Architecture Selection (Empty Project Init)
+
+Status: PASS. Records user-confirmed architecture constraints without inventing empty-project implementation facts. Does not guess architecture when absent.
+
+### S3 -- Placement & Boundary Review
+
+Status: PASS. Consumes Feature Modular Architecture and placement rules, identifies owner/dependencies/contracts, and escalates ambiguity.
+
+### S4 -- Update (Architecture Rule Preservation)
+
+Status: PASS. Updates the affected payments spec without silently rewriting architecture rules.
+
+### S5 -- Verify (Architecture Violations and Drift)
+
+Status: PASS_WITH_NOTES. Reports `[FACT DRIFT]` for accepted vs submitted and `[ARCHITECTURE VIOLATION]` for domain importing infrastructure. `greenfield` severity is ambiguous (F-001 out of scope).
+
+### S7 -- Rebuild (State Machine)
+
+Status: PASS. Determines rebuild phase from `docs/spec-docs/rebuild/status.md`, not target file existence.
+
+### S8 -- Adopt / Gradual Adoption
+
+Status: PASS_WITH_NOTES. Correctly notes true `adopt` cannot be fully tested with the fallback fixture.
+
+### S9 -- Diagnose and Failure Localization
+
+Status: PASS. Performs architecture-guided diagnosis without claiming root cause or modifying unrelated modules first.
+
+### S11 -- Architecture Drift Verify
+
+Status: PASS. Detects architecture drift where billing policy leaks into a shared utility, strengthening architecture compliance verification.
+
+### S12 -- True Adopt Completed Rebuild
+
+Status: PASS. Exercises adopt with a completed-rebuild fixture (`ready-to-adopt` phase, last verify PASS), covering merge/archive behavior.
+
+### S20 -- Level 4 Architecture-Risk Escalation
+
+Status: PASS. Classifies cross-module boundary bypass as Level 4, reports architecture-risk signal, does not silently rewrite architecture rules or accepted ADRs, recommends escalated mode, and requires full verify before architecture-current claims. Mid-update reclassification from localized to Level 4 is exercised when architecture risk is discovered during the update.
+
 ## Scenario Evidence
 
 - S1 records user-confirmed architecture constraints without inventing empty-project implementation facts, and does not guess architecture when absent.
@@ -53,6 +95,46 @@ S20 validates that architecture-risk changes are classified as Level 4 even when
 - Mid-update reclassification when architecture risk is discovered during a localized update
 
 No architecture governance weakening is expected from the impact routing extension because Level 4 always escalates on architecture risk, and ordinary `update` must not modify architecture rules or accepted ADRs.
+
+## Architecture Hard Gates
+
+| Gate | Scenario(s) | Status | Notes |
+| --- | --- | --- | --- |
+| 1 | S1, S2, S7, S8 | pass | Architecture docs record Primary Preset, Addons, Adoption Mode, rationale, confidence, and known deviations. |
+| 2 | S3, S4, S5 | pass | Architecture docs define enforceable boundaries. |
+| 3 | S1 | pass | Empty-project init does not create fake implementation facts. |
+| 4 | S2, S13, S14 | pass | Existing-project init infers current preset, may mark Mixed/Hybrid. |
+| 5 | S7 | pass | Rebuild chooses target preset, addons, adoption mode, and migration strategy. |
+| 6 | S3 | pass | Placement review includes allowed/forbidden dependencies, required contracts, and forbidden shortcuts. |
+| 7 | S3 | pass | Placement review consumes Primary Preset, Addons, and Adoption Mode. |
+| 8 | S3, S4 | pass | Implementation plans follow placement review or re-run place / create ADR. |
+| 9 | S3, S20 | pass | Cross-module access uses public API or declared contract. |
+| 10 | S5 | pass | Domain does not depend on infrastructure under dependency inversion. |
+| 11 | S11 | pass | Business logic is not moved to shared/utils to avoid ownership decisions. |
+| 12 | S4, S6 | pass | Repair does not weaken architecture rules without confirmation or ADR. |
+| 13 | S5, S11 | pass | Verify reports required violation subtypes when detectable. |
+| 14 | S5, S11 | pass | Verify severity reflects Adoption Mode and enabled Addons. |
+| 15 | S9 | pass | Diagnose follows architecture boundaries, does not recommend modifying unrelated modules first. |
+| 16 | S9 | pass | Diagnose is architecture-guided triage, not automatic debugger or direct code repair. |
+| 17 | S9 | pass | Failure Localization is grounded in evidence. |
+| 18 | S3, S9 | pass | Module specs record boundary and failure localization information when known. |
+
+## ADR / User-Decision Triggers
+
+- S3: `Needs ADR` or `Needs User Decision` is output when ownership, dependency direction, or public contract is unclear.
+- S4: Architecture weakening requires explicit user confirmation or ADR; rules are not silently rewritten.
+- S7: Rebuild migration strategy and required ADRs are defined before proceeding.
+- S8: Unknown facts use `[NEEDS CLARIFICATION: ...]` instead of guessing.
+- S9: If evidence is missing, records `[NEEDS CLARIFICATION: ...]` rather than assuming.
+- S20: Architecture-risk changes do not silently legalize drift; ADR or user confirmation required before weakening rules.
+
+## Classification
+
+| Issue | Classification |
+| --- | --- |
+| F-001 `greenfield` Adoption Mode semantics out of scope | acceptable-limitation |
+| F-005 Protocol block sync live-test out of scope | acceptable-limitation |
+| `greenfield` severity ambiguity in Compliance Verification | user-decision |
 
 ## Overall Assessment
 

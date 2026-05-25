@@ -27,7 +27,7 @@ Automated checks passed. The suite now covers twenty scenarios. F-002, F-003, an
 | S17 (update -- Level 1 single-spec touch) | PASS |
 | S18 (update -- Level 2 targeted light check) | PASS |
 | S19 (update/verify -- Level 3 full update) | PASS |
-| S20 (update/place/repair/rebuild/adopt/verify -- Level 4 escalation) | PASS |
+| S20 (update/verify -- Level 4 escalation) | PASS |
 
 ## Findings
 

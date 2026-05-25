@@ -42,3 +42,28 @@ None detected.
 ## Hard-Gate Findings
 
 No hard-gate failures found.
+
+## Scenario Checklist Gaps
+
+| Scenario | Missing/Failed Checklist Items |
+| --- | --- |
+| S01 | none |
+| S02 | none |
+| S03 | none |
+| S04 | none |
+| S05 | none |
+| S06 | none |
+| S07 | none |
+| S08 | none |
+| S09 | none |
+| S10 | none |
+| S11 | none |
+| S12 | none |
+| S13 | none |
+| S14 | none |
+| S15 | none |
+| S16 | none |
+| S17 | none |
+| S18 | none |
+| S19 | none |
+| S20 | none |

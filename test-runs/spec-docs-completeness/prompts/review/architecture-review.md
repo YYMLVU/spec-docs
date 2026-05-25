@@ -13,7 +13,7 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 | Architecture Selection | S1, S7, S8, S12 | Primary Preset, Addons, Adoption Mode, confidence, rationale, known deviations |
 | Placement | S3 | Feature intent, ownership, layer placement, allowed/forbidden dependencies, required public contracts, forbidden shortcuts |
 | Boundary Contract | S3, S4, S5 | Module ownership rules, layer dependency rules, cross-module access rules, public contract rules, shared code rules, infrastructure access rules |
-| Compliance Verification | S5, S11 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited |
+| Compliance Verification | S5, S11, S20 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited, Level 4 escalation compliance checked |
 | Level 4 Escalation | S20 | Architecture-risk change classified as Level 4, no silent rewrite of architecture rules or accepted ADRs, mid-update reclassification when architecture risk is discovered |
 | Failure Localization | S9 | Owner module, failing layer, signals to check, debugging order |
 | Rebuild Evolution | S7, S8, S12 | Target preset/addons, adoption plan, rebuild status, target-architecture merge |
