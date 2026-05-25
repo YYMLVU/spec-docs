@@ -163,16 +163,172 @@ Do not require a separate command for this transition. Do not discard confirmed 
 
 ### Routine update
 
+Routine update starts with impact classification before deciding how much spec maintenance or verification is required.
+
+Classification order:
+
 1. Read `docs/spec-docs/README.md` and `inventory.md` if present.
 2. Identify changed files from git diff or user input.
-3. Use Code-to-Spec, Task-to-Spec, and Symbol-to-Spec indexes to find affected specs.
-4. Read affected specs before editing implementation files when the task includes code changes.
-5. Update affected specs in the same change.
-6. Update inventory if mappings, source globs, symbols, or task maps changed.
-7. Update frontmatter `verified_commit`, `verified_date`, `source_files`, `symbols`, `tech_stack`, and `related_specs` when needed.
-8. Do not silently rewrite architecture rules.
-9. Run `verify`.
-10. If no spec update is needed, state why.
+3. Inspect the smallest source/spec/context set needed to classify impact.
+4. Classify Level 0 through Level 4 using the rules below.
+5. Follow the route for that level.
+6. Re-classify upward if a higher-level signal is discovered during the update or light check.
+7. State the level and reason when reporting completion.
+
+Impact classification uses observable signals first: changed file paths, changed implementation files, changed mapped specs, changed exported symbols or public signatures, changed test assertions or verification points, source layout changes, inventory mapping changes, architecture file changes, accepted ADR changes, and imports that cross declared module or layer boundaries.
+
+Higher-level signals override lower-level labels. A one-file change is not Level 1 if it changes a public contract, inventory mapping, source layout, or architecture boundary.
+
+If non-architecture signals are ambiguous, choose the lightest safe level and state the uncertainty. If architecture risk is ambiguous, route to Level 4 unless current architecture references clearly show that no boundary, ownership, dependency-direction, ADR, or rebuild rule is implicated.
+
+#### Level 0: No Spec Action
+
+Use when the change does not affect runtime behavior, public contracts, architecture boundaries, verification points, or implementation mappings.
+
+Examples:
+
+- comments only;
+- formatting only;
+- README or non-runtime docs only;
+- package metadata only;
+- CI-only change that does not affect runtime behavior;
+- test name or test description only;
+- visual/style-only change when specs do not track visual details.
+
+Non-examples:
+
+- changed test assertions, expected values, fixtures, or verification logic are at least Level 1;
+- file moves, renames, or path changes that affect `source_files` or inventory mappings are at least Level 2;
+- public contract documentation changes are at least Level 2 if they describe implemented behavior.
+
+Required behavior:
+
+- Do not update specs.
+- Do not run `verify` merely to claim freshness.
+- If reporting completion, state why no spec-docs action was required.
+
+#### Level 1: Single-Spec Touch
+
+Use when a behavior or verification-point change is contained in one mapped spec and has no public contract, inventory, layout, or architecture-risk signal.
+
+Examples:
+
+- one-file bugfix;
+- one edge case change;
+- one validation behavior change;
+- one internal error message change tracked by one mapped spec;
+- implementation detail change that affects only one existing spec.
+
+Boundary rules:
+
+- If one implementation file maps to multiple specs, classify by affected specs, not file count.
+- If the changed behavior affects more than one spec, use Level 2 or higher.
+- If the change updates a public interface contract, use at least Level 2.
+- If inventory mappings, `source_files`, symbol maps, task maps, or source paths change, use at least Level 2.
+
+Required behavior:
+
+- Read the mapped spec.
+- Update only the affected behavior, edge case, verification point, or evidence.
+- Do not update unrelated specs.
+- Do not run full verify.
+- Do not modify inventory unless mapping or source coverage changed; if inventory must change, reclassify to Level 2.
+
+#### Level 2: Targeted Update + Light Check
+
+Use when one feature, module, runtime unit, interface, or inventory section changes across a localized area, and no architecture-risk signal is present.
+
+Examples:
+
+- localized feature behavior changes across a few files;
+- one interface contract changes;
+- one module internal flow changes;
+- tests or verification points materially change for one mapped area;
+- inventory rows need targeted updates for one localized area;
+- a file move or rename remains within the same ownership area and only requires targeted mapping updates.
+
+Observable anchors:
+
+- all changed implementation files map to one spec or one closely related spec group;
+- affected specs share one feature/module/runtime/interface owner;
+- affected inventory rows are limited to the same ownership area;
+- no source movement crosses ownership, layer, or architecture boundaries;
+- no accepted ADR or architecture rule is modified.
+
+Required behavior:
+
+- Update affected specs only.
+- Update affected inventory rows only if file mappings, symbol mappings, task mappings, or spec links changed.
+- Run a targeted light check.
+- Report the check as targeted; do not claim full `verify` success.
+
+#### Level 3: Full Update + Full Verify
+
+Use when the change affects broad behavior, cross-cutting behavior, multiple ownership areas, source layout, or release-level freshness claims.
+
+Examples:
+
+- more than one localized feature/module/interface area changed;
+- public API shape changed broadly;
+- source layout changed across ownership areas;
+- multiple inventory sections require updates;
+- cross-cutting behavior affects several specs;
+- the user asks to claim release-level spec freshness.
+
+Observable anchors:
+
+- affected specs do not share one owner or parent area;
+- changed files move across spec ownership areas;
+- more than one inventory section needs non-trivial edits;
+- a broad freshness claim is being made;
+- the change cannot be explained as one localized feature/module/runtime/interface update.
+
+Required behavior:
+
+- Update all affected specs.
+- Update inventory mappings for the affected scope.
+- Run full verify before claiming the workspace is current for the affected broad scope.
+
+A routine large-project change that touches two or three files may remain Level 2 if it maps to one localized area and has no architecture-risk signal.
+
+#### Level 4: Architecture / Rebuild Workflow
+
+Use whenever architecture risk is present, even if the code diff is small.
+
+Examples:
+
+- new module, layer, runtime, integration, or ownership boundary;
+- imports or calls cross a declared module/layer boundary in a new way;
+- dependency direction conflicts with architecture rules or is not covered by existing placement rules;
+- public contract ownership is unclear;
+- shared utility begins accumulating feature-specific policy;
+- architecture docs, placement rules, accepted ADRs, or rebuild state are modified;
+- current implementation appears to violate existing architecture rules.
+
+Required behavior:
+
+- Do not let ordinary `update` silently legalize the architecture change.
+- Do not modify architecture rules or accepted ADRs unless the user explicitly requested architecture rule changes.
+- Report the architecture-risk signal.
+- Recommend the appropriate mode: `place`, `repair`, `rebuild`, or `adopt`.
+- If the user explicitly asks to run the escalated mode immediately, load that mode's required references before acting.
+- Require full verify before claiming architecture state is current.
+
+If the user explicitly acknowledges the architecture risk and asks for a targeted factual spec update anyway, the update may record current implementation facts without changing architecture rules or accepted ADRs. The result must still report Level 4 risk and must not claim architecture currentness.
+
+#### Update routing table
+
+| Impact level | Spec action | Verify action | Architecture action |
+|---|---|---|---|
+| Level 0 | none | none | none |
+| Level 1 | one mapped spec only | none | none |
+| Level 2 | affected specs and inventory rows only | targeted light check | reclassify to Level 4 if risk discovered |
+| Level 3 | all affected specs and inventory mappings | full verify | reclassify to Level 4 if risk discovered |
+| Level 4 | do not ordinary-update architecture rules | full verify before architecture-current claim | recommend `place` / `repair` / `rebuild` / `adopt` |
+
+If an existing workspace lacks enough inventory mapping to classify a change confidently, inspect the smallest needed source/spec set and update only needed mapping evidence. Unmapped behavior changes are at least Level 2 because mapping evidence changed or is missing. If the unmapped change spans multiple ownership areas or cannot be localized, route to Level 3. Do not perform a full workspace rewrite solely to classify impact.
+
+If many Level 1 or Level 2 updates have occurred since the last full verify, recommend a Level 3 full verify. This is a recommendation, not a hard gate. A user request for release-level freshness remains a hard Level 3 trigger.
 
 ## `verify`
 
