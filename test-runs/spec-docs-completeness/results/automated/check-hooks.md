@@ -12,7 +12,7 @@ spec-docs reminder:
 - If this project has docs/spec-docs/, use the compact SKILL.md as router.
 - For mode details, read skills/spec-docs/references/*.md before acting.
 - For non-trivial implementation changes, run/apply spec-docs place before detailed planning.
-- After implementation-relevant edits, run/apply spec-docs update and verify before claiming completion.
+- After implementation-relevant edits, perform impact-appropriate spec action before claiming completion: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, Level 4 escalation and full verify before architecture-current claims.
 - Hooks are reminders; rules live in SKILL.md and references/.
 ```
 ## stop-verify-reminder
@@ -20,7 +20,8 @@ spec-docs reminder:
 ```text
 spec-docs completion reminder:
 - If implementation-relevant files changed, affected specs must be updated or a no-update reason must be stated.
-- Run/apply spec-docs verify before claiming init/update/repair/rebuild/adopt completion.
+- After implementation-relevant changes, complete impact-appropriate spec action: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, Level 4 escalation and full verify before architecture-current claims.
+- Run/apply spec-docs verify before claiming init/repair/rebuild/adopt completion.
 - Do not weaken architecture rules without explicit user confirmation or ADR.
 ```
 ## pre-edit-guard

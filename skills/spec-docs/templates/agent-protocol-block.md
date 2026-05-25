@@ -44,8 +44,13 @@ After changing implementation-relevant files:
 - Update every affected spec in the same change.
 - Update `docs/spec-docs/inventory.md` if source globs, spec metadata, code-to-spec mappings, task mappings, or symbol mappings changed.
 - If no spec update is needed, state why explicitly.
-- Run or apply `spec-docs verify` before declaring the task complete.
-- Do not claim the task is complete until spec consistency has been checked.
+- Complete the impact-appropriate spec action before declaring the task complete:
+  - Level 0: state a no-update reason.
+  - Level 1: update the affected spec.
+  - Level 2: update affected specs and run a targeted light check.
+  - Level 3: update all affected specs and run full verify.
+  - Level 4: report architecture risk, escalate to `place`/`repair`/`rebuild`/`adopt`, and run full verify before claiming architecture-current.
+- Do not claim the task is complete until the impact-appropriate spec action has been performed.
 
 Architecture repair guard:
 
