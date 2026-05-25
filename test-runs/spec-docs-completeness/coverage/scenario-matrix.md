@@ -26,7 +26,7 @@ All scenarios require manual review (`yes`). Scenario S10 has no mode assigned b
 | S17 Level 1 Single-Spec Touch | fixture | update | one mapped spec update without full verify | yes |
 | S18 Level 2 Targeted Light Check | fixture | update | localized contract/mapping update with targeted-check output | yes |
 | S19 Level 3 Full Update and Full Verify | fixture | update, verify | broad multi-area update with full verify | yes |
-| S20 Level 4 Architecture-Risk Escalation | fixture | update, place, repair, rebuild, adopt, verify | architecture-risk update escalation without legalizing drift | yes |
+| S20 Level 4 Architecture-Risk Escalation | fixture | update, verify | architecture-risk update escalation without legalizing drift | yes |
 
 ## Mode Coverage
 

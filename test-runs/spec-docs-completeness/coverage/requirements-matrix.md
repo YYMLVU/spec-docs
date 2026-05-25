@@ -1,7 +1,7 @@
 # Requirements Matrix -- spec-docs Completeness Test
 
 This matrix maps the requirement categories from the completeness test plan to verification methods:
-automated checks (check-static, check-install), scenario execution (S01-S10), and manual review prompts.
+automated checks (check-static, check-install), scenario execution (S01-S20), and manual review prompts.
 
 ## COMPRESS: Structural Completeness
 
