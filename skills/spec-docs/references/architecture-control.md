@@ -14,6 +14,39 @@ Architecture Control Layer
 + Rebuild Evolution
 ```
 
+## Architecture Workflow Subpaths
+
+Architecture modes keep their existing names. When architecture risk is present, choose one of two internal subpaths:
+
+| Subpath | Meaning | Currentness claim allowed |
+|---|---|---|
+| `scoped` | The architecture question is localized to one clearly bounded area, known rule, or known placement decision. | No architecture currentness claim. Report the bounded decision or repair only. |
+| `full` | The question spans multiple areas, unclear ownership, ADRs, stale architecture model, target architecture, or broad governance state. | Architecture currentness only after required full verify passes. |
+
+Subpath labels are internal routing labels, not user-facing modes. Do not create mode names such as `place-lite`, `repair-lite`, or `adopt-lite`.
+
+### Architecture Routing Matrix
+
+| Signal | Recommended mode/subpath | Verification requirement | Skip scoped path / escalation rule |
+|---|---|---|---|
+| Placement question only, one clear feature/module/integration, existing rules identify owner and allowed dependencies | `place` scoped | No architecture verify required for the placement answer itself because `place` does not change docs or code; later implementation follows normal update impact routing. | Skip scoped `place` and escalate to `place` full if ownership, dependency direction, public contract, ADR relevance, or multiple boundaries are unclear. |
+| Placement depends on multiple boundaries, competing owners, unclear dependency direction, or accepted ADR interpretation | `place` full | No architecture-current claim without full verify if docs are changed. | Output `Needs ADR` or `Needs User Decision` rather than guessing. |
+| Localized implementation violates one known architecture rule and the rule itself is current | `repair` scoped | After repair, run full verify before claiming repair complete or architecture currentness. A scoped repair may report bounded work performed, but not repair completion, before full verify. | Skip scoped `repair` and escalate to `repair` full if violations span multiple areas, touch ADRs, or imply the architecture model is stale. |
+| Many violations, repeated drift, contradictory rules, or stale current architecture docs | `repair` full or recommend `rebuild` | Full verify required before repair completion or architecture-current claim. | Recommend `rebuild` when current docs are too stale or contradictory to repair incrementally. |
+| Current architecture docs/ADRs intentionally changed | `repair` full, `adopt` full, or `rebuild` depending on intent | Full architecture-aware verify before any currentness claim. | Require explicit user intent and ADR/user-decision handling. |
+| New architecture baseline for one clear existing area without ADR adjacency or boundary changes outside that area | `adopt` scoped | Full verify required before claiming adopt complete or architecture currentness. | Skip scoped `adopt` and escalate to `adopt` full if governance affects other areas, accepted ADRs, shared boundaries, rebuild state, or ownership/dependency rules beyond the scoped area. |
+| New architecture baseline spans multiple areas or changes ownership/boundary rules | `adopt` full | Full verify required before adopt completion or architecture-current claim. | Require explicit user intent; do not treat as routine update. |
+| Target architecture is needed because current architecture references are too stale or contradictory | `rebuild` recommendation | Rebuild has its existing full completion gates. | `rebuild` remains exceptional; recommend it only when incremental repair is unsafe. |
+
+If architecture risk is ambiguous, choose the lightest safe architecture path only when current architecture references clearly rule out boundary, ownership, dependency-direction, ADR, and rebuild impact. Otherwise escalate. Scoped `place` has no verify gate because it answers a pre-implementation placement question without mutating artifacts; scoped `repair` and scoped `adopt` can mutate documentation/governance and therefore preserve full verify before completion/currentness claims.
+
+### ADR and Rule-Change Safeguards
+
+- Architecture rules, placement rules, accepted ADRs, and rebuild status must not be changed unless the user explicitly requested architecture governance changes.
+- ADR-adjacent scoped work must escalate to full architecture review unless current references clearly show no ADR or decision boundary is implicated.
+- If a scoped path discovers ADR relevance, ownership ambiguity, dependency-direction ambiguity, or broader rule impact, stop the scoped path and report the required escalation.
+- A scoped path may record current implementation facts, but must not legalize a violation by weakening rules.
+
 ## Architecture Selection
 
 Architecture selection records the current or target architecture choice. It must not invent implementation facts.
