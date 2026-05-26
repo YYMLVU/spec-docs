@@ -36,17 +36,19 @@ Use these scope labels exactly when reporting verify-like work:
 | `layered-check` | Explicitly scoped verification of one or more named layers without running full verify | only the checked layers and checked files/specs |
 | `full-verify` | Full verify required by the active mode, impact level, or user request | currentness for the verified scope, if all required layers pass |
 
+Currentness means a claim that docs/specs accurately reflect current implementation, architecture, release, or workspace state for the stated scope.
+
 Do not describe `targeted-check` or `layered-check` as full `verify` PASS.
 
-A `layered-check` must list:
+A `layered-check` must list only the layers actually checked; omit any layer not checked.
 
 ```text
 Status: PASS | PASS WITH WARNINGS | FAIL
 Scope: layered-check
-Layers checked: mechanical | mapping | semantic | architecture | freshness
+Layers checked: <subset of: mechanical, mapping, semantic, architecture, freshness>
 Checked specs: <list or none>
 Checked inventory rows: <list or none>
-Checked implementation evidence: <paths, symbols, or none>
+Checked implementation evidence: <paths, symbols, or none> (identifies implementation paths/symbols inspected)
 Findings by layer:
   mechanical: <none or findings>
   mapping: <none or findings>
@@ -66,7 +68,7 @@ Recommended next action: <none, update specific file, repair, escalate, or run f
 | Level 1 update | none | none | Do not create a mandatory verification workflow. Edited specs still follow normal authoring discipline. |
 | Level 2 update | `targeted-check` | mechanical, mapping if inventory/source references changed, semantic for changed behavior, changed-path inspection for unexpected architecture/ADR file changes only | Use the Targeted Light Check output format, not the `layered-check` format. This changed-path inspection is not an architecture review and cannot support architecture currentness. Must not claim full verify PASS. |
 | Level 3 update | `full-verify` | mechanical, mapping, semantic, freshness, architecture when architecture docs/ADRs/rebuild state exist | Required before broad currentness or release freshness. |
-| Level 4 update architecture-current claim | `full-verify` | mechanical, mapping, semantic for affected facts, architecture, freshness | Provisional until Phase 4 finalizes architecture workflow subpaths. Ordinary update must not legalize architecture drift. |
+| Level 4 update with architecture-current claim | `full-verify` | mechanical, mapping, semantic for affected facts, architecture, freshness | Provisional until Phase 4 finalizes architecture workflow subpaths. Ordinary update must not legalize architecture drift. |
 | Final init completion | `full-verify` | mechanical, mapping, semantic, freshness, architecture when architecture docs exist | Required for final init completion. |
 | `repair` completion | `full-verify` | mechanical, mapping, semantic, freshness, architecture when architecture docs exist | Required before claiming repair complete. |
 | `rebuild` completion | `full-verify` | mechanical, mapping, semantic, architecture, freshness | Required before claiming rebuild state current. |
@@ -89,7 +91,7 @@ Status: PASS | PASS WITH WARNINGS | FAIL
 Scope: targeted-check
 Checked specs: <list>
 Checked inventory rows: <list or none>
-Changed implementation evidence checked: <paths or symbols>
+Changed implementation evidence checked: <paths or symbols> (identifies implementation paths/symbols inspected; uses "changed evidence" because targeted-check is tied to Level 2 changed scope)
 Findings: <[FACT DRIFT] / [ARCHITECTURE VIOLATION] / [DECISION DRIFT] if any>
 Warnings: <non-blocking uncertainty, if any>
 Recommended next action: <none, update specific file, escalate, or run full verify>
