@@ -27,6 +27,8 @@
     { "id": "s17", "name": "Level 1 Single-Spec Touch", "modes": ["update"], "type": "fixture" },
     { "id": "s18", "name": "Level 2 Targeted Light Check", "modes": ["update"], "type": "fixture" },
     { "id": "s19", "name": "Level 3 Full Update and Full Verify", "modes": ["update", "verify"], "type": "fixture" },
-    { "id": "s20", "name": "Level 4 Architecture-Risk Escalation", "modes": ["update", "verify"], "type": "fixture" }
+    { "id": "s20", "name": "Level 4 Architecture-Risk Escalation", "modes": ["update", "verify"], "type": "fixture" },
+    { "id": "s21", "name": "Layered Verify Scope", "modes": ["verify"], "type": "fixture" },
+    { "id": "s22", "name": "Layered Verify Escalation", "modes": ["verify"], "type": "fixture" }
   ]
 }

@@ -27,6 +27,8 @@ All scenarios require manual review (`yes`). Scenario S10 has no mode assigned b
 | S18 Level 2 Targeted Light Check | fixture | update | localized contract/mapping update with targeted-check output | yes |
 | S19 Level 3 Full Update and Full Verify | fixture | update, verify | broad multi-area update with full verify | yes |
 | S20 Level 4 Architecture-Risk Escalation | fixture | update, verify | architecture-risk update escalation without legalizing drift | yes |
+| S21 Layered Verify Scope | fixture | verify | mechanical + mapping layered-check without currentness overclaim | yes |
+| S22 Layered Verify Escalation | fixture | verify | scoped layered-check surfaces architecture risk and recommends escalation | yes |
 
 ## Mode Coverage
 
@@ -37,7 +39,7 @@ Eight modes from `manifest.json` must each be exercised by at least one scenario
 | init | S1, S2, S13, S14, S15 | S1 validates empty-project init. S2 validates minimal existing project init. S13 validates standard existing project init. S14 validates large phased init and confirms PARTIAL INIT does not claim final completion. S15 validates that profile classification uses observable complexity signals beyond file count. |
 | place | S3 | Placement & Boundary Review before detailed planning; must include allowed/forbidden dependencies, public contracts, forbidden shortcuts, and failure localization hints. Must not modify code. |
 | update | S4, S16, S17, S18, S19, S20 | Same-change spec sync after implementation-relevant edits using Level 0-4 impact routing. S4/S18 validate localized Level 2 targeted light check. S16 validates no-action Level 0. S17 validates one-spec Level 1. S19 validates broad Level 3 full verify. S20 validates Level 4 escalation and no silent architecture rule rewrite. |
-| verify | S5, S11, S19, S20 | Fact drift, decision drift, and architecture violation subtype reporting. Severity reflects Adoption Mode and Addons. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. S19 verifies full verify is required for Level 3 broad updates. S20 verifies full verify is required before architecture-current Level 4 claims. |
+| verify | S5, S11, S19, S20, S21, S22 | Fact drift, decision drift, architecture violation subtype reporting, full verify gates, and scoped layered-check behavior. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. S19 verifies full verify is required for Level 3 broad updates. S20 verifies full verify is required before architecture-current Level 4 claims. S21 verifies mechanical+mapping layered checks do not overclaim. S22 verifies scoped checks surface architecture risk and recommend escalation instead of silently expanding or ignoring risk. |
 | repair | S6 | Doc-only alignment with current implementation; no business-code modifications. Architecture repair requires explicit user confirmation or ADR. |
 | rebuild | S7 | Rebuild mode determined by `rebuild/status.md`, not by target file existence. Must select target preset, addons, adoption mode, migration strategy. |
 | adopt | S8, S12 | Gradual adoption through `init` for first-time projects; target-architecture merge when rebuild is complete. Must verify code matches target rules before merging. S12 verifies completed-rebuild adopt behavior: read rebuild status, verify target/code alignment, merge target into current, archive target docs, and mark rebuild completed. |

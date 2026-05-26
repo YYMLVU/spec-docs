@@ -1,7 +1,7 @@
 # Requirements Matrix -- spec-docs Completeness Test
 
 This matrix maps the requirement categories from the completeness test plan to verification methods:
-automated checks (check-static, check-install), scenario execution (S01-S20), and manual review prompts.
+automated checks (check-static, check-install), scenario execution (S01-S22), and manual review prompts.
 
 ## COMPRESS: Structural Completeness
 
@@ -48,6 +48,11 @@ Requirements focused on correctness, absence of placeholders, and internal consi
 | I19 | Higher-level signals override lower-level labels, including public contract, inventory mapping, layout, and architecture-risk signals | -- | -- | S18, S20 | mode-review.md |
 | I20 | Hooks and hard gates are impact-aware and do not require full verify for Level 0 through Level 2 | -- | -- | S10, S16, S17, S18 | hook-review.md |
 | I21 | Mid-update discovery of architecture risk reclassifies a localized update to Level 4 | -- | -- | S20 | architecture-review.md |
+| I22 | Full verify output identifies active verification layers and groups findings by layer | -- | -- | S5 | mode-review.md |
+| I23 | Targeted and layered checks are not described as full verify PASS | -- | -- | S18, S21, S22 | mode-review.md |
+| I24 | Layered mechanical/mapping checks cannot claim semantic, architecture, release, workspace, or architecture currentness | -- | -- | S21 | mode-review.md |
+| I25 | Final init, repair/adopt/rebuild completion, release freshness, and architecture-current claims retain full verify gates | -- | -- | S5, S19, S20 | architecture-review.md |
+| I26 | Scoped verification reports and escalates out-of-scope architecture risk instead of silently broadening or ignoring it | -- | -- | S22 | architecture-review.md |
 
 ## Gap Closure: Coverage of Previously Untested Paths
 
@@ -83,7 +88,7 @@ Requirements related to public README, INSTALL-FOR-AI, and references/ cross-che
 
 | Review Prompt | Covers Requirements | Inputs |
 |---|---|---|
-| mode-review.md | C5, I1, I2, I4, I5, I6, I6a, I6b, I6c, I6d, I9, I14, I15, I16, I17, I19, P1 | results/scenario-outputs/, coverage/scenario-matrix.md |
-| architecture-review.md | C6, I3, I7, I8, I10, I11, I18, I21, G1, G2, G3, G4, G10 | results/scenario-outputs/ S1, S3, S4, S5, S7, S8, S9, S11, S12, S20 |
+| mode-review.md | C5, I1, I2, I4, I5, I6, I6a, I6b, I6c, I6d, I9, I14, I15, I16, I17, I19, I22, I23, I24, P1 | results/scenario-outputs/, coverage/scenario-matrix.md |
+| architecture-review.md | C6, I3, I7, I8, I10, I11, I18, I21, I25, I26, G1, G2, G3, G4, G10 | results/scenario-outputs/ S1, S3, S4, S5, S7, S8, S9, S11, S12, S20, S22 |
 | hook-review.md | G5, G6, I20 | results/automated/check-hooks.md, results/automated/simulate-hook-events.md |
 | collaboration-review.md | C7, I12, I13, G7, G8, G9 | results/scenario-outputs/S10, prompts/review/collaboration-review.md, source-under-test/skills/spec-docs/templates/agent-protocol-block.md |
