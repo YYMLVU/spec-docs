@@ -40,7 +40,7 @@ Currentness means a claim that docs/specs accurately reflect current implementat
 
 Do not describe `targeted-check` or `layered-check` as full `verify` PASS.
 
-A `layered-check` must list only the layers actually checked; omit any layer not checked.
+A `layered-check` must list only the layers actually checked; omit any layer not checked. If a layered-check discovers risk evidence outside checked layers, report it in `Out-of-scope risk discovered` and recommend escalation or full verify instead of silently broadening the check.
 
 ```text
 Status: PASS | PASS WITH WARNINGS | FAIL
@@ -51,6 +51,7 @@ Checked inventory rows: <list or none>
 Checked implementation evidence: <paths, symbols, or none> (identifies implementation paths/symbols inspected)
 Findings by layer:
   <checked layer>: <none or findings>
+Out-of-scope risk discovered: <none, or risk category and evidence requiring escalation>
 Warnings: <non-blocking uncertainty, if any>
 Currentness claim: <exact bounded claim, or none>
 Recommended next action: <none, update specific file, repair, escalate, or run full verify>
