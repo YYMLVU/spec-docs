@@ -138,7 +138,7 @@ Synchronize implementation specs and inventory after implementation-relevant cha
 
 ### `verify`
 
-Check facts, architecture, decisions, references, and indexes with full verify or targeted light check depending on impact level. Output PASS / PASS WITH WARNINGS / FAIL. Findings use `[FACT DRIFT]`, `[ARCHITECTURE VIOLATION: <subtype>]`, and `[DECISION DRIFT]`. Each architecture violation must include: observed issue, expected architecture behavior, recommended action, evidence, and source documents checked. Severity reflects Adoption Mode and enabled Addons; verify reports detectable violations and is honest about manual review needs. Subtype list and severity mapping in `references/verification.md`.
+Check facts, mappings, architecture, decisions, references, and indexes with `targeted-check`, `layered-check`, or `full-verify` scope depending on impact level, completion gate, or explicit user request. Output PASS / PASS WITH WARNINGS / FAIL. Findings use `[FACT DRIFT]`, `[ARCHITECTURE VIOLATION: <subtype>]`, and `[DECISION DRIFT]`. Each architecture violation must include: observed issue, expected architecture behavior, recommended action, evidence, and source documents checked. Severity reflects Adoption Mode and enabled Addons; verify reports detectable violations and is honest about manual review needs. Subtype list and severity mapping in `references/verification.md`.
 
 ### `repair`
 
@@ -174,7 +174,7 @@ These gates are non-negotiable. Additional mode-specific and architecture-specif
 
 1. No writing specs before exploring the current project.
 2. No final `init` completion until full included-scope coverage is verified.
-3. No implementation-relevant completion claim until impact level is handled: no-update reason for Level 0, affected spec update for Level 1, targeted light check for Level 2, or full verify/escalation for Level 3/4.
+3. No implementation-relevant completion claim until impact level is handled: no-update reason (Level 0), affected spec update (Level 1), `targeted-check` (Level 2), or `full-verify`/escalation (Level 3/4).
 4. No `verify` success claim without checking protocol, core files, frontmatter, references, coverage, content, and index consistency.
 5. No code modifications during `repair` without explicit user approval.
 6. Architecture rules must not be weakened without explicit user confirmation or ADR.
