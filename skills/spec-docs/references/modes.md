@@ -312,7 +312,7 @@ Required behavior:
 - Do not let ordinary `update` silently legalize the architecture change.
 - Do not modify architecture rules or accepted ADRs unless the user explicitly requested architecture rule changes.
 - Report the architecture-risk signal.
-- Recommend the appropriate mode: `place`, `repair`, `rebuild`, or `adopt`.
+- Recommend the lightest safe architecture receiving path from `architecture-control.md`: `place` scoped/full, `repair` scoped/full, `rebuild` recommendation, or `adopt` scoped/full. If architecture risk is ambiguous or ADR-adjacent, escalate instead of defaulting to a scoped path.
 - If the user explicitly asks to run the escalated mode immediately, load that mode's required references before acting.
 - Require full verify before claiming architecture state is current.
 
@@ -326,7 +326,7 @@ If the user explicitly acknowledges the architecture risk and asks for a targete
 | Level 1 | one mapped spec only | none | none |
 | Level 2 | affected specs and inventory rows only | targeted light check | reclassify to Level 4 if risk discovered |
 | Level 3 | all affected specs and inventory mappings | full verify | reclassify to Level 4 if risk discovered |
-| Level 4 | do not ordinary-update architecture rules | full verify before architecture-current claim | recommend `place` / `repair` / `rebuild` / `adopt` |
+| Level 4 | do not ordinary-update architecture rules | full verify before architecture-current claim | route to lightest safe architecture receiving path: scoped/full `place`, scoped/full `repair`, `rebuild` recommendation, or scoped/full `adopt`; escalate instead of using scoped path when risk is ambiguous or ADR-adjacent |
 
 If an existing workspace lacks enough inventory mapping to classify a change confidently, inspect the smallest needed source/spec set and update only needed mapping evidence. Unmapped behavior changes are at least Level 2 because mapping evidence changed or is missing. If the unmapped change spans multiple ownership areas or cannot be localized, route to Level 3. Do not perform a full workspace rewrite solely to classify impact.
 
@@ -354,6 +354,7 @@ Allowed:
 - Rebuild `inventory.md`.
 - Fix README, constitution, and project protocol blocks.
 - Repair `architecture/current-architecture.md` only with explicit user confirmation or ADR.
+- Route architecture repair as scoped or full using `architecture-control.md`.
 - Run `verify`.
 
 Forbidden unless explicitly requested:
@@ -364,15 +365,21 @@ Forbidden unless explicitly requested:
 - Treat stale specs as higher priority than code.
 - Automatically relax architecture rules to match violating code.
 
+Scoped repair may identify or perform a bounded documentation repair against one current rule, but full verify is still required before claiming repair complete or architecture currentness.
+
 If repair finds a likely code bug, report it as an implementation concern with code/spec references. Do not fix it unless the user explicitly asks for code changes.
 
 ## `place`
 
-Use after lightweight intent intake and before detailed implementation planning for non-trivial feature/module changes. Detailed rules live in `architecture-control.md`.
+Use after lightweight intent intake and before detailed implementation planning for non-trivial feature/module changes. Route placement as scoped or full using `architecture-control.md`.
+
+Scoped `place` answers a bounded placement question using the smallest needed architecture references. Full `place` is required when ownership, dependency direction, public contract, ADR relevance, or competing boundary rules are unclear.
 
 ## `rebuild`
 
 Use when the project needs a target architecture migration.
+
+Recommend `rebuild` when current architecture references are too stale or contradictory to repair incrementally. Do not enter rebuild merely because references are stale; target migration still requires user intent or decision handling.
 
 1. Document current architecture.
 2. Choose target Primary Preset and target Addons.
@@ -383,9 +390,15 @@ Use when the project needs a target architecture migration.
 7. During active rebuild, `place` and `verify` consider target architecture.
 8. During paused rebuild, target architecture gaps are warning/info and do not block normal maintenance unless the changed area touches migration scope.
 
+`rebuild` remains exceptional. A rebuild recommendation must explain why scoped `place`, scoped `repair`, or scoped `adopt` is unsafe.
+
 ## `adopt`
 
-Use when target architecture has been fully implemented.
+Use when target architecture has been fully implemented, or when architecture governance is being introduced for one clear existing area with implementation evidence.
+
+Scoped `adopt` is allowed only for one clear existing area with no ADR adjacency, no ownership-boundary changes outside that area, and no rules that affect other areas. Full `adopt` is required for completed target-architecture merge or broad governance changes.
+
+For completed-rebuild full adopt:
 
 1. Verify code matches target architecture rules.
 2. Merge target architecture into current architecture.
@@ -395,8 +408,14 @@ Use when target architecture has been fully implemented.
 6. Archive target/adoption docs.
 7. Run `verify`.
 
+For scoped adopt, limit governance changes to the named area and escalate to full adopt if ADR adjacency, ownership-boundary changes, rebuild state, shared boundaries, or cross-area rules are discovered.
+
+Full verify remains required before claiming adopt complete or architecture currentness.
+
 ## `diagnose`
 
 Use when the user reports a symptom and architecture should guide triage.
 
 `diagnose` is architecture-guided triage, not an automatic debugger or direct repair mode. It identifies likely owner, likely layer, specs/files to inspect, signals to check, and debugging order.
+
+Phase 4 does not add a named scoped diagnose subpath. `diagnose` may still keep one-symptom triage lightweight by reading the smallest relevant evidence, but `diagnose` is not a receiving mode for Level 4 update escalation.

@@ -110,6 +110,8 @@ Architecture docs must define enforceable boundaries:
 
 ## Placement & Boundary Review
 
+Use `place` scoped when the placement question is limited to one clear new file, module, integration, behavior, or public contract and current architecture references identify the governing boundary. Use `place` full when placement depends on multiple boundaries, unclear ownership, competing ADRs, or dependency direction that cannot be resolved from current references.
+
 `place` must output:
 
 - Feature intent.
@@ -154,6 +156,20 @@ If ownership, dependency direction, or public contract is unclear, output `Needs
 6. Implementation plans must not ignore placement review; if a plan conflicts, stop and resolve by re-running `place`, asking the user, or creating an ADR.
 7. Do not cross module boundaries through internal imports.
 8. Do not bypass declared public contracts, ports, events, adapters, or state owners.
+9. Scoped `place` answers only the bounded placement question and must not claim architecture currentness.
+10. Full `place` is required when ownership, dependency direction, public contract, ADR relevance, or competing boundary rules are unclear.
+11. `place` must not modify architecture rules; it may output `Needs ADR` or `Needs User Decision`.
+
+## Architecture Repair Routing
+
+`repair` remains documentation alignment, not business-code repair. Architecture repair has scoped and full subpaths:
+
+| Repair subpath | Use when | Required boundary |
+|---|---|---|
+| `repair` scoped | One localized doc/spec/architecture drift or one known implementation violation is measured against a current, explicit architecture rule. | Do not change architecture rules or accepted ADRs unless the user explicitly requested that governance change. |
+| `repair` full | Violations span multiple areas, current rules contradict implementation in several places, accepted ADRs are implicated, or the architecture model may be stale. | Run full verify before claiming repair completion or architecture currentness. |
+
+A scoped repair may identify the bounded repair action, but repair completion and architecture-current claims still require full verify according to `verification.md`. If scoped repair discovers broader drift, ADR impact, or stale architecture rules, report escalation instead of continuing as scoped repair.
 
 ## Debugging Rules
 
@@ -189,6 +205,23 @@ It should output:
 
 It must not claim root cause without evidence.
 
+### Diagnose Scope Decision
+
+Phase 4 does not add a scoped diagnose subpath. `diagnose` can already triage one reported symptom using the smallest relevant architecture references, but it is not a receiving mode for Phase 2 Level 4 update escalation.
+
+Defer a named scoped diagnose path until real-use replay shows diagnose itself is too heavy. Level 4 update escalation recommends `place`, `repair`, `rebuild`, or `adopt`, not `diagnose`.
+
+## Architecture Adopt Routing
+
+`adopt` is for introducing or merging architecture governance after implementation evidence exists.
+
+| Adopt subpath | Use when | Escalation rule |
+|---|---|---|
+| `adopt` scoped | One clear existing area needs architecture governance and current evidence shows no ADR adjacency, no ownership-boundary changes outside that area, and no rules that affect other areas. | Escalate to `adopt` full if the proposed governance affects other areas, accepted ADRs, shared boundaries, or rebuild state. |
+| `adopt` full | Governance spans multiple areas, merges completed target architecture, updates placement rules broadly, or changes ownership/dependency rules. | Require explicit user intent and full verify before adopt completion or architecture-current claims. |
+
+Scoped adopt cannot claim architecture currentness. Full verify remains required before adopting target architecture into current architecture or claiming adopt complete.
+
 ## Architecture Review Cadence
 
 Run architecture-focused verify when:
@@ -203,6 +236,17 @@ Run architecture-focused verify when:
 - Changing observability on critical paths.
 - Entering, pausing, resuming, or completing rebuild.
 - Implementing active target architecture scope.
+
+## Rebuild Recommendation
+
+`rebuild` remains exceptional. Recommend `rebuild` only when current architecture references are too stale, broad, or contradictory to safely repair incrementally, or when the user explicitly wants a target architecture migration.
+
+A rebuild recommendation must state:
+
+- why scoped `place`, scoped `repair`, or scoped `adopt` is unsafe;
+- which current architecture references are stale, contradictory, or insufficient;
+- what user decision or ADR is needed before migration planning;
+- that ordinary `update` must not rewrite architecture rules to legalize current drift.
 
 ## Architecture Drift
 

@@ -134,7 +134,7 @@ Create or repair the initial `docs/spec-docs/` workspace. Classify init as Empty
 
 ### `update`
 
-Synchronize implementation specs and inventory after implementation-relevant changes using Level 0-4 impact routing. Same-change spec maintenance is required when behavior, contracts, mappings, or architecture-relevant facts changed; Level 0 changes satisfy the gate by stating a no-update reason. Level 1 updates one mapped spec only, Level 2 uses targeted light check, Level 3 uses full verify, and Level 4 reports architecture risk and recommends `place`, `repair`, `rebuild`, or `adopt`. Must not silently rewrite architecture rules. Includes baseline absorption when transitioning from empty-project to real implementation. Details in `references/modes.md`.
+Synchronize implementation specs and inventory after implementation-relevant changes using Level 0-4 impact routing. Same-change spec maintenance is required when behavior, contracts, mappings, or architecture-relevant facts changed; Level 0 changes satisfy the gate by stating a no-update reason. Level 1 updates one mapped spec only, Level 2 uses targeted light check, Level 3 uses full verify, and Level 4 reports architecture risk and recommends the lightest safe architecture receiving path (`place`, `repair`, `rebuild`, or `adopt` scoped/full as applicable). Must not silently rewrite architecture rules or claim architecture currentness without full verify. Includes baseline absorption when transitioning from empty-project to real implementation. Details in `references/modes.md`.
 
 ### `verify`
 
@@ -154,7 +154,7 @@ Define and track migration from current to target architecture. Choose target Pr
 
 ### `adopt`
 
-Merge completed target architecture into current architecture after verifying code matches target rules. Archives target docs and marks rebuild completed. Details in `references/modes.md`.
+Merge completed target architecture into current architecture after verifying code matches target rules, or introduce scoped governance for one clear existing area when current evidence supports it. Completed-rebuild adopt archives target docs and marks rebuild completed. Details in `references/modes.md`.
 
 ### `diagnose`
 
@@ -213,7 +213,7 @@ Hooks must not automatically modify code, create ADRs, weaken architecture rules
 | Reference | Canonical content |
 |---|---|
 | `references/modes.md` | Detailed mode procedures for init, update, verify, repair, place, rebuild, adopt, diagnose |
-| `references/architecture-control.md` | Architecture Selection, Primary Preset, Addons, Adoption Mode, Boundary Contract, Placement & Boundary Review, Diagnose, Architecture Review Cadence, Architecture Drift, Architecture Hard Gates |
+| `references/architecture-control.md` | Architecture Selection, Primary Preset, Addons, Adoption Mode, Boundary Contract, Placement & Boundary Review, Architecture Workflow Subpaths, Architecture Routing Matrix, ADR and Rule-Change Safeguards, Diagnose, Architecture Review Cadence, Architecture Drift, Architecture Hard Gates |
 | `references/source-priority.md` | Conflict handling and priority rules for implementation facts, architecture rules, placement decisions, diagnosis, decision rationale |
 | `references/verification.md` | Verify output status, verification layers and scopes, layer routing matrix, finding categories, architecture violation subtypes, addon severity mapping, profile-specific init checks, and verification commands |
 | `references/spec-authoring.md` | Frontmatter schema, spec kinds, shared sections, implementation mapping, coverage rules, inventory rules, template map, module boundary and failure localization |
