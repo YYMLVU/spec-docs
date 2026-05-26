@@ -10,6 +10,72 @@ This file is the canonical home for verify rules.
 
 Output PASS, PASS WITH WARNINGS, or FAIL. If FAIL, list affected files and whether the next mode should be `update` or `repair`.
 
+## Verification Layers
+
+Verification has five named layers. Layers describe what was checked; they are not new user-facing modes.
+
+| Layer | Checks | Typical findings |
+|---|---|---|
+| `mechanical` | file existence, required files, frontmatter shape, links, anchors, placeholder scan, protocol block presence | missing file, invalid frontmatter, broken link, unresolved `{{template_variables}}`, `TODO`, or `TBD` |
+| `mapping` | `source_files`, `symbols`, Code-to-Spec Index, Task-to-Spec Map, Symbol-to-Spec Index, changed source/spec coverage consistency | stale source path, unmapped included file, missing symbol mapping, inventory row points to absent spec |
+| `semantic` | implementation facts in specs match current code, tests, configs, contracts, and behavior-defining docs | `[FACT DRIFT]` |
+| `architecture` | current/target architecture rules, placement rules, dependency direction, architecture addons, accepted ADRs, rebuild constraints | `[ARCHITECTURE VIOLATION: <subtype>]`, `[DECISION DRIFT]` |
+| `freshness` | `verified_commit`, `verified_date`, included-scope coverage claim, release/workspace currentness claim | stale verification evidence, unsupported currentness claim |
+
+Layer names must be reported when output is not the legacy short format. A partial or layered check may report only the layers it actually checked.
+
+Mapping remains a separate layer because path/link validity and source-to-spec coverage can fail independently. A spec file can be mechanically valid while its `source_files`, symbols, or inventory rows are stale.
+
+## Verification Scopes
+
+Use these scope labels exactly when reporting verify-like work:
+
+| Scope | Meaning | Currentness claims allowed |
+|---|---|---|
+| `targeted-check` | Level 2 targeted light check for affected specs/inventory rows only | targeted changed scope only; never full verify PASS |
+| `layered-check` | Explicitly scoped verification of one or more named layers without running full verify | only the checked layers and checked files/specs |
+| `full-verify` | Full verify required by the active mode, impact level, or user request | currentness for the verified scope, if all required layers pass |
+
+Do not describe `targeted-check` or `layered-check` as full `verify` PASS.
+
+A `layered-check` must list:
+
+```text
+Status: PASS | PASS WITH WARNINGS | FAIL
+Scope: layered-check
+Layers checked: mechanical | mapping | semantic | architecture | freshness
+Checked specs: <list or none>
+Checked inventory rows: <list or none>
+Checked implementation evidence: <paths, symbols, or none>
+Findings by layer:
+  mechanical: <none or findings>
+  mapping: <none or findings>
+  semantic: <none or findings>
+  architecture: <none or findings>
+  freshness: <none or findings>
+Warnings: <non-blocking uncertainty, if any>
+Currentness claim: <exact bounded claim, or none>
+Recommended next action: <none, update specific file, repair, escalate, or run full verify>
+```
+
+## Layer Routing Matrix
+
+| Trigger | Required scope | Required layers | Notes |
+|---|---|---|---|
+| Level 0 update | none | none | Do not run verify merely to claim freshness. |
+| Level 1 update | none | none | Do not create a mandatory verification workflow. Edited specs still follow normal authoring discipline. |
+| Level 2 update | `targeted-check` | mechanical, mapping if inventory/source references changed, semantic for changed behavior, changed-path inspection for unexpected architecture/ADR file changes only | Use the Targeted Light Check output format, not the `layered-check` format. This changed-path inspection is not an architecture review and cannot support architecture currentness. Must not claim full verify PASS. |
+| Level 3 update | `full-verify` | mechanical, mapping, semantic, freshness, architecture when architecture docs/ADRs/rebuild state exist | Required before broad currentness or release freshness. |
+| Level 4 update architecture-current claim | `full-verify` | mechanical, mapping, semantic for affected facts, architecture, freshness | Provisional until Phase 4 finalizes architecture workflow subpaths. Ordinary update must not legalize architecture drift. |
+| Final init completion | `full-verify` | mechanical, mapping, semantic, freshness, architecture when architecture docs exist | Required for final init completion. |
+| `repair` completion | `full-verify` | mechanical, mapping, semantic, freshness, architecture when architecture docs exist | Required before claiming repair complete. |
+| `rebuild` completion | `full-verify` | mechanical, mapping, semantic, architecture, freshness | Required before claiming rebuild state current. |
+| `adopt` completion | `full-verify` | mechanical, mapping, semantic, architecture, freshness | Required before merging target architecture into current. |
+| Explicit user request for one layer | `layered-check` unless user asks for full verify | requested layers only | Must state bounded currentness claim or none. |
+| Explicit user request for targeted changed-scope verification | `targeted-check` only when the request matches Level 2 targeted light check boundaries | targeted light check layers from the row above | If the request is not tied to a Level 2 changed scope, use `layered-check` or ask whether full verify is intended. |
+
+If a layered or targeted check discovers evidence outside its safe scope, stop expanding silently. Report the finding and recommend the next action: update a specific file, escalate to the appropriate mode, or run full verify.
+
 ## Targeted Light Check
 
 A targeted light check is a scoped verification variant for Level 2 update routing. It is not a full `verify` result and must not be reported as full `verify` PASS. The human-readable term "targeted light check" corresponds to output scope token `targeted-check`.
@@ -38,7 +104,7 @@ Required checks:
 - Changed spec sections accurately describe the changed implementation behavior, edge case, contract, or verification point.
 - Architecture files and accepted ADRs were not modified unexpectedly, checked by changed-path inspection rather than broad architecture review.
 
-A targeted-check `FAIL` follows normal verify failure semantics for the checked scope. A targeted-check `PASS` confirms only the targeted scope.
+A targeted-check `FAIL` follows normal verify failure semantics for the checked scope. A targeted-check `PASS` confirms only the targeted changed scope and does not imply `full-verify` PASS, release freshness, workspace currentness, semantic currentness outside the changed behavior, or architecture currentness.
 
 Full `verify` remains required for Level 3, Level 4 architecture-current claims, final init completion, repair/adopt/rebuild completion, release-level freshness claims, and explicit user request.
 
