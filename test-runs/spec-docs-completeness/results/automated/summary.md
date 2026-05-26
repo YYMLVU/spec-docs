@@ -2,12 +2,12 @@
 
 ## Overall Status
 
-Collected: 29 result file(s)
-Automated: 4, Scenarios: 20, Reviews: 4
+Collected: 30 result file(s)
+Automated: 4, Scenarios: 22, Reviews: 4
 
 Status breakdown:
-  PASS:           19
-  PASS_WITH_NOTES: 9
+  PASS:           22
+  PASS_WITH_NOTES: 8
   FAIL:           0
   BLOCKED:        0
   UNCLASSIFIED:   0
@@ -44,6 +44,8 @@ Status breakdown:
 | s18.md | PASS |
 | s19.md | PASS |
 | s20.md | PASS |
+| s21.md | PASS |
+| s22.md | PASS |
 
 
 ## Grouped Reviews

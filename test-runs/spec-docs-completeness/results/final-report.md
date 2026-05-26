@@ -2,7 +2,7 @@
 
 ## Overall Status: PASS_WITH_NOTES
 
-Automated checks passed. The suite now covers twenty scenarios. F-002, F-003, and F-004 are covered by S11, S12, and expanded hook matcher simulation. F-001 and F-005 remain out of scope and non-blocking.
+Automated checks passed. The suite now covers twenty-two scenarios. F-002, F-003, and F-004 are covered by S11, S12, and expanded hook matcher simulation. F-001 and F-005 remain out of scope and non-blocking.
 
 ## Scenario Results
 
@@ -28,6 +28,8 @@ Automated checks passed. The suite now covers twenty scenarios. F-002, F-003, an
 | S18 (update -- Level 2 targeted light check) | PASS |
 | S19 (update/verify -- Level 3 full update) | PASS |
 | S20 (update/verify -- Level 4 escalation) | PASS |
+| S21 (verify -- layered scope) | PASS |
+| S22 (verify -- layered escalation) | PASS |
 
 ## Findings
 
@@ -59,6 +61,14 @@ This run covers five impact routing scenarios plus the updated S4 localized upda
 - S19 Level 3 Full Update and Full Verify: broad multi-area changes require full verify.
 - S20 Level 4 Architecture-Risk Escalation: architecture-risk changes escalate and do not silently legalize drift.
 
+## Verify Layering Coverage
+
+This run covers Phase 3 verify layering:
+
+- S5 Full Verify Layered Output: full verify reports mechanical, mapping, semantic, architecture, and freshness layers with findings grouped by layer.
+- S21 Layered Verify Scope: mechanical+mapping layered-check passes without claiming full verify, semantic currentness, architecture currentness, release freshness, or workspace currentness.
+- S22 Layered Verify Escalation: scoped layered-check reports architecture-risk evidence and recommends Level 4/full verify before architecture-current claims.
+
 ## Coverage Conclusion
 
 | Dimension | Covered? |
@@ -73,6 +83,7 @@ This run covers five impact routing scenarios plus the updated S4 localized upda
 | No-Spec-Skill fallback reviewed | yes |
 | COMPRESS/IMPROVE/gap-plan requirements mapped | yes |
 | Impact routing covered | yes |
+| Verify layering covered | yes |
 
 ## Release Judgment
 

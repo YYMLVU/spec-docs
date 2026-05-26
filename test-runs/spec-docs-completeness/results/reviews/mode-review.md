@@ -9,7 +9,7 @@ Status: PASS_WITH_NOTES
 | init | S1, S2, S13, S14, S15 |
 | place | S3 |
 | update | S4, S16, S17, S18, S19, S20 |
-| verify | S5, S11, S19, S20 |
+| verify | S5, S11, S19, S20, S21, S22 |
 | repair | S6 |
 | rebuild | S7 |
 | adopt | S8, S12 |
@@ -22,6 +22,7 @@ Status: PASS_WITH_NOTES
 - S12 strengthens adopt coverage for completed-rebuild behavior.
 - Init coverage now includes Empty Project (S1), Minimal Existing Project (S2), Standard Existing Project (S13), Large Project / Phased Init (S14), and Init Profile Boundary (S15). These scenarios verify that init output scales with project complexity, `PARTIAL INIT` does not claim final completion, and classification uses observable complexity signals beyond file count.
 - Remaining notes are F-001 and F-005, which are out of scope for this extension.
+- Verify coverage now includes full verify layered output (S5), architecture drift (S11), Level 3/4 full verify gates (S19/S20), positive layered-check scope without overclaim (S21), and layered-check escalation when architecture risk is discovered (S22).
 
 ## Mode Responsibility Confusion
 
@@ -67,3 +68,5 @@ No hard-gate failures found.
 | S18 | none |
 | S19 | none |
 | S20 | none |
+| S21 | none |
+| S22 | none |

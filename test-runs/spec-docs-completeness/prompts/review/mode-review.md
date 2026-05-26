@@ -7,8 +7,8 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
 ## Inputs
 
 - `coverage/scenario-matrix.md` -- mode-to-scenario mapping and responsibility verification summary
-- `prompts/scenarios/s01.md` through `prompts/scenarios/s20.md` -- scenario checklists
-- `results/scenario-outputs/s01.md` through `results/scenario-outputs/s20.md` -- scenario execution outputs
+- `prompts/scenarios/s01.md` through `prompts/scenarios/s22.md` -- scenario checklists
+- `results/scenario-outputs/s01.md` through `results/scenario-outputs/s22.md` -- scenario execution outputs
 - `source-under-test/skills/spec-docs/references/modes.md` -- normative mode behavior
 - `source-under-test/skills/spec-docs/references/architecture-control.md` -- architecture mode contracts
 - `source-under-test/skills/spec-docs/references/hard-gates.md` -- hard gate index
@@ -16,13 +16,13 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
 
 ## Review Steps
 
-1. Confirm every scenario output file exists for S01-S20 (or document which are missing).
+1. Confirm every scenario output file exists for S01-S22 (or document which are missing).
 
 2. For each mode, verify the scenario(s) assigned to it exercise the mode properly:
    - **init** (S1, S2, S13, S14, S15): S1 validates empty-project init produces only principle seed, no fake facts. S2 validates Minimal Existing Project init produces a minimal workspace without architecture/ADR/rebuild/empty category directories by default. S13 covers Standard Existing Project Init: grounded child specs for observed runtime, route, domain, and integration areas. S14 covers Large Project / Phased Init: `PARTIAL INIT` is allowed only as a non-final state and does not satisfy final included-scope coverage. S15 covers profile boundary classification beyond file count: classification uses observable complexity signals.
    - **place** (S3): Placement & Boundary Review before detailed planning; includes allowed/forbidden dependencies, public contracts, forbidden shortcuts, failure localization hints; does not modify code.
    - **update** (S4, S16, S17, S18, S19, S20): Same-change spec sync uses Level 0-4 impact routing. S16 validates Level 0 no-action. S17 validates Level 1 single-spec touch without full verify. S4 and S18 validate Level 2 targeted light check and no full verify claim. S19 validates Level 3 full verify for broad changes. S20 validates Level 4 architecture-risk escalation without silently rewriting architecture rules or accepted ADRs.
-   - **verify** (S5, S11, S19, S20): Fact drift, decision drift, and architecture violation subtype reporting; severity matches Adoption Mode. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. S19 verifies full verify is required for Level 3 broad updates. S20 verifies full verify is required before architecture-current Level 4 claims.
+   - **verify** (S5, S11, S19, S20, S21, S22): Fact drift, decision drift, architecture violation subtype reporting, full verify gates, and layered verify scope behavior. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. S19 verifies full verify is required for Level 3 broad updates. S20 verifies full verify is required before architecture-current Level 4 claims. S21 verifies mechanical+mapping layered checks do not overclaim. S22 verifies scoped checks surface architecture risk and recommend escalation.
    - **repair** (S6): Doc-only alignment; no business-code modifications; architecture repair requires explicit confirmation or ADR.
    - **rebuild** (S7): Rebuild mode from `rebuild/status.md`; target preset, addons, adoption mode, migration strategy selected.
    - **adopt** (S8, S12): Gradual adoption for first-time projects; target-architecture merge when rebuild is complete; code verified against target rules before merge. S12 verifies completed-rebuild adopt behavior: read rebuild status, verify target/code alignment, merge target into current, archive target docs, and mark rebuild completed.
@@ -54,7 +54,7 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 | init | S1, S2, S13, S14, S15 | yes/no | yes/no | |
 | place | S3 | yes/no | yes/no | |
 | update | S4, S16, S17, S18, S19, S20 | yes/no | yes/no | |
-| verify | S5, S11, S19, S20 | yes/no | yes/no | |
+| verify | S5, S11, S19, S20, S21, S22 | yes/no | yes/no | |
 | repair | S6 | yes/no | yes/no | |
 | rebuild | S7 | yes/no | yes/no | |
 | adopt | S8, S12 | yes/no | yes/no | |

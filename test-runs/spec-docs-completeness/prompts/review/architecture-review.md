@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Review scenario outputs S1, S3, S4, S5, S7, S8, S9, S11, S12, and S20 against the architecture governance layer defined in `references/architecture-control.md` and `SKILL.md`. Evaluate whether the six architecture control responsibilities are correctly exercised by their respective scenarios, and whether architecture gates are respected.
+Review scenario outputs S1, S3, S4, S5, S7, S8, S9, S11, S12, S20, and S22 against the architecture governance layer defined in `references/architecture-control.md` and `SKILL.md`. Evaluate whether the six architecture control responsibilities are correctly exercised by their respective scenarios, and whether architecture gates are respected.
 
 ## Architecture Control Layer Responsibilities
 
@@ -13,8 +13,8 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 | Architecture Selection | S1, S7, S8, S12 | Primary Preset, Addons, Adoption Mode, confidence, rationale, known deviations |
 | Placement | S3 | Feature intent, ownership, layer placement, allowed/forbidden dependencies, required public contracts, forbidden shortcuts |
 | Boundary Contract | S3, S4, S5 | Module ownership rules, layer dependency rules, cross-module access rules, public contract rules, shared code rules, infrastructure access rules |
-| Compliance Verification | S5, S11, S20 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited, Level 4 escalation compliance checked |
-| Level 4 Escalation | S20 | Architecture-risk change classified as Level 4, no silent rewrite of architecture rules or accepted ADRs, mid-update reclassification when architecture risk is discovered |
+| Compliance Verification | S5, S11, S20, S22 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited, Level 4 escalation compliance checked, scoped verify escalation behavior |
+| Level 4 Escalation | S20, S22 | Architecture-risk change classified as Level 4, no silent rewrite of architecture rules or accepted ADRs, mid-update reclassification when architecture risk is discovered, scoped check escalation recommendation |
 | Failure Localization | S9 | Owner module, failing layer, signals to check, debugging order |
 | Rebuild Evolution | S7, S8, S12 | Target preset/addons, adoption plan, rebuild status, target-architecture merge |
 
@@ -30,6 +30,7 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 - `results/scenario-outputs/s11.md` -- Architecture Drift Verify (business policy accumulating in shared utilities)
 - `results/scenario-outputs/s12.md` -- True Adopt Completed Rebuild (merge/archive target docs)
 - `results/scenario-outputs/s20.md` -- Level 4 Architecture-Risk Escalation
+- `results/scenario-outputs/s22.md` -- Layered Verify Escalation (architecture-risk evidence in scoped check)
 - `source-under-test/skills/spec-docs/references/architecture-control.md` -- normative architecture rules
 - `source-under-test/skills/spec-docs/references/verification.md` -- verify output status, finding categories, violation subtypes, addon severity mapping
 - `source-under-test/skills/spec-docs/SKILL.md` -- Architecture Gate Summary
@@ -125,6 +126,7 @@ For S12 (true adopt completed rebuild):
 - Full verify is required before claiming architecture state is current.
 - If the change was initially treated as localized, reclassification upward to Level 4 occurs when the architecture risk is discovered (mid-update reclassification).
 - If a factual spec update is suggested, the output states that architecture risk remains and architecture currentness is not claimed.
+- S22 verifies that scoped layered checks report architecture-risk evidence and recommend escalation instead of claiming architecture currentness or silently expanding to full verify.
 
 ### 8. ADR and User-Decision Triggers
 
@@ -212,6 +214,10 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 (Status, gaps, evidence)
 
 #### S20 -- Level 4 Architecture-Risk Escalation
+
+(Status, gaps, evidence)
+
+#### S22 -- Layered Verify Escalation
 
 (Status, gaps, evidence)
 
