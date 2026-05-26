@@ -4,16 +4,16 @@ Status: PASS_WITH_NOTES
 
 ## Updated Mode Coverage
 
-| Mode | Scenario(s) |
-| --- | --- |
-| init | S1, S2, S13, S14, S15 |
-| place | S3 |
-| update | S4, S16, S17, S18, S19, S20 |
-| verify | S5, S11, S19, S20, S21, S22 |
-| repair | S6 |
-| rebuild | S7 |
-| adopt | S8, S12 |
-| diagnose | S9 |
+| Mode | Scenario(s) | Covered | Within Responsibility | Notes |
+| --- | --- | --- | --- | --- |
+| init | S1, S2, S13, S14, S15 | yes | yes | Empty Project (S1), Minimal Existing (S2), Standard Existing (S13), Large/Phased (S14), Profile Boundary (S15) |
+| place | S3 | yes | yes | Does not modify code or create implementation specs |
+| update | S4, S16, S17, S18, S19, S20 | yes | yes | Level 0-4 impact routing; S4/S18 Level 2, S19 Level 3, S20 Level 4 |
+| verify | S5, S11, S19, S20, S21, S22 | yes | yes | Full verify (S5), architecture drift (S11), Level 3/4 gates (S19/S20), layered scope (S21), escalation (S22) |
+| repair | S6 | yes | yes | Doc-only alignment; no business-code modifications |
+| rebuild | S7 | yes | yes | Uses rebuild/status.md as authoritative state |
+| adopt | S8, S12 | yes | yes | Gradual adoption (S8); completed-rebuild merge/archive (S12) |
+| diagnose | S9 | yes | yes | Architecture-guided triage; does not claim root cause |
 
 ## Notes
 

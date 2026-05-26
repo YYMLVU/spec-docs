@@ -13,8 +13,7 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 | Architecture Selection | S1, S7, S8, S12 | Primary Preset, Addons, Adoption Mode, confidence, rationale, known deviations |
 | Placement | S3 | Feature intent, ownership, layer placement, allowed/forbidden dependencies, required public contracts, forbidden shortcuts |
 | Boundary Contract | S3, S4, S5 | Module ownership rules, layer dependency rules, cross-module access rules, public contract rules, shared code rules, infrastructure access rules |
-| Compliance Verification | S5, S11, S20, S22 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited, Level 4 escalation compliance checked, scoped verify escalation behavior |
-| Level 4 Escalation | S20, S22 | Architecture-risk change classified as Level 4, no silent rewrite of architecture rules or accepted ADRs, mid-update reclassification when architecture risk is discovered, scoped check escalation recommendation |
+| Compliance Verification | S5, S11, S20, S22 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited, Level 4 escalation compliance checked (architecture-risk reclassification, no silent rewrite of rules/ADRs, mid-update reclassification), scoped verify escalation behavior |
 | Failure Localization | S9 | Owner module, failing layer, signals to check, debugging order |
 | Rebuild Evolution | S7, S8, S12 | Target preset/addons, adoption plan, rebuild status, target-architecture merge |
 
@@ -171,7 +170,6 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 | Placement | covered/partial/missing | |
 | Boundary Contract | covered/partial/missing | |
 | Compliance Verification | covered/partial/missing | |
-| Level 4 Escalation | covered/partial/missing | |
 | Failure Localization | covered/partial/missing | |
 | Rebuild Evolution | covered/partial/missing | |
 
