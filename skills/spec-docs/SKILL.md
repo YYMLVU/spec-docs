@@ -138,7 +138,7 @@ Synchronize implementation specs and inventory after implementation-relevant cha
 
 ### `verify`
 
-Check facts, architecture, decisions, references, and indexes with full verify or targeted light check depending on impact level. Output PASS / PASS WITH WARNINGS / FAIL. Findings use `[FACT DRIFT]`, `[ARCHITECTURE VIOLATION: <subtype>]`, and `[DECISION DRIFT]`. Each architecture violation must include: observed issue, expected architecture behavior, recommended action, evidence, and source documents checked. Severity reflects Adoption Mode and enabled Addons; verify reports detectable violations and is honest about manual review needs. Subtype list and severity mapping in `references/verification.md`.
+Check facts, mappings, architecture, decisions, references, and indexes with `targeted-check`, `layered-check`, or `full-verify` scope depending on impact level, completion gate, or explicit user request. Output PASS / PASS WITH WARNINGS / FAIL. Findings use `[FACT DRIFT]`, `[ARCHITECTURE VIOLATION: <subtype>]`, and `[DECISION DRIFT]`. Each architecture violation must include: observed issue, expected architecture behavior, recommended action, evidence, and source documents checked. Severity reflects Adoption Mode and enabled Addons; verify reports detectable violations and is honest about manual review needs. Subtype list and severity mapping in `references/verification.md`.
 
 ### `repair`
 

@@ -334,7 +334,13 @@ If many Level 1 or Level 2 updates have occurred since the last full verify, rec
 
 ## `verify`
 
-Use before declaring `init`, `update`, `repair`, or architecture adoption complete. Detailed rules live in `verification.md`.
+Use `verify` to check facts, mappings, architecture, decisions, references, and indexes using the scopes defined in `verification.md`.
+
+- `targeted-check` applies only to Level 2 update routing.
+- `layered-check` applies only when the user or workflow asks for named verification layers without a full currentness claim.
+- `full-verify` remains required before final init completion, Level 3 broad currentness or release freshness, Level 4 architecture-current claims, and repair/adopt/rebuild completion.
+
+Detailed layer and output rules live in `verification.md`.
 
 ## `repair`
 
