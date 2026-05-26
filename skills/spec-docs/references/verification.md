@@ -50,17 +50,15 @@ Checked specs: <list or none>
 Checked inventory rows: <list or none>
 Checked implementation evidence: <paths, symbols, or none> (identifies implementation paths/symbols inspected)
 Findings by layer:
-  mechanical: <none or findings>
-  mapping: <none or findings>
-  semantic: <none or findings>
-  architecture: <none or findings>
-  freshness: <none or findings>
+  <checked layer>: <none or findings>
 Warnings: <non-blocking uncertainty, if any>
 Currentness claim: <exact bounded claim, or none>
 Recommended next action: <none, update specific file, repair, escalate, or run full verify>
 ```
 
 ## Layer Routing Matrix
+
+> **Note:** `references/modes.md` remains canonical for impact classification and update routing. This matrix maps existing triggers to verification scope and layer consequences only.
 
 | Trigger | Required scope | Required layers | Notes |
 |---|---|---|---|

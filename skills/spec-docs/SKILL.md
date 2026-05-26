@@ -174,7 +174,7 @@ These gates are non-negotiable. Additional mode-specific and architecture-specif
 
 1. No writing specs before exploring the current project.
 2. No final `init` completion until full included-scope coverage is verified.
-3. No implementation-relevant completion claim until impact level is handled: no-update reason for Level 0, affected spec update for Level 1, targeted light check for Level 2, or full verify/escalation for Level 3/4.
+3. No implementation-relevant completion claim until impact level is handled: no-update reason (Level 0), affected spec update (Level 1), `targeted-check` (Level 2), or `full-verify`/escalation (Level 3/4).
 4. No `verify` success claim without checking protocol, core files, frontmatter, references, coverage, content, and index consistency.
 5. No code modifications during `repair` without explicit user approval.
 6. Architecture rules must not be weakened without explicit user confirmation or ADR.
