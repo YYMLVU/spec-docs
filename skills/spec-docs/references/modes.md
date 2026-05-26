@@ -12,7 +12,7 @@ This file is normative for mode-specific behavior. `SKILL.md` routes to this fil
 | `repair` | Realign docs with current implementation without changing business code. | `source-priority.md`, `spec-authoring.md`, `project-instructions.md` |
 | `place` | Decide feature/module placement before detailed implementation planning. | `architecture-control.md` |
 | `rebuild` | Define and track migration from current to target architecture. | `architecture-control.md`, `verification.md` |
-| `adopt` | Merge completed target architecture into current architecture. | `architecture-control.md`, `verification.md` |
+| `adopt` | Merge completed target architecture into current architecture, or introduce scoped governance for one clear area. | `architecture-control.md`, `verification.md` |
 | `diagnose` | Perform architecture-guided triage for a reported symptom. | `architecture-control.md`, `source-priority.md`, `modes.md` |
 
 Always apply `hard-gates.md` for every mode.

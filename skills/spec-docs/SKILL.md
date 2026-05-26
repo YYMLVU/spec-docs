@@ -213,7 +213,7 @@ Hooks must not automatically modify code, create ADRs, weaken architecture rules
 | Reference | Canonical content |
 |---|---|
 | `references/modes.md` | Detailed mode procedures for init, update, verify, repair, place, rebuild, adopt, diagnose |
-| `references/architecture-control.md` | Architecture Selection, Primary Preset, Addons, Adoption Mode, Boundary Contract, Placement & Boundary Review, Architecture Workflow Subpaths, Architecture Routing Matrix, ADR and Rule-Change Safeguards, Diagnose, Architecture Review Cadence, Architecture Drift, Architecture Hard Gates |
+| `references/architecture-control.md` | Architecture Selection, Primary Preset, Addons, Adoption Mode, Boundary Contract, Placement & Boundary Review, Architecture Workflow Subpaths, Architecture Routing Matrix, Architecture Repair Routing, Architecture Adopt Routing, Rebuild Recommendation, Diagnose Scope Decision, ADR and Rule-Change Safeguards, Diagnose, Architecture Review Cadence, Architecture Drift, Architecture Hard Gates |
 | `references/source-priority.md` | Conflict handling and priority rules for implementation facts, architecture rules, placement decisions, diagnosis, decision rationale |
 | `references/verification.md` | Verify output status, verification layers and scopes, layer routing matrix, finding categories, architecture violation subtypes, addon severity mapping, profile-specific init checks, and verification commands |
 | `references/spec-authoring.md` | Frontmatter schema, spec kinds, shared sections, implementation mapping, coverage rules, inventory rules, template map, module boundary and failure localization |
