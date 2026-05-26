@@ -23,7 +23,7 @@ Architecture modes keep their existing names. When architecture risk is present,
 | `scoped` | The architecture question is localized to one clearly bounded area, known rule, or known placement decision. | No architecture currentness claim. Report the bounded decision or repair only. |
 | `full` | The question spans multiple areas, unclear ownership, ADRs, stale architecture model, target architecture, or broad governance state. | Architecture currentness only after required full verify passes. |
 
-Subpath labels are internal routing labels, not user-facing modes. Do not create mode names such as `place-lite`, `repair-lite`, or `adopt-lite`.
+Subpath labels are internal routing labels, not user-facing modes. Do not create mode names such as `place-lite`, `repair-lite`, or `adopt-lite`. An architecture receiving path means the recommended existing mode plus scoped/full subpath or rebuild recommendation from the Architecture Routing Matrix.
 
 ### Architecture Routing Matrix
 
