@@ -23,6 +23,7 @@ const requiredFiles = [
   "skills/spec-docs/references/spec-authoring.md",
   "skills/spec-docs/references/hooks.md",
   "skills/spec-docs/references/hard-gates.md",
+  "test-runs/spec-docs-completeness/coverage/rule-ownership-inventory.md",
   "skills/spec-docs/templates/current-architecture.md",
   "skills/spec-docs/templates/target-architecture.md",
   "skills/spec-docs/templates/placement-rules.md",
@@ -75,6 +76,49 @@ assertIncludes(skill, "Architecture Selection", "SKILL.md");
 assertIncludes(skill, "Core Hard Gates", "SKILL.md");
 assertIncludes(skill, "references/architecture-control.md", "SKILL.md reference map");
 assertIncludes(skill, "references/hard-gates.md", "SKILL.md reference map");
+
+function assertNotIncludes(text, needle, label) {
+  assert(!text.includes(needle), `${label} must not include stale unconditional wording ${JSON.stringify(needle)}`);
+}
+
+const ownershipInventory = readText(path.join(repoRoot, "test-runs/spec-docs-completeness/coverage/rule-ownership-inventory.md"));
+for (const phrase of [
+  "Canonical Ownership Table",
+  "Impact levels 0-4",
+  "Trigger Deduplication Decisions",
+  "Planned Static Check Expectations"
+]) {
+  assertIncludes(ownershipInventory, phrase, "rule ownership inventory");
+}
+
+const protocolBlock = readText(path.join(repoRoot, "skills/spec-docs/templates/agent-protocol-block.md"));
+const workspaceReadmeTemplate = readText(path.join(repoRoot, "skills/spec-docs/templates/workspace-readme.md"));
+const hooksReference = readText(path.join(repoRoot, "skills/spec-docs/references/hooks.md"));
+
+assertNotIncludes(
+  workspaceReadmeTemplate,
+  "**Before declaring work done**: run `spec-docs verify`.",
+  "workspace-readme.md"
+);
+assertNotIncludes(
+  protocolBlock,
+  "11. Run tests.\n12. Run `spec-docs update`.\n13. Run `spec-docs verify`.",
+  "agent-protocol-block.md"
+);
+assertNotIncludes(
+  hooksReference,
+  "remind update/verify around tests/builds when code changed",
+  "hooks.md"
+);
+
+for (const phrase of [
+  "impact-appropriate spec action",
+  "Level 0: state a no-update reason",
+  "Level 2: update affected specs and run a targeted light check",
+  "Level 4: report architecture risk"
+]) {
+  assertIncludes(protocolBlock, phrase, "agent-protocol-block.md impact-aware protocol");
+}
 
 const architectureControl = readText(path.join(repoRoot, "skills/spec-docs/references/architecture-control.md"));
 for (const phrase of [
