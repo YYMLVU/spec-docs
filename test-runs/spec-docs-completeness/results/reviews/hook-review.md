@@ -97,3 +97,7 @@ Hook policy is impact-aware: hooks do not block merely because full verify was s
 - S18 validates Level 2: localized update with targeted light check satisfies the completion gate without full verify.
 
 Level 3 and Level 4 still require full verify before broad currentness, release freshness, or architecture-current claims (S19, S20).
+
+## Rule Ownership and Trigger Deduplication
+
+S28 and `coverage/rule-ownership-inventory.md` confirm that `references/hooks.md` owns hook behavior levels and block candidates. Hook declarations and scripts remain reminder-only and do not invent extra block conditions. The stale `update/verify around tests/builds` wording has been replaced with impact classification plus impact-appropriate spec action, preserving Level 0 through Level 2 no-full-verify behavior while keeping Level 3 and Level 4 strict gates.

@@ -7,8 +7,8 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
 ## Inputs
 
 - `coverage/scenario-matrix.md` -- mode-to-scenario mapping and responsibility verification summary
-- `prompts/scenarios/s01.md` through `prompts/scenarios/s27.md` -- scenario checklists
-- `results/scenario-outputs/s01.md` through `results/scenario-outputs/s27.md` -- scenario execution outputs
+- `prompts/scenarios/s01.md` through `prompts/scenarios/s28.md` -- scenario checklists
+- `results/scenario-outputs/s01.md` through `results/scenario-outputs/s28.md` -- scenario execution outputs
 - `source-under-test/skills/spec-docs/references/modes.md` -- normative mode behavior
 - `source-under-test/skills/spec-docs/references/architecture-control.md` -- architecture mode contracts
 - `source-under-test/skills/spec-docs/references/hard-gates.md` -- hard gate index
@@ -16,7 +16,7 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
 
 ## Review Steps
 
-1. Confirm every scenario output file exists for S01-S27 (or document which are missing).
+1. Confirm every scenario output file exists for S01-S28 (or document which are missing).
 
 2. For each mode, verify the scenario(s) assigned to it exercise the mode properly:
    - **init** (S1, S2, S13, S14, S15): S1 validates empty-project init produces only principle seed, no fake facts. S2 validates Minimal Existing Project init produces a minimal workspace without architecture/ADR/rebuild/empty category directories by default. S13 covers Standard Existing Project Init: grounded child specs for observed runtime, route, domain, and integration areas. S14 covers Large Project / Phased Init: `PARTIAL INIT` is allowed only as a non-final state and does not satisfy final included-scope coverage. S15 covers profile boundary classification beyond file count: classification uses observable complexity signals.
@@ -39,6 +39,16 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
    - Are any of the 10 Core Hard Gates violated?
    - Are any of the 5 Architecture Gate Summary gates violated?
    - Are any mode-specific hard gates from `references/hard-gates.md` violated?
+
+### Rule Ownership and Trigger Deduplication (S28)
+
+Verify that S28 preserves mode boundaries after deduplication:
+
+- `update` impact levels remain owned by `references/modes.md`.
+- `verify` scopes and currentness gates remain owned by `references/verification.md`.
+- Templates and protocol text use impact-appropriate spec action instead of unconditional full verify.
+- Level 0, Level 1, and Level 2 do not require full verify merely because a task is ending.
+- Level 3, Level 4 architecture-current, final init, and repair/adopt/rebuild completion gates still require full verify where previously required.
 
 ## Output Format
 

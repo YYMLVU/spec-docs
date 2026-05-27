@@ -76,3 +76,8 @@ No hard-gate failures found.
 | S25 | none |
 | S26 | none |
 | S27 | none |
+| S28 | none |
+
+## Rule Ownership and Trigger Deduplication
+
+S28 passes. The mode layer keeps impact routing in `references/modes.md` and verification scope semantics in `references/verification.md`. The expected output rejects unconditional full verify for Level 0 through Level 2 while preserving full verify gates for Level 3 broad currentness, Level 4 architecture-current claims, final init, and repair/adopt/rebuild completion.

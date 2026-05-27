@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Review the hook layer completeness by evaluating the automated hook-check results and hook-simulation results. Determine whether hook declarations are complete, no extra hooks exist beyond the five declared skeleton scripts, scripts are reminder-only with no executable enforcement, matcher simulation is correct, and no side effects exist.
+Review the hook layer completeness by evaluating the automated hook-check results, hook-simulation results, S28 rule ownership scenario, and rule ownership inventory. Determine whether hook declarations are complete, no extra hooks exist beyond the five declared skeleton scripts, scripts are reminder-only with no executable enforcement, matcher simulation is correct, no side effects exist, and hook policy remains impact-aware without reintroducing unconditional full verify for Level 0 through Level 2.
 
 ## Hook Layer Design
 
@@ -22,6 +22,8 @@ The hook layer follows the design in `references/hooks.md`:
 - `source-under-test/skills/spec-docs/hooks/run-hook.cmd` -- Windows cmd stub
 - `source-under-test/skills/spec-docs/hooks/scripts/` -- five skeleton scripts
 - `source-under-test/skills/spec-docs/references/hooks.md` -- normative hook policy
+- `results/scenario-outputs/s28.md` -- expected Phase 5 ownership and trigger deduplication behavior
+- `coverage/rule-ownership-inventory.md` -- canonical owner and stale trigger inventory
 
 ## Review Steps
 
@@ -122,6 +124,16 @@ Verify hooks respect safety boundaries:
 - Hooks must not weaken architecture rules.
 - Hooks must not generate future plans.
 - Hooks must not over-block normal read-only work.
+
+### 9. Rule Ownership and Trigger Deduplication
+
+From `coverage/rule-ownership-inventory.md` and S28, verify:
+
+- `references/hooks.md` is the canonical owner for hook behavior levels and block candidates.
+- Hook scripts and JSON declarations do not invent additional block candidates.
+- Hook policy reminds impact classification and impact-appropriate spec action rather than unconditional `update/verify`.
+- Hooks do not block merely because full verify was skipped for Level 0, Level 1, or Level 2 when their required action is complete.
+- The protocol block remains self-contained without requiring universal full verify for Level 0 through Level 2.
 
 ## Output Format
 
