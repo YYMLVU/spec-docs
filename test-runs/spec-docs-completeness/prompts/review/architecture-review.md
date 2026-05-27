@@ -41,7 +41,7 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 
 ## Review Steps
 
-### 1. Architecture Selection (S1, S7, S8, S12)
+### 1. Architecture Selection (S1, S7, S8, S12, S27)
 
 For S1 (empty-project init):
 - Architecture Selection records Primary Preset, Addons, Adoption Mode, rationale, confidence, and known deviations.
@@ -69,7 +69,7 @@ For S12 (true adopt completed rebuild):
 - Archives target docs.
 - Marks rebuild completed in status.
 
-### 2. Placement & Boundary Review (S3)
+### 2. Placement & Boundary Review (S3, S23)
 
 - `place` output includes: Feature Intent, Ownership, Layer Placement, Allowed Dependencies, Forbidden Dependencies, Required Public Contracts, Forbidden Shortcuts, Specs to Read, Implementation Constraints, Failure Localization Hints, Specs to Update After Implementation, Open Questions, Decision/Confidence.
 - If ownership, dependency direction, or public contract is unclear, output says `Needs ADR` or `Needs User Decision`.

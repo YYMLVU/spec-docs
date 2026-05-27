@@ -69,13 +69,25 @@ Status: PASS. Classifies cross-module boundary bypass as Level 4, reports archit
 
 Status: PASS. Scoped layered check discovers architecture-risk evidence and recommends escalation (Level 4/full verify) instead of claiming architecture currentness or silently expanding to full verify.
 
-#### S23-S27 -- Architecture Workflow Routing
+#### S23 -- Scoped Placement
 
-- S23 confirms scoped `place` handles a bounded placement question without broad architecture workflow or architecture-current claim.
-- S24 confirms scoped `repair` handles localized documentation drift while preserving the full verify completion gate.
-- S25 confirms multi-area and ADR-implicated repair escalates to full repair plus decision handling.
-- S26 confirms rebuild is recommended only when current architecture references are too stale or contradictory for scoped repair.
-- S27 confirms scoped adopt is limited to one clear area, ADR-adjacent adopt escalates to decision handling, and full adopt remains required for completed target-architecture merge.
+Status: PASS_WITH_NOTES. Confirms scoped `place` handles a bounded placement question without broad architecture workflow or architecture-current claim.
+
+#### S24 -- Scoped Repair
+
+Status: PASS_WITH_NOTES. Confirms scoped `repair` handles localized documentation drift while preserving the full verify completion gate.
+
+#### S25 -- Scoped Repair Escalation
+
+Status: PASS_WITH_NOTES. Confirms multi-area and ADR-implicated repair escalates to full repair plus decision handling.
+
+#### S26 -- Rebuild Recommendation
+
+Status: PASS_WITH_NOTES. Confirms rebuild is recommended only when current architecture references are too stale or contradictory for scoped repair.
+
+#### S27 -- Adopt Scope Distinction
+
+Status: PASS_WITH_NOTES. Confirms scoped adopt is limited to one clear area, ADR-adjacent adopt escalates to decision handling, and full adopt remains required for completed target-architecture merge.
 
 ## Scenario Evidence
 
