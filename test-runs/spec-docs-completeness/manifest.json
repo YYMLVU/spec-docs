@@ -34,6 +34,7 @@
     { "id": "s24", "name": "Scoped Repair", "modes": ["repair", "verify"], "type": "fixture" },
     { "id": "s25", "name": "Scoped Repair Escalation", "modes": ["repair", "verify"], "type": "fixture" },
     { "id": "s26", "name": "Rebuild Recommendation", "modes": ["rebuild", "verify"], "type": "fixture" },
-    { "id": "s27", "name": "Adopt Scope Distinction", "modes": ["adopt", "verify"], "type": "fixture" }
+    { "id": "s27", "name": "Adopt Scope Distinction", "modes": ["adopt", "verify"], "type": "fixture" },
+    { "id": "s28", "name": "Rule Ownership Trigger Deduplication", "modes": ["update", "verify"], "type": "fixture" }
   ]
 }
