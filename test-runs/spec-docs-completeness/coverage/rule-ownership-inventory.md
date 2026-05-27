@@ -15,7 +15,9 @@ This inventory defines canonical ownership for major rule families after Phase 5
 | Rule family | Canonical owner | Summary locations allowed | Required dedup decision |
 |---|---|---|---|
 | Identity, mode router, minimal contracts | `skills/spec-docs/SKILL.md` | `README.md` mode overview | Keep concise summaries only. |
-| Core hard gates | `skills/spec-docs/SKILL.md` and indexed by `skills/spec-docs/references/hard-gates.md` | protocol block compact summary | Do not duplicate long gate rationale outside canonical owners. |
+| Core hard gates | `skills/spec-docs/SKILL.md` | `skills/spec-docs/references/hard-gates.md` (summary/index), protocol block compact summary | Do not duplicate long gate rationale outside canonical owner. |
+| Workflow detection order, Integrated Mode, Standalone Mode, Minimal Implementation Plan boundaries | `skills/spec-docs/references/workflow-integration.md` | `SKILL.md`, `README.md` (summaries only) | Keep workflow mechanics in workflow-integration; public/top-level docs summarize only. |
+| Anti-patterns and corrective guidance | `skills/spec-docs/references/common-mistakes.md` | review prompts (summary if needed) | Examples may be cited elsewhere, but canonical anti-pattern guidance lives in common-mistakes. |
 | Init profiles | `skills/spec-docs/references/modes.md` | `SKILL.md`, public README | Summarize profile names only outside `modes.md`. |
 | Impact levels 0-4 | `skills/spec-docs/references/modes.md` | `SKILL.md`, hooks policy, protocol block | Keep compact downstream protocol text, but remove unconditional update/verify wording that contradicts Levels 0-2. |
 | Verify layers and currentness gates | `skills/spec-docs/references/verification.md` | `modes.md`, protocol block | Summaries must distinguish targeted-check, layered-check, and full-verify. |
@@ -37,11 +39,11 @@ This inventory defines canonical ownership for major rule families after Phase 5
 | Hook block candidates repeated outside hooks reference | Summarize | `SKILL.md` may summarize block candidates; detailed criteria live in `references/hooks.md`. |
 | Public README operational gate details | Keep compact | README describes impact-aware routing at product level only. |
 
-## Static Check Expectations
+## Planned Static Check Expectations
 
 `check-static.mjs` should fail if source skill text reintroduces these stale unconditional patterns in operational templates or hook policy:
 
-- `Before declaring work done**: run `spec-docs verify``
+- `**Before declaring work done**: run `spec-docs verify`.`
 - `Run `spec-docs update`.` immediately followed by `Run `spec-docs verify`.` in the protocol block
 - `remind update/verify around tests/builds when code changed`
 
