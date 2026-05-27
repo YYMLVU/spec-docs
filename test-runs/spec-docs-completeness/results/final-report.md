@@ -2,7 +2,7 @@
 
 ## Overall Status: PASS_WITH_NOTES
 
-Automated checks passed. The suite now covers twenty-seven scenarios. F-002, F-003, and F-004 are covered by S11, S12, and expanded hook matcher simulation. F-001 and F-005 remain out of scope and non-blocking.
+Automated checks passed. The suite now covers twenty-eight scenarios. F-002, F-003, and F-004 are covered by S11, S12, and expanded hook matcher simulation. F-001 and F-005 remain out of scope and non-blocking.
 
 ## Scenario Results
 
@@ -35,6 +35,7 @@ Automated checks passed. The suite now covers twenty-seven scenarios. F-002, F-0
 | S25 (repair -- scoped repair escalation) | PASS |
 | S26 (rebuild -- rebuild recommendation) | PASS |
 | S27 (adopt -- scope distinction) | PASS |
+| S28 (update/verify -- rule ownership trigger deduplication) | PASS |
 
 ## Findings
 
@@ -84,6 +85,14 @@ This run covers Phase 4 architecture workflow routing:
 - S26 Rebuild Recommendation: rebuild is recommended when current architecture references are too stale or contradictory for scoped repair.
 - S27 Adopt Scope Distinction: one-area governance uses scoped adopt while completed target-architecture merge uses full adopt.
 
+## Rule Ownership and Trigger Deduplication Coverage
+
+This run covers Phase 5 rule ownership and trigger deduplication:
+
+- S28 Rule Ownership Trigger Deduplication: canonical owners are documented for major rule families, stale unconditional update/verify triggers are removed, and impact-aware completion behavior is preserved.
+- Static checks fail if key stale trigger patterns return in protocol, workspace README, or hook policy text.
+- Hook and mode reviews include S28 plus the rule ownership inventory.
+
 ## Coverage Conclusion
 
 | Dimension | Covered? |
@@ -100,6 +109,7 @@ This run covers Phase 4 architecture workflow routing:
 | Impact routing covered | yes |
 | Verify layering covered | yes |
 | Architecture workflow routing covered | yes |
+| Rule ownership and trigger deduplication covered | yes |
 
 ## Release Judgment
 
