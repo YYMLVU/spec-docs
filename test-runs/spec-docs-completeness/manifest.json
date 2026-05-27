@@ -29,6 +29,11 @@
     { "id": "s19", "name": "Level 3 Full Update and Full Verify", "modes": ["update", "verify"], "type": "fixture" },
     { "id": "s20", "name": "Level 4 Architecture-Risk Escalation", "modes": ["update", "verify"], "type": "fixture" },
     { "id": "s21", "name": "Layered Verify Scope", "modes": ["verify"], "type": "fixture" },
-    { "id": "s22", "name": "Layered Verify Escalation", "modes": ["verify"], "type": "fixture" }
+    { "id": "s22", "name": "Layered Verify Escalation", "modes": ["verify"], "type": "fixture" },
+    { "id": "s23", "name": "Scoped Placement", "modes": ["place"], "type": "fixture" },
+    { "id": "s24", "name": "Scoped Repair", "modes": ["repair", "verify"], "type": "fixture" },
+    { "id": "s25", "name": "Scoped Repair Escalation", "modes": ["repair", "verify"], "type": "fixture" },
+    { "id": "s26", "name": "Rebuild Recommendation", "modes": ["rebuild", "verify"], "type": "fixture" },
+    { "id": "s27", "name": "Adopt Scope Distinction", "modes": ["adopt", "verify"], "type": "fixture" }
   ]
 }

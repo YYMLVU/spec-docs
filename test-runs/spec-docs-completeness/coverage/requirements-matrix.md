@@ -1,7 +1,7 @@
 # Requirements Matrix -- spec-docs Completeness Test
 
 This matrix maps the requirement categories from the completeness test plan to verification methods:
-automated checks (check-static, check-install), scenario execution (S01-S22), and manual review prompts.
+automated checks (check-static, check-install), scenario execution (S01-S27), and manual review prompts.
 
 ## COMPRESS: Structural Completeness
 
@@ -53,6 +53,11 @@ Requirements focused on correctness, absence of placeholders, and internal consi
 | I24 | Layered mechanical/mapping checks cannot claim semantic, architecture, release, workspace, or architecture currentness | -- | -- | S21 | mode-review.md |
 | I25 | Final init, repair/adopt/rebuild completion, release freshness, and architecture-current claims retain full verify gates | -- | -- | S5, S19, S20 | architecture-review.md |
 | I26 | Scoped verification reports and escalates out-of-scope architecture risk instead of silently broadening or ignoring it | -- | -- | S22 | architecture-review.md |
+| I27 | Level 4 architecture risk routes to the lightest safe architecture receiving path instead of automatically using broad workflow | -- | -- | S20, S23, S24, S25, S26, S27 | architecture-review.md |
+| I28 | Scoped architecture subpaths cannot claim architecture currentness and preserve full verify gates for repair/adopt/rebuild completion | -- | -- | S23, S24, S25, S27 | architecture-review.md |
+| I29 | ADR-adjacent or multi-area scoped architecture work escalates to full review, user decision, or ADR handling | -- | -- | S25, S27 | architecture-review.md |
+| I30 | Rebuild remains exceptional and is recommended when current architecture references are too stale or contradictory for incremental repair | -- | -- | S26 | architecture-review.md |
+| I31 | Existing mode names remain unchanged; scoped/full are internal subpaths only | Yes | -- | S23, S24, S25, S26, S27 | mode-review.md |
 
 ## Gap Closure: Coverage of Previously Untested Paths
 
@@ -88,7 +93,7 @@ Requirements related to public README, INSTALL-FOR-AI, and references/ cross-che
 
 | Review Prompt | Covers Requirements | Inputs |
 |---|---|---|
-| mode-review.md | C5, I1, I2, I4, I5, I6, I6a, I6b, I6c, I6d, I9, I14, I15, I16, I17, I19, I22, I23, I24, P1 | results/scenario-outputs/, coverage/scenario-matrix.md |
-| architecture-review.md | C6, I3, I7, I8, I10, I11, I18, I21, I25, I26, G1, G2, G3, G4, G10 | results/scenario-outputs/ S1, S3, S4, S5, S7, S8, S9, S11, S12, S20, S22 |
+| mode-review.md | C5, I1, I2, I4, I5, I6, I6a, I6b, I6c, I6d, I9, I14, I15, I16, I17, I19, I22, I23, I24, I31, P1 | results/scenario-outputs/, coverage/scenario-matrix.md |
+| architecture-review.md | C6, I3, I7, I8, I10, I11, I18, I21, I25, I26, I27, I28, I29, I30, G1, G2, G3, G4, G10 | results/scenario-outputs/ S1, S3, S4, S5, S7, S8, S9, S11, S12, S20, S22, S23, S24, S25, S26, S27 |
 | hook-review.md | G5, G6, I20 | results/automated/check-hooks.md, results/automated/simulate-hook-events.md |
 | collaboration-review.md | C7, I12, I13, G7, G8, G9 | results/scenario-outputs/S10, prompts/review/collaboration-review.md, source-under-test/skills/spec-docs/templates/agent-protocol-block.md |
