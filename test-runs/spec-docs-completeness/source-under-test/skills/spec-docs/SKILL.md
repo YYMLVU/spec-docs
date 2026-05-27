@@ -204,7 +204,7 @@ Hooks help enforce when it is required.
 
 Behavior levels: `info` (reminder), `warning` (missing step, continue), `block` (hard gate violation).
 
-Block candidates: repair edits business code without request; update silently weakens architecture rules; architecture rules weakened without ADR/confirmation; completion claimed without impact-appropriate spec action (level-specific criteria in references/hooks.md and references/modes.md) after implementation-relevant changes.
+Block candidates are summarized here but interpreted in `references/hooks.md`; impact-level criteria live in `references/modes.md`: repair edits business code without request; update silently weakens architecture rules; architecture rules weakened without ADR/confirmation; completion claimed without impact-appropriate spec action after implementation-relevant changes.
 
 Hooks must not automatically modify code, create ADRs, weaken architecture rules, generate future plans, or over-block normal read-only work. Details in `references/hooks.md`.
 

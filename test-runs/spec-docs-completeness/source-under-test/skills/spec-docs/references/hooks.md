@@ -31,12 +31,14 @@ Hooks detect events and point agents to required modes/references.
 
 ## Block Candidates
 
+This section is the canonical owner for hook behavior levels and block-candidate interpretation. Other files may summarize these candidates, but must not invent additional hook block conditions.
+
 - Repair mode tries to edit business code without explicit request.
 - Update silently weakens architecture rules.
 - Architecture rules are weakened without ADR or user confirmation.
 - Agent claims completion after implementation-relevant changes without impact-appropriate spec action: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, or Level 4 architecture-risk report, escalated mode recommendation, and full verify before architecture-current claims.
 
-Hooks are impact-aware reminders. They must not block merely because full verify was skipped for Level 0, Level 1, or Level 2 when the agent stated the impact level and completed the required action for that level. They may warn when the impact level is unstated or classification evidence is missing.
+Hooks are impact-aware reminders. They must not block merely because full verify was skipped for Level 0, Level 1, or Level 2 when the agent stated the impact level and completed the required action for that level. They may warn when the impact level is unstated, classification evidence is missing, or implementation-relevant changes occurred without any impact-appropriate spec action.
 
 ## Safety Boundaries
 
