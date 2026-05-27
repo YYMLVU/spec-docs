@@ -2,7 +2,7 @@
 
 ## Overall Status: PASS_WITH_NOTES
 
-Automated checks passed. The suite now covers twenty-two scenarios. F-002, F-003, and F-004 are covered by S11, S12, and expanded hook matcher simulation. F-001 and F-005 remain out of scope and non-blocking.
+Automated checks passed. The suite now covers twenty-seven scenarios. F-002, F-003, and F-004 are covered by S11, S12, and expanded hook matcher simulation. F-001 and F-005 remain out of scope and non-blocking.
 
 ## Scenario Results
 
@@ -30,6 +30,11 @@ Automated checks passed. The suite now covers twenty-two scenarios. F-002, F-003
 | S20 (update/verify -- Level 4 escalation) | PASS |
 | S21 (verify -- layered scope) | PASS |
 | S22 (verify -- layered escalation) | PASS |
+| S23 (place -- scoped placement) | PASS |
+| S24 (repair -- scoped repair) | PASS |
+| S25 (repair -- scoped repair escalation) | PASS |
+| S26 (rebuild -- rebuild recommendation) | PASS |
+| S27 (adopt -- scope distinction) | PASS |
 
 ## Findings
 
@@ -69,6 +74,16 @@ This run covers Phase 3 verify layering:
 - S21 Layered Verify Scope: mechanical+mapping layered-check passes without claiming full verify, semantic currentness, architecture currentness, release freshness, or workspace currentness.
 - S22 Layered Verify Escalation: scoped layered-check reports architecture-risk evidence and recommends Level 4/full verify before architecture-current claims.
 
+## Architecture Workflow Routing Coverage
+
+This run covers Phase 4 architecture workflow routing:
+
+- S23 Scoped Placement: bounded architecture placement uses scoped `place` without broad workflow or architecture-current claim.
+- S24 Scoped Repair: localized architecture documentation drift uses scoped `repair` while preserving full verify before repair completion/currentness.
+- S25 Scoped Repair Escalation: multi-area and ADR-implicated repair escalates to full repair plus decision handling.
+- S26 Rebuild Recommendation: rebuild is recommended when current architecture references are too stale or contradictory for scoped repair.
+- S27 Adopt Scope Distinction: one-area governance uses scoped adopt while completed target-architecture merge uses full adopt.
+
 ## Coverage Conclusion
 
 | Dimension | Covered? |
@@ -84,6 +99,7 @@ This run covers Phase 3 verify layering:
 | COMPRESS/IMPROVE/gap-plan requirements mapped | yes |
 | Impact routing covered | yes |
 | Verify layering covered | yes |
+| Architecture workflow routing covered | yes |
 
 ## Release Judgment
 
