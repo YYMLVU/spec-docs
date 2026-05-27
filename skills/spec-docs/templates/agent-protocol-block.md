@@ -29,9 +29,9 @@ For every non-trivial implementation change:
 8. If the implementation plan conflicts with the placement review, stop and resolve by re-running `spec-docs place`, asking the user, or creating an ADR.
 9. Read related specs, architecture rules, and ADRs.
 10. Implement through the active workflow or a Minimal Implementation Plan.
-11. Run tests.
-12. Run `spec-docs update`.
-13. Run `spec-docs verify`.
+11. Run tests appropriate to the change.
+12. Classify implementation impact before declaring completion.
+13. Complete the impact-appropriate spec action listed below.
 
 When debugging:
 
@@ -49,7 +49,7 @@ After changing implementation-relevant files:
   - Level 1: update the affected spec.
   - Level 2: update affected specs and run a targeted light check.
   - Level 3: update all affected specs and run full verify.
-  - Level 4: report architecture risk, escalate to `place`/`repair`/`rebuild`/`adopt`, and run full verify before claiming architecture-current.
+  - Level 4: report architecture risk, recommend the architecture receiving path selected by `references/architecture-control.md` (`place`, `repair`, `rebuild`, or `adopt` scoped/full as applicable), and run full verify before claiming architecture-current.
 - Do not claim the task is complete until the impact-appropriate spec action has been performed.
 
 Architecture repair guard:

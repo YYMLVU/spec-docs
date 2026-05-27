@@ -41,7 +41,7 @@ docs/spec-docs/
 
 - **Before code changes**: read affected specs via Code-to-Spec Index in `inventory.md`.
 - **After code changes**: update every affected spec in the same change.
-- **Before declaring work done**: run `spec-docs verify`.
+- **Before declaring work done**: complete the impact-appropriate spec action: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, or Level 4 architecture-risk escalation.
 - **Before non-trivial feature placement**: run `spec-docs place`.
 
 ## Architecture Control Layer
@@ -60,7 +60,7 @@ When `docs/spec-docs/rebuild/status.md` has `mode: rebuild` and `status: active`
 
 ## Verification
 
-Run `spec-docs verify` to check:
+Run `spec-docs verify` when a full verification gate applies, or when explicitly requested, to check:
 
 - Core files exist and contain required structures.
 - Every spec has valid frontmatter and resolves source paths.

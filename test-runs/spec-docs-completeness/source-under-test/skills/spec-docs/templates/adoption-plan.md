@@ -55,4 +55,4 @@ When all completion criteria are met:
 4. Update the rebuild ADR with implementation evidence.
 5. Set `docs/spec-docs/rebuild/status.md` to `mode: rebuild`, `status: completed`.
 6. Move `docs/spec-docs/architecture/target-architecture.md` and `docs/spec-docs/architecture/adoption-plan.md` to `docs/spec-docs/rebuild/archive/`.
-7. Run `spec-docs verify`.
+7. Run full `spec-docs verify` before claiming adopt complete or architecture currentness.
