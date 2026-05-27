@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Review scenario outputs S1, S3, S4, S5, S7, S8, S9, S11, S12, S20, and S22 against the architecture governance layer defined in `references/architecture-control.md` and `SKILL.md`. Evaluate whether the six architecture control responsibilities are correctly exercised by their respective scenarios, and whether architecture gates are respected.
+Review scenario outputs S1, S3, S4, S5, S7, S8, S9, S11, S12, S20, S22, S23, S24, S25, S26, and S27 against the architecture governance layer defined in `references/architecture-control.md` and `SKILL.md`. Evaluate whether the six architecture control responsibilities are correctly exercised by their respective scenarios, and whether architecture gates and scoped/full architecture subpath rules are respected.
 
 ## Architecture Control Layer Responsibilities
 
@@ -10,12 +10,12 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 
 | Responsibility | Tested By | Key Evidence to Evaluate |
 |---|---|---|
-| Architecture Selection | S1, S7, S8, S12 | Primary Preset, Addons, Adoption Mode, confidence, rationale, known deviations |
-| Placement | S3 | Feature intent, ownership, layer placement, allowed/forbidden dependencies, required public contracts, forbidden shortcuts |
-| Boundary Contract | S3, S4, S5 | Module ownership rules, layer dependency rules, cross-module access rules, public contract rules, shared code rules, infrastructure access rules |
-| Compliance Verification | S5, S11, S20, S22 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited, Level 4 escalation compliance checked (architecture-risk reclassification, no silent rewrite of rules/ADRs, mid-update reclassification), scoped verify escalation behavior |
-| Failure Localization | S9 | Owner module, failing layer, signals to check, debugging order |
-| Rebuild Evolution | S7, S8, S12 | Target preset/addons, adoption plan, rebuild status, target-architecture merge |
+| Architecture Selection | S1, S7, S8, S12, S27 | Primary Preset, Addons, Adoption Mode, confidence, rationale, known deviations, scoped/full adopt distinction |
+| Placement | S3, S23 | Feature intent, ownership, layer placement, allowed/forbidden dependencies, required public contracts, forbidden shortcuts, scoped/full placement routing |
+| Boundary Contract | S3, S4, S5, S20, S23, S24, S25 | Module ownership rules, layer dependency rules, cross-module access rules, public contract rules, shared code rules, infrastructure access rules, rule-change safeguards |
+| Compliance Verification | S5, S11, S20, S22, S24, S25, S27 | Architecture violation subtypes detected, severity reflects Adoption Mode/Addons, evidence and source documents cited, Level 4 escalation compliance checked, scoped subpaths preserve full-verify currentness gates |
+| Failure Localization | S9 | Owner module, failing layer, signals to check, debugging order, and explicit Phase 4 deferral of a named scoped diagnose subpath |
+| Rebuild Evolution | S7, S8, S12, S26, S27 | Target preset/addons, adoption plan, rebuild status, target-architecture merge, rebuild recommendation when current model is stale or contradictory |
 
 ## Inputs
 
@@ -30,6 +30,11 @@ The architecture governance layer has six responsibilities. Each is tested by sp
 - `results/scenario-outputs/s12.md` -- True Adopt Completed Rebuild (merge/archive target docs)
 - `results/scenario-outputs/s20.md` -- Level 4 Architecture-Risk Escalation
 - `results/scenario-outputs/s22.md` -- Layered Verify Escalation (architecture-risk evidence in scoped check)
+- `results/scenario-outputs/s23.md` -- Scoped Placement
+- `results/scenario-outputs/s24.md` -- Scoped Repair
+- `results/scenario-outputs/s25.md` -- Scoped Repair Escalation
+- `results/scenario-outputs/s26.md` -- Rebuild Recommendation
+- `results/scenario-outputs/s27.md` -- Adopt Scope Distinction
 - `source-under-test/skills/spec-docs/references/architecture-control.md` -- normative architecture rules
 - `source-under-test/skills/spec-docs/references/verification.md` -- verify output status, finding categories, violation subtypes, addon severity mapping
 - `source-under-test/skills/spec-docs/SKILL.md` -- Architecture Gate Summary
@@ -127,13 +132,22 @@ For S12 (true adopt completed rebuild):
 - If a factual spec update is suggested, the output states that architecture risk remains and architecture currentness is not claimed.
 - S22 verifies that scoped layered checks report architecture-risk evidence and recommend escalation instead of claiming architecture currentness or silently expanding to full verify.
 
-### 8. ADR and User-Decision Triggers
+### 8. Architecture Workflow Subpaths (S23, S24, S25, S26, S27)
+
+- S23 routes a bounded placement question to scoped `place` and does not recommend broad repair/rebuild/adopt or claim architecture currentness.
+- S24 routes localized architecture documentation drift to scoped `repair`, does not modify business code, does not weaken rules, and preserves full verify before repair completion/currentness.
+- S25 escalates from scoped repair when multiple areas and accepted ADR interpretation are implicated.
+- S26 recommends `rebuild` only because current architecture references are stale or contradictory enough that scoped repair is unsafe.
+- S27 distinguishes scoped adopt for one clear existing area, ADR-adjacent adopt escalation, and full adopt for completed target-architecture merge.
+- All scenarios keep existing mode names; `scoped` and `full` are internal subpaths only.
+
+### 9. ADR and User-Decision Triggers
 
 For scenarios where ownership, dependency direction, or public contract is unclear:
 - Is `Needs ADR` or `Needs User Decision` output instead of guessing? (S3, S7, S8, S9)
 - When architecture rules need weakening, is explicit user confirmation or ADR required? (S4, S6, S7, S8, S20)
 
-### 9. Architecture Hard Gates
+### 10. Architecture Hard Gates
 
 Check the 18 Architecture Hard Gates from `references/architecture-control.md`:
 1. Architecture docs record Primary Preset, Addons, Adoption Mode, rationale, confidence, and known deviations.
@@ -216,6 +230,26 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 (Status, gaps, evidence)
 
 #### S22 -- Layered Verify Escalation
+
+(Status, gaps, evidence)
+
+#### S23 -- Scoped Placement
+
+(Status, gaps, evidence)
+
+#### S24 -- Scoped Repair
+
+(Status, gaps, evidence)
+
+#### S25 -- Scoped Repair Escalation
+
+(Status, gaps, evidence)
+
+#### S26 -- Rebuild Recommendation
+
+(Status, gaps, evidence)
+
+#### S27 -- Adopt Scope Distinction
 
 (Status, gaps, evidence)
 

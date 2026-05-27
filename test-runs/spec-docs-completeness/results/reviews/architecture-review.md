@@ -16,12 +16,12 @@ Status: PASS_WITH_NOTES
 
 | Responsibility | Status | Notes |
 | --- | --- | --- |
-| Architecture Selection | covered | `greenfield` Adoption Mode is not in the standard table. |
-| Placement | covered | S3 exercises Placement & Boundary Review. |
-| Boundary Contract | covered | S3/S4/S5 exercise allowed/forbidden dependencies and contracts. S20 exercises boundary bypass escalation. |
-| Compliance Verification | covered with notes | S5 detects fact drift and domain-to-infra violation; `greenfield` severity is ambiguous. S20 covers Level 4 escalation compliance. S22 covers scoped verify escalation behavior. |
-| Failure Localization | covered | S9 uses debugging rules and module failure localization. |
-| Rebuild Evolution | covered | S7 state-machine behavior covered; S12 now strengthens true adopt with completed-rebuild fixture. |
+| Architecture Selection | covered | S1, S7, S8, S12, S27 cover primary preset, addons, adoption mode, and scoped/full adopt distinction. `greenfield` Adoption Mode is not in the standard table. |
+| Placement | covered | S3/S23 exercise Placement & Boundary Review; S23 verifies scoped placement routing. |
+| Boundary Contract | covered | S3/S4/S5/S20/S23/S24/S25 exercise allowed/forbidden dependencies, contracts, and rule-change safeguards. |
+| Compliance Verification | covered with notes | S5/S11/S20/S22/S24/S25/S27 cover violation subtypes, Level 4 escalation, scoped subpath currentness gates. `greenfield` severity is ambiguous. |
+| Failure Localization | covered | S9 uses debugging rules and module failure localization; Phase 4 defers named scoped diagnose path. |
+| Rebuild Evolution | covered | S7/S8/S12/S26/S27 cover state-machine behavior, rebuild recommendation, and target-architecture merge. S26 verifies rebuild recommendation when current model is stale/contradictory. |
 
 ## Per-Scenario Findings
 
@@ -68,6 +68,14 @@ Status: PASS. Classifies cross-module boundary bypass as Level 4, reports archit
 ### S22 -- Layered Verify Escalation
 
 Status: PASS. Scoped layered check discovers architecture-risk evidence and recommends escalation (Level 4/full verify) instead of claiming architecture currentness or silently expanding to full verify.
+
+#### S23-S27 -- Architecture Workflow Routing
+
+- S23 confirms scoped `place` handles a bounded placement question without broad architecture workflow or architecture-current claim.
+- S24 confirms scoped `repair` handles localized documentation drift while preserving the full verify completion gate.
+- S25 confirms multi-area and ADR-implicated repair escalates to full repair plus decision handling.
+- S26 confirms rebuild is recommended only when current architecture references are too stale or contradictory for scoped repair.
+- S27 confirms scoped adopt is limited to one clear area, ADR-adjacent adopt escalates to decision handling, and full adopt remains required for completed target-architecture merge.
 
 ## Scenario Evidence
 

@@ -7,8 +7,8 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
 ## Inputs
 
 - `coverage/scenario-matrix.md` -- mode-to-scenario mapping and responsibility verification summary
-- `prompts/scenarios/s01.md` through `prompts/scenarios/s22.md` -- scenario checklists
-- `results/scenario-outputs/s01.md` through `results/scenario-outputs/s22.md` -- scenario execution outputs
+- `prompts/scenarios/s01.md` through `prompts/scenarios/s27.md` -- scenario checklists
+- `results/scenario-outputs/s01.md` through `results/scenario-outputs/s27.md` -- scenario execution outputs
 - `source-under-test/skills/spec-docs/references/modes.md` -- normative mode behavior
 - `source-under-test/skills/spec-docs/references/architecture-control.md` -- architecture mode contracts
 - `source-under-test/skills/spec-docs/references/hard-gates.md` -- hard gate index
@@ -16,17 +16,17 @@ Review scenario outputs in `results/scenario-outputs/` against `coverage/scenari
 
 ## Review Steps
 
-1. Confirm every scenario output file exists for S01-S22 (or document which are missing).
+1. Confirm every scenario output file exists for S01-S27 (or document which are missing).
 
 2. For each mode, verify the scenario(s) assigned to it exercise the mode properly:
    - **init** (S1, S2, S13, S14, S15): S1 validates empty-project init produces only principle seed, no fake facts. S2 validates Minimal Existing Project init produces a minimal workspace without architecture/ADR/rebuild/empty category directories by default. S13 covers Standard Existing Project Init: grounded child specs for observed runtime, route, domain, and integration areas. S14 covers Large Project / Phased Init: `PARTIAL INIT` is allowed only as a non-final state and does not satisfy final included-scope coverage. S15 covers profile boundary classification beyond file count: classification uses observable complexity signals.
-   - **place** (S3): Placement & Boundary Review before detailed planning; includes allowed/forbidden dependencies, public contracts, forbidden shortcuts, failure localization hints; does not modify code.
+   - **place** (S3, S23): Placement & Boundary Review before detailed planning; includes allowed/forbidden dependencies, public contracts, forbidden shortcuts, failure localization hints; does not modify code. S23 verifies bounded placement can use scoped `place` without broad architecture workflow or architecture-current claim.
    - **update** (S4, S16, S17, S18, S19, S20): Same-change spec sync uses Level 0-4 impact routing. S16 validates Level 0 no-action. S17 validates Level 1 single-spec touch without full verify. S4 and S18 validate Level 2 targeted light check and no full verify claim. S19 validates Level 3 full verify for broad changes. S20 validates Level 4 architecture-risk escalation without silently rewriting architecture rules or accepted ADRs.
-   - **verify** (S5, S11, S19, S20, S21, S22): Fact drift, decision drift, architecture violation subtype reporting, full verify gates, and layered verify scope behavior. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. S19 verifies full verify is required for Level 3 broad updates. S20 verifies full verify is required before architecture-current Level 4 claims. S21 verifies mechanical+mapping layered checks do not overclaim. S22 verifies scoped checks surface architecture risk and recommend escalation.
-   - **repair** (S6): Doc-only alignment; no business-code modifications; architecture repair requires explicit confirmation or ADR.
-   - **rebuild** (S7): Rebuild mode from `rebuild/status.md`; target preset, addons, adoption mode, migration strategy selected.
-   - **adopt** (S8, S12): Gradual adoption for first-time projects; target-architecture merge when rebuild is complete; code verified against target rules before merge. S12 verifies completed-rebuild adopt behavior: read rebuild status, verify target/code alignment, merge target into current, archive target docs, and mark rebuild completed.
-   - **diagnose** (S9): Architecture-guided triage; identifies owner module, failing layer, debugging order; does not claim root cause without evidence.
+   - **verify** (S5, S11, S19, S20, S21, S22, S24, S25, S26, S27): Fact drift, decision drift, architecture violation subtype reporting, full verify gates, and layered verify scope behavior. S11 verifies ARCHITECTURE DRIFT reporting for business policy accumulating in shared utilities. S19 verifies full verify is required for Level 3 broad updates. S20 verifies full verify is required before architecture-current Level 4 claims. S21 verifies mechanical+mapping layered checks do not overclaim. S22 verifies scoped checks surface architecture risk and recommend escalation. S24/S25/S26/S27 verify architecture scoped subpaths preserve full verify completion/currentness gates and avoid unsupported architecture-current claims.
+   - **repair** (S6, S24, S25): Doc-only alignment; no business-code modifications; architecture repair requires explicit confirmation or ADR. S24 verifies localized scoped repair. S25 verifies escalation for multi-area and ADR-implicated repair.
+   - **rebuild** (S7, S26): Rebuild mode from `rebuild/status.md`; target preset, addons, adoption mode, migration strategy selected. S26 verifies rebuild is recommended only when current architecture references are too stale or contradictory for scoped repair and does not enter migration planning without user decision.
+   - **adopt** (S8, S12, S27): Gradual adoption for first-time projects; target-architecture merge when rebuild is complete; code verified against target rules before merge. S12 verifies completed-rebuild adopt behavior: read rebuild status, verify target/code alignment, merge target into current, archive target docs, and mark rebuild completed. S27 verifies scoped adopt for one clear area, ADR-adjacent adopt escalation, and full adopt for completed target architecture merge.
+   - **diagnose** (S9): Architecture-guided triage; identifies owner module, failing layer, debugging order; does not claim root cause without evidence. Phase 4 explicitly defers a named scoped diagnose path and keeps diagnose out of Level 4 update receiving paths.
 
 3. For each scenario output, check the checklist items from the corresponding scenario prompt. Flag any checklist item marked as unchecked or missing.
 
@@ -52,12 +52,12 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 | Mode | Scenario(s) | Covered | Within Responsibility | Notes |
 |---|---|---|---|---|
 | init | S1, S2, S13, S14, S15 | yes/no | yes/no | |
-| place | S3 | yes/no | yes/no | |
+| place | S3, S23 | yes/no | yes/no | |
 | update | S4, S16, S17, S18, S19, S20 | yes/no | yes/no | |
-| verify | S5, S11, S19, S20, S21, S22 | yes/no | yes/no | |
-| repair | S6 | yes/no | yes/no | |
-| rebuild | S7 | yes/no | yes/no | |
-| adopt | S8, S12 | yes/no | yes/no | |
+| verify | S5, S11, S19, S20, S21, S22, S24, S25, S26, S27 | yes/no | yes/no | |
+| repair | S6, S24, S25 | yes/no | yes/no | |
+| rebuild | S7, S26 | yes/no | yes/no | |
+| adopt | S8, S12, S27 | yes/no | yes/no | |
 | diagnose | S9 | yes/no | yes/no | |
 
 ### Missing Mode Coverage
