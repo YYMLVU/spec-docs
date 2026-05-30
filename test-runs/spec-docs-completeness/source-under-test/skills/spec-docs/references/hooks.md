@@ -40,9 +40,11 @@ This section is the canonical owner for hook behavior levels and block-candidate
 
 Hooks are impact-aware reminders. They must not block merely because full verify was skipped for Level 0, Level 1, or Level 2 when the agent stated the impact level and completed the required action for that level. They may warn when the impact level is unstated, classification evidence is missing, or implementation-relevant changes occurred without any impact-appropriate spec action.
 
+Hook reminders should be deduplicated within a session or change unit. Production hook adapters should store a session/change-unit marker outside project source control, such as an agent cache or temporary directory, and suppress repeated reminder text for the same unchanged event class. Skeleton hooks may print reminder text every invocation only because they are not production enforcement.
+
 ## Safety Boundaries
 
-Hooks must not automatically modify code, create ADRs, weaken architecture rules, generate future plans, or over-block normal read-only work.
+Hooks must not automatically modify code, create ADRs, weaken architecture rules, generate future plans, or over-block normal read-only work. Hook installers and adapters must not overwrite existing hook configurations silently; they must preserve unrelated user hooks, update only marked spec-docs hook entries, and report conflicts for user confirmation.
 
 ## Skeleton Files
 

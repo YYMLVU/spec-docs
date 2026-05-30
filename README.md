@@ -28,9 +28,14 @@ Within that workspace, `specs/` records what the code does now: behavior, stack,
 
 ## 🚀 Quick Start
 
-### Option 1: Ask your AI assistant
+### Platform support
 
-Send this to Claude Code, Cursor, GitHub Copilot, or another AI coding assistant:
+- **Primary support: Claude Code** skill installation and usage.
+- **Manual or experimental integration:** Cursor, GitHub Copilot, OpenAI agents, and other agent systems may use the skill files as a prompt/documentation package only when their installation, invocation, and verification behavior are confirmed for that environment.
+
+### Option 1: Ask Claude Code
+
+Send this to Claude Code:
 
 ```text
 Please follow the guidelines in https://github.com/YYMLVU/spec-docs/blob/main/INSTALL-FOR-AI.md to install the spec-docs skill into the current project.
@@ -315,7 +320,7 @@ Agents must not guess.
 
 > 📦 **Version `2.0.0`** has local completeness coverage for both the source tree and installed package form.
 >
-> The local suite covers twenty scenarios across all eight modes: `init`, `update`, `verify`, `repair`, `place`, `rebuild`, `adopt`, and `diagnose`.
+> The local suite covers twenty-eight scenarios across all eight modes: `init`, `update`, `verify`, `repair`, `place`, `rebuild`, `adopt`, and `diagnose`.
 
 Coverage highlights:
 

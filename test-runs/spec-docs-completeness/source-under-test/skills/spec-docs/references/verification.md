@@ -5,7 +5,7 @@ This file is the canonical home for verify rules.
 ## Output Status
 
 - `PASS`: no error findings.
-- `PASS WITH WARNINGS`: no error findings, but warning or info findings exist.
+- `PASS WITH WARNINGS`: no error findings, but warning or info findings exist. Each warning must state whether it is informational, requires follow-up, or blocks the current claim.
 - `FAIL`: one or more error findings exist.
 
 Output PASS, PASS WITH WARNINGS, or FAIL. If FAIL, list affected files and whether the next mode should be `update` or `repair`.
@@ -52,7 +52,8 @@ Checked implementation evidence: <paths, symbols, or none> (identifies implement
 Findings by layer:
   <checked layer>: <none or findings>
 Out-of-scope risk discovered: <none, or risk category and evidence requiring escalation>
-Warnings: <non-blocking uncertainty, if any>
+Unverified assumptions: <none, or assumption plus evidence limit>
+Warnings: <none, or entries labeled informational / requires follow-up / blocks the current claim>
 Currentness claim: <exact bounded claim, or none>
 Recommended next action: <none, update specific file, repair, escalate, or run full verify>
 ```
@@ -92,7 +93,8 @@ Checked specs: <list>
 Checked inventory rows: <list or none>
 Changed implementation evidence checked: <paths or symbols> (identifies implementation paths/symbols inspected; uses "changed evidence" because targeted-check is tied to Level 2 changed scope)
 Findings: <[FACT DRIFT] / [ARCHITECTURE VIOLATION] / [DECISION DRIFT] if any>
-Warnings: <non-blocking uncertainty, if any>
+Unverified assumptions: <none, or assumption plus evidence limit>
+Warnings: <none, or entries labeled informational / requires follow-up / blocks the current claim>
 Recommended next action: <none, update specific file, escalate, or run full verify>
 ```
 

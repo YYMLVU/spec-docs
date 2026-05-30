@@ -103,9 +103,10 @@ export function runNode(scriptPath, args = [], cwd = repoRoot) {
   });
 }
 
-export function runCommand(command, args = [], cwd = repoRoot) {
+export function runCommand(command, args = [], cwd = repoRoot, env = process.env) {
   return execFileSync(command, args, {
     cwd,
+    env,
     encoding: "utf8",
     stdio: ["ignore", "pipe", "pipe"]
   });

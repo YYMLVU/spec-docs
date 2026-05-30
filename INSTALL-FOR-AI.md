@@ -2,6 +2,11 @@
 
 This file is a copy-ready handoff for an AI agent to install the `spec-docs` skill into a target project.
 
+## Platform Support
+
+- **Primary support: Claude Code** project-level or user-level skill installation.
+- **Manual or experimental integration:** Cursor, GitHub Copilot, OpenAI agents, and other agent systems may use this repository as a prompt/documentation package only when their skills directory, invocation method, and verification behavior are confirmed for that environment.
+
 ## Copy This To Your AI
 
 ```text
@@ -9,7 +14,7 @@ Please install the `spec-docs` skill from the current repository into the target
 
 Requirements:
 1. If the target project uses Claude Code, install it into `.claude/skills/spec-docs/` under the project root.
-2. If the target environment uses another agent with a skills directory, install it into that agent's equivalent project-level or user-level skills path.
+2. If the target environment uses another agent with a skills directory, first confirm that agent's skills path, invocation behavior, and verification method; otherwise treat this repository as a reusable prompt/documentation package, not a true skill installation.
 3. Copy the contents of `skills/spec-docs/` from this repository into the target directory. This includes:
    - `SKILL.md`
    - `references/` (all files)

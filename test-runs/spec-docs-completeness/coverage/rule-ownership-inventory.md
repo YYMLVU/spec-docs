@@ -51,3 +51,13 @@ Allowed uses:
 
 - `spec-docs verify` in command examples, verification reference text, and adopt/rebuild completion criteria.
 - `full verify` where it is explicitly tied to Level 3, Level 4 architecture-current, final init, or repair/adopt/rebuild completion.
+
+## Equivalence Review Procedure
+
+After moving or deduplicating rule text, perform an equivalence review before declaring cleanup complete:
+
+1. List each removed or shortened rule statement.
+2. compare old wording to the canonical owner named in this inventory.
+3. verify every hard gate still has a canonical owner and at least one allowed summary location where downstream agents can find it.
+4. Confirm no summary location invents a stricter or weaker rule than the canonical owner.
+5. Add or update a static check, scenario, or review prompt when the moved rule is safety-critical, architecture-critical, or trigger-related.

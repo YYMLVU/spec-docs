@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+STATE_DIR="${SPEC_DOCS_HOOK_STATE_DIR:-}"
+if [ -n "$STATE_DIR" ]; then
+  mkdir -p "$STATE_DIR"
+  MARKER="$STATE_DIR/post-edit-reminder.shown"
+  if [ -f "$MARKER" ]; then
+    printf '%s\n' 'spec-docs post-edit reminder already shown for this session/change unit.'
+    exit 0
+  fi
+  : > "$MARKER"
+fi
+
 printf '%s\n' 'spec-docs post-edit reminder:'
 printf '%s\n' '- If implementation-relevant files changed, run/apply spec-docs update.'
 printf '%s\n' '- Before claiming completion, complete impact-appropriate spec action: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, Level 4 escalation and full verify before architecture-current claims.'

@@ -175,10 +175,65 @@ for (const subtype of [
 const readme = readText(path.join(repoRoot, "README.md"));
 assertIncludes(readme, "diagnose mode", "README.md diagnose usage");
 assertIncludes(readme, "skills/spec-docs/references/", "README.md references path");
+assertIncludes(readme, "Primary support: Claude Code", "README.md platform positioning");
+assertIncludes(readme, "Manual or experimental integration", "README.md platform positioning");
+assertIncludes(readme, "twenty-eight scenarios", "README.md scenario count");
+assertNotIncludes(
+  readme,
+  "Send this to Claude Code, Cursor, GitHub Copilot, or another AI coding assistant:",
+  "README.md platform positioning"
+);
 
 const installDoc = readText(path.join(repoRoot, "INSTALL-FOR-AI.md"));
 assertIncludes(installDoc, "references/", "INSTALL-FOR-AI.md");
 assertIncludes(installDoc, "hooks/", "INSTALL-FOR-AI.md");
+assertIncludes(installDoc, "Primary support: Claude Code", "INSTALL-FOR-AI.md platform positioning");
+assertIncludes(installDoc, "Manual or experimental integration", "INSTALL-FOR-AI.md platform positioning");
+
+const workflowIntegration = readText(path.join(repoRoot, "skills/spec-docs/references/workflow-integration.md"));
+for (const phrase of [
+  "docs/superpowers/specs/",
+  "openspec.yaml",
+  ".specify/",
+  "Small Bugfix Fast Path"
+]) {
+  assertIncludes(workflowIntegration, phrase, "workflow-integration.md adaptive scope follow-up");
+}
+
+const verification = readText(path.join(repoRoot, "skills/spec-docs/references/verification.md"));
+for (const phrase of [
+  "Unverified assumptions",
+  "informational",
+  "requires follow-up",
+  "blocks the current claim"
+]) {
+  assertIncludes(verification, phrase, "verification.md warning classification");
+}
+
+const modes = readText(path.join(repoRoot, "skills/spec-docs/references/modes.md"));
+for (const phrase of [
+  "Profile upgrade recommendation",
+  "outgrown its current profile",
+  "Do not rewrite existing specs wholesale"
+]) {
+  assertIncludes(modes, phrase, "modes.md profile upgrade guidance");
+}
+
+for (const phrase of [
+  "deduplicated within a session or change unit",
+  "must not overwrite existing hook configurations silently",
+  "session/change-unit marker"
+]) {
+  assertIncludes(hooksReference, phrase, "hooks.md hook deduplication and overwrite protection");
+}
+
+for (const phrase of [
+  "Equivalence Review Procedure",
+  "verify every hard gate still has a canonical owner",
+  "compare old wording to the canonical owner"
+]) {
+  assertIncludes(ownershipInventory, phrase, "rule ownership equivalence review");
+}
 
 const report = [
   "# Static Source Check",

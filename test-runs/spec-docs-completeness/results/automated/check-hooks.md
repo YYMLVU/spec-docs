@@ -48,3 +48,8 @@ spec-docs bash reminder:
 - Before completion, complete impact-appropriate spec action: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, Level 4 escalation and full verify before architecture-current claims.
 - Read-only commands should not be blocked by this skeleton.
 ```
+## post-edit-reminder dedup
+
+```text
+spec-docs post-edit reminder already shown for this session/change unit.
+```

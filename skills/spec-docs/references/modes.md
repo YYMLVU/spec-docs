@@ -161,6 +161,10 @@ If an empty-project baseline exists and implementation-relevant files now exist,
 
 Do not require a separate command for this transition. Do not discard confirmed principles while absorbing the baseline.
 
+### Profile upgrade recommendation
+
+If `update` or `repair` finds that a workspace has outgrown its current profile, report a profile upgrade recommendation instead of silently broadening scope. Examples include a Minimal Existing Project gaining distinct module ownership, public API surface, persistent data models, external integrations, or enough implementation areas that one overview is no longer precise. Add only newly needed docs and mappings for confirmed implementation evidence. Do not rewrite existing specs wholesale.
+
 ### Routine update
 
 Routine update starts with impact classification before deciding how much spec maintenance or verification is required.

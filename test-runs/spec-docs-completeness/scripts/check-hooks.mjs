@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import {
   assert,
@@ -43,6 +44,21 @@ for (const script of expectedScripts) {
   assertIncludes(output, "spec-docs", `${script} output`);
   scriptOutputs.push(`## ${script}\n\n\`\`\`text\n${output.trim()}\n\`\`\``);
 }
+
+const dedupStateDir = fs.mkdtempSync(path.join(os.tmpdir(), "spec-docs-hook-dedup-"));
+try {
+  const dedupEnv = { ...process.env, SPEC_DOCS_HOOK_STATE_DIR: dedupStateDir };
+  const postEditScript = path.join(hooksRoot, "scripts", "post-edit-reminder");
+  const firstPostEdit = runCommand(postEditScript, [], repoRoot, dedupEnv);
+  const secondPostEdit = runCommand(postEditScript, [], repoRoot, dedupEnv);
+  assertIncludes(firstPostEdit, "spec-docs post-edit reminder", "post-edit-reminder first dedup output");
+  assertIncludes(secondPostEdit, "already shown for this session/change unit", "post-edit-reminder second dedup output");
+  assert(!secondPostEdit.includes("If implementation-relevant files changed"), "post-edit-reminder repeated output must suppress full reminder body");
+  scriptOutputs.push(`## post-edit-reminder dedup\n\n\`\`\`text\n${secondPostEdit.trim()}\n\`\`\``);
+} finally {
+  fs.rmSync(dedupStateDir, { recursive: true, force: true });
+}
+
 const afterHash = hashTree(path.join(repoRoot, "skills", "spec-docs"));
 assert(beforeHash === afterHash, "Hook scripts must not modify skill files");
 
