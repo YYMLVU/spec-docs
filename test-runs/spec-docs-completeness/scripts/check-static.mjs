@@ -178,7 +178,18 @@ assertIncludes(readme, "skills/spec-docs/references/", "README.md references pat
 assertIncludes(readme, "Primary support: Claude Code", "README.md platform positioning");
 assertIncludes(readme, "Manual or experimental integration", "README.md platform positioning");
 assertIncludes(readme, "twenty-eight scenarios", "README.md scenario count");
-assertIncludes(readme, "impact-appropriate spec action", "README.md impact-aware protocol summary");
+for (const phrase of [
+  "impact-appropriate spec action",
+  "debugging-rules.md",
+  "Level 0-4 impact routing",
+  "targeted-check, layered-check, and full-verify",
+  "scoped adopt",
+  "package-lock.json",
+  "internal design notes",
+  "marked protocol block"
+]) {
+  assertIncludes(readme, phrase, "README.md current content");
+}
 for (const staleReadmePhrase of [
   "Send this to Claude Code, Cursor, GitHub Copilot, or another AI coding assistant:",
   "run or apply `spec-docs verify` before claiming completion",
@@ -195,7 +206,14 @@ for (const phrase of [
   "impact-appropriate spec action",
   "Minimal Existing Project",
   "Standard Existing Project",
-  "Large Project / Phased Init"
+  "Large Project / Phased Init",
+  "debugging-rules.md",
+  "Level 0-4 impact routing",
+  "targeted-check、layered-check 和 full-verify",
+  "scoped adopt",
+  "package-lock.json",
+  "内部设计说明",
+  "marked protocol block"
 ]) {
   assertIncludes(readmeZh, phrase, "README.zh-CN.md adaptive-scope parity");
 }
@@ -213,6 +231,22 @@ assertIncludes(installDoc, "references/", "INSTALL-FOR-AI.md");
 assertIncludes(installDoc, "hooks/", "INSTALL-FOR-AI.md");
 assertIncludes(installDoc, "Primary support: Claude Code", "INSTALL-FOR-AI.md platform positioning");
 assertIncludes(installDoc, "Manual or experimental integration", "INSTALL-FOR-AI.md platform positioning");
+for (const phrase of [
+  "hooks/hooks-cursor.json",
+  "~/.claude/skills/spec-docs/",
+  "copy files byte-for-byte",
+  "references/hooks.md",
+  "templates/diagnosis.md",
+  "hooks/scripts/stop-verify-reminder",
+  "chmod +x",
+  "overwriting existing files with the same names without creating backups",
+  "debugging-rules.md",
+  "docs/spec-docs/reviews/",
+  "docs/spec-docs/rebuild/archive/"
+]) {
+  assertIncludes(installDoc, phrase, "INSTALL-FOR-AI.md current install guidance");
+}
+assertNotIncludes(installDoc, "`hooks/` if present", "INSTALL-FOR-AI.md stale optional hooks wording");
 
 const workflowIntegration = readText(path.join(repoRoot, "skills/spec-docs/references/workflow-integration.md"));
 for (const phrase of [

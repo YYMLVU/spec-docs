@@ -112,7 +112,7 @@ The spec-docs skill uses a compact `SKILL.md` as the execution router, with deta
 | 🧭 Router | `SKILL.md` | Identity, mode router, hard gates, and reference map. The agent reads this first to determine which mode and reference to follow. |
 | 📖 Normative rules | `skills/spec-docs/references/` | Detailed per-mode rules, verification criteria, spec-authoring rules, architecture control, workflow integration, and hook policy. When a mode points to a reference, that reference is normative -- the agent must read and follow it before acting. |
 | 🧱 Output shapes | `templates/` | File templates for specs, architecture docs, ADRs, reviews, and other workspace outputs. |
-| 🪝 Optional hook layer | `hooks/` | Skeleton/reminder placeholders for agent hook integration. Claude hook scaffolds cover `SessionStart`, `PreToolUse`, `PostToolUse`, and `Stop`; Cursor hook scaffolds cover `sessionStart` and `stop`. Hooks do not replace rules; they detect events and point the agent to the required mode or reference. Hooks must not automatically modify code, ADRs, or architecture rules. Current hooks are not production-enforced; they serve as integration scaffolding. |
+| 🪝 Optional hook layer | `hooks/` | Skeleton/reminder placeholders for agent hook integration. Claude hook scaffolds cover `SessionStart`, `PreToolUse` (Edit/Write/MultiEdit plus Bash), `PostToolUse`, and `Stop`; Cursor hook scaffolds cover `sessionStart` and `stop`. Hooks do not replace rules; they detect events and point the agent to the required mode or reference. Hooks must not automatically modify code, ADRs, or architecture rules. Current hooks are not production-enforced; they serve as integration scaffolding with session/change-unit reminder deduplication. |
 
 This separation keeps the skill entry point small while ensuring all rules remain accessible and authoritative in their canonical location.
 
@@ -137,6 +137,7 @@ Typical output in a target project:
 ├── 📁 architecture/
 │   ├── current-architecture.md
 │   ├── placement-rules.md
+│   ├── debugging-rules.md
 │   ├── target-architecture.md
 │   └── adoption-plan.md
 ├── 📁 decisions/
@@ -163,7 +164,7 @@ Existing `docs/spec-docs/` workspaces remain valid. Adaptive profiles guide futu
 | Directory | Role |
 | --- | --- |
 | 📁 `specs/` | Implementation facts: code behavior, stack, constraints, mappings, and verification points. |
-| 🏗️ `architecture/` | Current architecture rules, placement rules, target architecture, and adoption plans during rebuilds. |
+| 🏗️ `architecture/` | Current architecture rules, placement rules, debugging rules, target architecture, and adoption plans during rebuilds. |
 | 🧾 `decisions/` | ADRs, the single source for why architecture decisions were made. |
 | 🔎 `reviews/` | Placement and architecture review records produced by governance workflows. |
 | 🔁 `rebuild/status.md` | Rebuild mode source of truth for active, paused, or completed migrations. |
@@ -173,13 +174,12 @@ Existing `docs/spec-docs/` workspaces remain valid. Adaptive profiles guide futu
 | Mode | Use it when | What it does |
 | --- | --- | --- |
 | 🚀 `init` | Starting Spec Docs in a project | Builds the implementation spec library, creates core files, records architecture governance when present, and installs the marked agent protocol block. |
-| 🔄 `update` | Code changed | Synchronizes affected specs and `inventory.md` using Code-to-Spec, Task-to-Spec, and Symbol-to-Spec mappings. |
-| | | Routine changes are scoped by impact. Comment-only or metadata-only changes can state a no-update reason, single-spec behavior changes update only the mapped spec, localized changes use targeted light check, and broad or architecture-risk changes still require full verification or escalation. |
+| 🔄 `update` | Code changed | Synchronizes affected specs and `inventory.md` using Code-to-Spec, Task-to-Spec, and Symbol-to-Spec mappings. Routine changes use Level 0-4 impact routing: Level 0 comment-only or metadata-only changes can state a no-update reason; Level 1 single-spec behavior changes update only the mapped spec; Level 2 localized changes use targeted light check; Level 3 broad changes require full verify; Level 4 architecture-risk changes require escalation. |
 | ✅ `verify` | Before claiming specs are current | Checks protocol blocks, required files, frontmatter, source paths, coverage, symbol mappings, placeholder-free content, and architecture conformance. Reports `[ARCHITECTURE VIOLATION: <subtype>]` with expected behavior and recommended action. Severity reflects Adoption Mode and enabled Addons. |
 | 🩹 `repair` | Specs are stale or inconsistent | Realigns docs and project rules with current code; reports likely code issues without modifying code unless explicitly requested. |
 | 📍 `place` | Deciding where a new module or change belongs | Runs Placement & Boundary Review against `architecture/` rules before implementation planning. Outputs ownership, layer placement, boundary contract (allowed/forbidden dependencies, required contracts, forbidden shortcuts), failure localization hints, and specs to update. Serves as boundary contract for later planning. Does not modify code. |
 | 🏗️ `rebuild` | Starting a target architecture migration | Defines target architecture, an adoption plan, and rebuild status while keeping specs aligned during the migration. |
-| 📦 `adopt` | Completing a rebuild migration | Merges target architecture into current architecture, updates ADR evidence, completes rebuild status, and archives rebuild documents. |
+| 📦 `adopt` | Completing a rebuild migration, or introducing scoped governance for one clearly evidenced area | Merges target architecture into current architecture, updates ADR evidence, completes rebuild status, and archives rebuild documents. Also supports scoped adopt for one well-evidenced area without requiring a full rebuild. |
 | 🧭 `diagnose` | A symptom needs architecture-guided triage | Identifies likely owner, likely layer, specs/files to inspect, signals to check, and debugging order. Does not perform direct repair. |
 
 ### Empty project behavior
@@ -316,6 +316,8 @@ Agents must not guess.
 | Adopt a completed rebuild | `Use $spec-docs adopt to merge the completed target architecture into the current architecture and archive rebuild documents.` |
 | Architecture-guided diagnosis | `Use the spec-docs skill in diagnose mode for this symptom: <symptom>. Identify likely owner, failure boundary, specs/files to inspect, signals to check, and debugging order without claiming root cause prematurely.` |
 
+In this table, `$spec-docs` means "the spec-docs skill"; phrase the request however your agent expects. `verify`, `place`, `repair`, and `adopt` support scoped subpaths when the task does not require a full workspace pass.
+
 ## ✅ Release and Completeness Notes
 
 > 📦 **Version `2.0.0`** has local completeness coverage for both the source tree and installed package form.
@@ -327,6 +329,9 @@ Coverage highlights:
 - ✅ source-form and installed-form checks
 - ✅ empty-project and existing-project `init`
 - ✅ architecture placement and boundary review
+- ✅ scoped placement, scoped repair, repair escalation, rebuild recommendation, and adopt scope distinction
+- ✅ Level 0-4 impact-aware routing without full-verify over-triggering for Level 0-2
+- ✅ targeted-check, layered-check, and full-verify scope separation
 - ✅ implementation/spec synchronization
 - ✅ fact drift plus architecture violation reporting
 - ✅ `[ARCHITECTURE VIOLATION: ARCHITECTURE DRIFT]` for policy moving into the wrong module
@@ -346,7 +351,7 @@ Migration steps:
 
 1. Move `docs/specs/*` to `docs/spec-docs/specs/`.
 2. Move `constitution.md` and `inventory.md` to `docs/spec-docs/` if they exist.
-3. Update the `AGENTS.md` or `CLAUDE.md` protocol block.
+3. Update the marked protocol block in `AGENTS.md` or `CLAUDE.md` between `<!-- SPEC-DOCS-PROTOCOL:BEGIN -->` and `<!-- SPEC-DOCS-PROTOCOL:END -->`; if the block does not exist yet, run `spec-docs init` or `spec-docs repair` to insert it without rewriting unrelated project instructions.
 4. Classify the migration impact and complete the impact-appropriate spec action; run full `spec-docs verify` only if the impact level or an explicit currentness claim requires it.
 
 No compatibility layer is required after migration.
@@ -372,7 +377,7 @@ No compatibility layer is required after migration.
 │       ├── 📁 hooks/
 │       │   ├── hooks.json
 │       │   ├── hooks-cursor.json
-│       │   ├── run-hook.cmd
+│       │   ├── run-hook.cmd      # Windows wrapper; POSIX shells run scripts/ directly
 │       │   └── 📁 scripts/
 │       │       ├── session-start
 │       │       ├── pre-edit-guard
@@ -411,9 +416,11 @@ No compatibility layer is required after migration.
 ├── 📁 test-runs/
 │   └── 📁 spec-docs-completeness/   # local completeness suite: 28 scenarios, all modes, source + installed checks
 ├── package.json
+├── package-lock.json
 ├── README.md
 ├── README.zh-CN.md
 ├── INSTALL-FOR-AI.md
+├── 📁 docs/                # internal design notes, not shipped in the npm package
 ├── head.png
 ├── LICENSE
 └── .gitignore
