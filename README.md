@@ -280,7 +280,7 @@ After `init`, Spec Docs installs a marked protocol block into project-level agen
 
 The block is wrapped with `<!-- SPEC-DOCS-PROTOCOL:BEGIN -->` and `<!-- SPEC-DOCS-PROTOCOL:END -->` markers. Future `init` or `repair` runs can replace the marked block without rewriting unrelated project instructions.
 
-The block requires future AI agents to read relevant specs before implementation changes, update affected specs after those changes, and run or apply `spec-docs verify` before claiming completion.
+The block requires future AI agents to read relevant specs before implementation changes, classify implementation impact after those changes, and complete the impact-appropriate spec action before claiming completion: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, or Level 4 architecture-risk escalation with full verify before architecture-current claims.
 
 ## 🎯 Source-of-Truth Priority
 
@@ -347,7 +347,7 @@ Migration steps:
 1. Move `docs/specs/*` to `docs/spec-docs/specs/`.
 2. Move `constitution.md` and `inventory.md` to `docs/spec-docs/` if they exist.
 3. Update the `AGENTS.md` or `CLAUDE.md` protocol block.
-4. Run `spec-docs verify`.
+4. Classify the migration impact and complete the impact-appropriate spec action; run full `spec-docs verify` only if the impact level or an explicit currentness claim requires it.
 
 No compatibility layer is required after migration.
 
@@ -409,7 +409,7 @@ No compatibility layer is required after migration.
 ├── 📁 agents/
 │   └── openai.yaml
 ├── 📁 test-runs/
-│   └── 📁 spec-docs-completeness/   # local completeness suite: 20 scenarios, all modes, source + installed checks
+│   └── 📁 spec-docs-completeness/   # local completeness suite: 28 scenarios, all modes, source + installed checks
 ├── package.json
 ├── README.md
 ├── README.zh-CN.md

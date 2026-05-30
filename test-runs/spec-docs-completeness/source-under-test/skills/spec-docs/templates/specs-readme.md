@@ -40,11 +40,11 @@ Spec authors should follow `references/spec-authoring.md` for frontmatter, secti
 
 ## After Changing Code
 
-1. Update every affected spec.
-2. Update `inventory.md` if mappings, source globs, symbols, or spec metadata changed.
-3. Update `verified_commit` and `verified_date` in affected specs after verification.
-4. If no spec update is needed, state why.
-5. Run the spec consistency checks before claiming completion.
+1. Classify implementation impact before deciding how much spec maintenance is required.
+2. Complete the impact-appropriate spec action: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, or Level 4 architecture-risk escalation.
+3. Update `inventory.md` if mappings, source globs, symbols, or spec metadata changed.
+4. Update `verified_commit` and `verified_date` in affected specs after verification.
+5. If no spec update is needed, state why.
 
 ## Consistency Checks
 

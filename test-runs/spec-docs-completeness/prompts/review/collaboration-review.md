@@ -46,8 +46,8 @@ Verify for both S10 variants:
     -> spec-docs place
     -> Detailed Spec / Plan (via local Spec Skill)
     -> Implementation / TDD
-    -> spec-docs update
-    -> spec-docs verify
+    -> classify impact
+    -> impact-appropriate spec action
   ```
 - Does spec-docs provide placement, facts, and verification without replacing the local Spec Skill's planning workflow?
 - Are collaboration boundaries clear: spec-docs handles placement, boundary contracts, facts, and verification; local Spec Skill handles feature-level specification and planning?
@@ -62,8 +62,8 @@ Verify for both S10 variants:
     -> spec-docs place
     -> Minimal Implementation Plan
     -> Implementation
-    -> spec-docs update
-    -> spec-docs verify
+    -> classify impact
+    -> impact-appropriate spec action
   ```
 - Does the Minimal Implementation Plan remain lightweight (not a full requirements system, roadmap, or backlog)?
 - Does Standalone Mode NOT become a roadmap or backlog system?
@@ -73,15 +73,15 @@ Verify for both S10 variants:
 For both variants, for non-trivial implementation changes, the expected order must be clear and preserved:
 
 ```
-place -> implement -> update -> verify
+place -> implement -> classify impact -> impact-appropriate spec action
 ```
 
 (Or the integrated equivalent, where the local Spec Skill's planning replaces the Standalone plan but `place` still runs before detailed planning.)
 
 Verify:
 - `place` runs before detailed implementation planning in both variants.
-- `update` runs after implementation-relevant changes in both variants.
-- `verify` runs before claiming completion in both variants.
+- Impact classification runs after implementation/TDD in both variants.
+- Impact-appropriate spec action is completed in both variants: Level 0 no-update reason, Level 1 affected spec update, Level 2 targeted light check, Level 3 full verify, or Level 4 architecture-risk routing.
 - The order is explicit in the output and not ambiguous.
 
 ### 5. Protocol Block Synchronization
@@ -92,7 +92,7 @@ From `references/project-instructions.md`:
 
 - **Target Selection**: AGENTS.md precedence, then CLAUDE.md, then both, then create AGENTS.md.
 - **Update Strategy**: Replace block if markers present, append if absent, no duplicates, no rewriting unrelated instructions, report conflicts if existing instructions conflict.
-- **Protocol Expectations**: Read specs and architecture docs before implementation, run `place` before detailed planning, update specs after implementation changes, run `verify` before completion, use `diagnose` for architecture-guided triage.
+- **Protocol Expectations**: Read specs and architecture docs before implementation, run `place` before detailed planning, classify impact after implementation changes, complete impact-appropriate spec action before completion, use `diagnose` for architecture-guided triage.
 
 Review S10 output for protocol block behavior:
 
@@ -105,8 +105,8 @@ Review S10 output for protocol block behavior:
 | Unrelated user instructions are not overwritten | yes/no |
 | Protocol block requires reading specs/architecture before code changes | yes/no |
 | Protocol block requires `place` before detailed planning for non-trivial changes | yes/no |
-| Protocol block requires `update` after implementation-relevant changes | yes/no |
-| Protocol block requires `verify` before claiming completion | yes/no |
+| Protocol block requires impact classification after implementation-relevant changes | yes/no |
+| Protocol block requires impact-appropriate spec action before claiming completion | yes/no |
 | Protocol block requires `diagnose` for architecture-guided triage | yes/no |
 
 ### 6. Hook Behavior During Collaboration
@@ -118,8 +118,8 @@ Review hook behavior during S10 (both variants):
 - Hooks do not automatically modify code, create ADRs, weaken architecture rules, generate future plans, or over-block normal read-only work.
 - `session-start` hook reminds about inspecting `docs/spec-docs/` and reading compact `SKILL.md`.
 - `pre-edit-guard` hook reminds about `place` before non-trivial implementation changes.
-- `post-edit-reminder` hook reminds about `update` after implementation-relevant changes.
-- `stop-verify-reminder` hook reminds about `verify` before completion.
+- `post-edit-reminder` hook reminds about impact-aware spec action after implementation-relevant changes.
+- `stop-verify-reminder` hook reminds about impact-appropriate completion action and strict full-verify gates.
 - No extra hook behavior is invented beyond what the hook policy and skeleton hooks define.
 
 ### 7. Invented Hook Behavior
@@ -153,9 +153,9 @@ Status: PASS / PASS_WITH_NOTES / FAIL / BLOCKED
 
 (Empty if no issues found.)
 
-### Workflow Order (place -> implement -> update -> verify)
+### Workflow Order (place -> implement -> classify impact -> impact-appropriate spec action)
 
-| Variant | place Before Planning | update After Changes | verify Before Completion | Order Explicit |
+| Variant | place Before Planning | Impact Classified | Impact-Appropriate Spec Action | Order Explicit |
 |---|---|---|---|---|
 | A (Integrated) | yes/no | yes/no | yes/no | yes/no |
 | B (Standalone) | yes/no | yes/no | yes/no | yes/no |

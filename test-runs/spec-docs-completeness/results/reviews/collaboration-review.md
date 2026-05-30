@@ -15,7 +15,7 @@ Both S10 variants follow the expected detection order:
 
 The expected order is preserved:
 
-`Requirement Intake -> spec-docs place -> Detailed Spec/Plan -> Implementation/TDD -> spec-docs update -> spec-docs verify`
+`Requirement Intake -> spec-docs place -> Detailed Spec/Plan -> Implementation/TDD -> classify impact -> impact-appropriate spec action`
 
 Spec Docs provides placement, implementation facts, architecture verification, and documentation synchronization without replacing the local Spec Skill's planning workflow.
 
@@ -23,7 +23,7 @@ Spec Docs provides placement, implementation facts, architecture verification, a
 
 The expected order is preserved:
 
-`Lightweight Requirement Intake -> spec-docs place -> Minimal Implementation Plan -> Implementation -> spec-docs update -> spec-docs verify`
+`Lightweight Requirement Intake -> spec-docs place -> Minimal Implementation Plan -> Implementation -> classify impact -> impact-appropriate spec action`
 
 Standalone Mode remains lightweight and does not become a roadmap, backlog, or full external Spec Skill replacement.
 
@@ -33,7 +33,7 @@ None detected. Hook behavior remains reminder-only and does not invent extra blo
 
 ## Notes
 
-S10 is protocol reasoning only. It does not deeply exercise protocol block synchronization mechanics such as target-file selection, marker replacement, duplicate detection, or conflict reporting. The canonical `agent-protocol-block.md` content appears aligned with the expected workflow, but runtime sync behavior would need a dedicated scenario or live observation.
+S10 is protocol reasoning only. It does not deeply exercise protocol block synchronization mechanics such as target-file selection, marker replacement, duplicate detection, or conflict reporting. The canonical `agent-protocol-block.md` content appears aligned with impact-aware completion, but runtime sync behavior would need a dedicated scenario or live observation.
 
 ## Overall Assessment
 

@@ -21,11 +21,11 @@ Requirement Intake
   -> spec-docs place
   -> Detailed Spec / Plan
   -> Implementation / TDD
-  -> spec-docs update
-  -> spec-docs verify
+  -> classify impact
+  -> impact-appropriate spec action
 ```
 
-Spec Docs does not replace external planning workflows. It provides implementation facts, architecture placement, architecture verification, and documentation synchronization.
+Spec Docs does not replace external planning workflows. It provides implementation facts, architecture placement, architecture verification, and documentation synchronization. Full verify applies only when the impact level, active mode, or explicit user request requires it.
 
 ## Small Bugfix Fast Path
 
@@ -43,8 +43,8 @@ Lightweight Requirement Intake
   -> spec-docs place
   -> Minimal Implementation Plan
   -> Implementation
-  -> spec-docs update
-  -> spec-docs verify
+  -> classify impact
+  -> impact-appropriate spec action
 ```
 
-Standalone Mode must remain lightweight and must not become a roadmap, backlog, full requirements system, or external Spec Skill replacement.
+Standalone Mode must remain lightweight and must not become a roadmap, backlog, full requirements system, or external Spec Skill replacement. Full verify applies only when the impact level, active mode, or explicit user request requires it.

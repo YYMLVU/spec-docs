@@ -178,11 +178,35 @@ assertIncludes(readme, "skills/spec-docs/references/", "README.md references pat
 assertIncludes(readme, "Primary support: Claude Code", "README.md platform positioning");
 assertIncludes(readme, "Manual or experimental integration", "README.md platform positioning");
 assertIncludes(readme, "twenty-eight scenarios", "README.md scenario count");
-assertNotIncludes(
-  readme,
+assertIncludes(readme, "impact-appropriate spec action", "README.md impact-aware protocol summary");
+for (const staleReadmePhrase of [
   "Send this to Claude Code, Cursor, GitHub Copilot, or another AI coding assistant:",
-  "README.md platform positioning"
-);
+  "run or apply `spec-docs verify` before claiming completion",
+  "local completeness suite: 20 scenarios"
+]) {
+  assertNotIncludes(readme, staleReadmePhrase, "README.md adaptive-scope stale wording");
+}
+
+const readmeZh = readText(path.join(repoRoot, "README.zh-CN.md"));
+for (const phrase of [
+  "主要支持：Claude Code",
+  "手动或实验性集成",
+  "二十八个场景",
+  "impact-appropriate spec action",
+  "Minimal Existing Project",
+  "Standard Existing Project",
+  "Large Project / Phased Init"
+]) {
+  assertIncludes(readmeZh, phrase, "README.zh-CN.md adaptive-scope parity");
+}
+for (const staleReadmeZhPhrase of [
+  "Claude Code、Cursor、GitHub Copilot 或其他 AI 编码助手",
+  "在声明完成前运行或应用 `spec-docs verify`",
+  "十二个场景",
+  "12 个场景"
+]) {
+  assertNotIncludes(readmeZh, staleReadmeZhPhrase, "README.zh-CN.md adaptive-scope stale wording");
+}
 
 const installDoc = readText(path.join(repoRoot, "INSTALL-FOR-AI.md"));
 assertIncludes(installDoc, "references/", "INSTALL-FOR-AI.md");
@@ -195,10 +219,17 @@ for (const phrase of [
   "docs/superpowers/specs/",
   "openspec.yaml",
   ".specify/",
-  "Small Bugfix Fast Path"
+  "Small Bugfix Fast Path",
+  "classify impact",
+  "impact-appropriate spec action"
 ]) {
   assertIncludes(workflowIntegration, phrase, "workflow-integration.md adaptive scope follow-up");
 }
+assertNotIncludes(
+  workflowIntegration,
+  "-> spec-docs update\n  -> spec-docs verify",
+  "workflow-integration.md adaptive routing diagrams"
+);
 
 const verification = readText(path.join(repoRoot, "skills/spec-docs/references/verification.md"));
 for (const phrase of [
@@ -226,6 +257,31 @@ for (const phrase of [
 ]) {
   assertIncludes(hooksReference, phrase, "hooks.md hook deduplication and overwrite protection");
 }
+
+const staleWorkflowFiles = [
+  "test-runs/spec-docs-completeness/prompts/scenarios/s10.md",
+  "test-runs/spec-docs-completeness/results/scenario-outputs/s10.md",
+  "test-runs/spec-docs-completeness/prompts/review/collaboration-review.md",
+  "test-runs/spec-docs-completeness/results/reviews/collaboration-review.md",
+  "test-runs/spec-docs-completeness/fixtures/s10-hooks-and-collaboration/README.md"
+];
+for (const rel of staleWorkflowFiles) {
+  const text = readText(path.join(repoRoot, rel));
+  for (const staleWorkflowPhrase of [
+    "place -> implement -> update -> verify",
+    "spec-docs update -> spec-docs verify",
+    "-> update -> verify",
+    "verify before claiming completion",
+    "verify before completion"
+  ]) {
+    assertNotIncludes(text, staleWorkflowPhrase, `${rel} adaptive workflow wording`);
+  }
+  assertIncludes(text, "impact-appropriate spec action", `${rel} adaptive workflow wording`);
+}
+
+const specsReadme = readText(path.join(repoRoot, "skills/spec-docs/templates/specs-readme.md"));
+assertIncludes(specsReadme, "impact-appropriate spec action", "specs-readme.md impact-aware completion");
+assertNotIncludes(specsReadme, "Run the spec consistency checks before claiming completion", "specs-readme.md stale completion wording");
 
 for (const phrase of [
   "Equivalence Review Procedure",

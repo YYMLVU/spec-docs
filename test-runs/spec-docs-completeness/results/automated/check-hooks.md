@@ -53,3 +53,28 @@ spec-docs bash reminder:
 ```text
 spec-docs post-edit reminder already shown for this session/change unit.
 ```
+## run-hook session-start dedup
+
+```text
+spec-docs session-start reminder already shown for this session/change unit.
+```
+## run-hook stop-verify-reminder dedup
+
+```text
+spec-docs stop-verify-reminder reminder already shown for this session/change unit.
+```
+## run-hook pre-edit-guard dedup
+
+```text
+spec-docs pre-edit-guard reminder already shown for this session/change unit.
+```
+## run-hook post-edit-reminder dedup
+
+```text
+spec-docs post-edit-reminder reminder already shown for this session/change unit.
+```
+## run-hook pre-bash-guard dedup
+
+```text
+spec-docs pre-bash-guard reminder already shown for this session/change unit.
+```
